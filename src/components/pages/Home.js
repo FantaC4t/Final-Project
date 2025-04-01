@@ -35,7 +35,7 @@ function Home({ openLogin, openSignup }) {
     { id: 'gpu', name: 'Graphics Cards', icon: 'hardware/gpu.png', color: '#ff5e5e' },
     { id: 'cpu', name: 'Processors', icon: 'hardware/cpu.png', color: '#5e9fff' },
     { id: 'motherboard', name: 'Motherboards', icon: 'hardware/ram.webp', color: '#5effb8' },
-    { id: 'peripherals', name: 'Peripherals', icon: 'hardware/keeb.png', color: '#ff5ee7' }
+    { id: 'peripherals', name: 'Peripherals', icon: 'hardware/keeb.webp', color: '#ff5ee7' }
   ];
 
   const useCases = [
@@ -99,13 +99,13 @@ function Home({ openLogin, openSignup }) {
               <div className="dark-splash"></div>
               <div className="hardware-crown">
                 <img src="/assets/hardware/cpu.png" className="hardware-item" alt="CPU" 
-                     style={{"--final-x": "-100px", "--final-y": "-70px", "--rotation": "15deg", "--delay": "0.1s"}} />
+                     style={{"--final-x": "0px", "--final-y": "-120px", "--rotation": "0deg", "--delay": "0.1s"}} />
                 <img src="/assets/hardware/gpu.png" className="hardware-item" alt="GPU" 
-                     style={{"--final-x": "120px", "--final-y": "-20px", "--rotation": "-10deg", "--delay": "0.3s"}} />
+                     style={{"--final-x": "100px", "--final-y": "-60px", "--rotation": "-10deg", "--delay": "0.3s"}} />
                 <img src="/assets/hardware/ram.webp" className="hardware-item" alt="RAM" 
-                     style={{"--final-x": "-80px", "--final-y": "100px", "--rotation": "-15deg", "--delay": "0.5s"}} />
+                     style={{"--final-x": "100px", "--final-y": "60px", "--rotation": "-15deg", "--delay": "0.5s"}} />
                 <img src="/assets/hardware/motherboard.png" className="hardware-item" alt="Motherboard" 
-                     style={{"--final-x": "90px", "--final-y": "80px", "--rotation": "8deg", "--delay": "0.7s"}} />
+                     style={{"--final-x": "0px", "--final-y": "120px", "--rotation": "0deg", "--delay": "0.7s"}} />
               </div>
               <img src="/assets/EasyWare.png" alt="EasyWare Logo" className="pyro-logo" />
               <div className="dark-ripple"></div>

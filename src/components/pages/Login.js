@@ -20,7 +20,7 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
+    // login  logic here from auctionhouse
     console.log('Login submitted:', formData);
   };
 

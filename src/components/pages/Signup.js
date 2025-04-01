@@ -22,7 +22,7 @@ function Signup() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle signup logic here
+    //  signup logic here from auctionhouse
     console.log('Signup submitted:', formData);
   };
 

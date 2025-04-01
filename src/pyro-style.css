@@ -16,7 +16,7 @@
   --pyro-radius: 12px;
   --pyro-radius-sm: 8px;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  --pyro-header-height: 80px;
+  --pyro-header-height: 70px; /* Adjust this to match your actual header height */
   --pyro-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -39,15 +39,15 @@ body {
 
 /* Header */
 .pyro-header {
-  position: fixed;
+  position: fixed; /* Make it stick on scroll */
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--pyro-header-height);
-  z-index: 1000;
+  z-index: 1000; /* Ensure it's above other content */
   transition: var(--pyro-transition);
-  background-color: transparent;
-  backdrop-filter: blur(0);
+  background-color: rgba(10, 10, 11, 0.3);
+  backdrop-filter: blur(5px);
+  height: var(--pyro-header-height, 60px);
 }
 
 .pyro-header.scrolled {
@@ -57,232 +57,310 @@ body {
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Enhanced Mobile Navigation Styles */
-
-/* Desktop/Mobile visibility classes */
-.desktop-only {
-  display: flex;
-}
-
-.mobile-only {
-  display: none;
-}
-
-/* Navigation base styles */
+/* Navigation centered container layout */
 nav {
+  display: flex;
+  justify-content: center; /* Center the nav-container */
+  width: 100%;
+  height: var(--pyro-header-height);
+  padding: 0; /* Remove padding from the nav itself */
+}
+
+.nav-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  max-width: 1400px; /* Consistent with your other max-width values */
   width: 100%;
-  position: relative;
-  z-index: 100;
+  padding: 0 1.5rem; /* Move padding to container */
+  position: relative; /* For proper positioning of children */
 }
 
+/* Adjust existing nav components to work with the container */
 .pyro-logo {
+  width: 280px;  /* Increased from 200px for a more prominent logo */
+  height: auto;
+  filter: drop-shadow(0 0 15px rgba(255, 94, 94, 0.4)); /* Enhanced glow */
+  z-index: 2;
+}
+
+.logo-container {
+  position: relative;
+  width: 420px;  /* Increased from 360px */
+  height: 420px; /* Increased from 360px */
   display: flex;
+  justify-content: center;
   align-items: center;
-  z-index: 101;
 }
 
 .pyro-logo img {
-  height: 40px;
+  height: 52px; /* Increased from 44px for an even more prominent navbar logo */
+  width: auto;
   transition: var(--pyro-transition);
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin: 0;
+  gap: 1.5rem;
+  margin-left: auto; /* Push to center */
+  margin-right: 2rem; /* Space before buttons */
   padding: 0;
+  list-style: none;
+  transition: var(--pyro-transition);
 }
 
 .nav-links li {
   margin: 0;
 }
 
-.nav-links a {
+.nav-links li a {
   color: var(--pyro-text);
   text-decoration: none;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1rem;
   transition: var(--pyro-transition);
-  position: relative;
-  padding: 0.25rem 0;
+  padding: 0.5rem 0;
 }
 
-/* Fix for the active class styling */
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(to right, var(--pyro-primary), var(--pyro-quaternary, var(--pyro-primary)));
-  transition: var(--pyro-transition);
-}
-
-.nav-links a:hover, 
-.nav-links a.active {
+.nav-links li a:hover {
   color: var(--pyro-primary);
 }
 
-.nav-links a:hover::after,
-.nav-links a.active::after {
-  width: 100%;
+.nav-links li a.active {
+  color: var(--pyro-primary);
+  font-weight: 600;
 }
 
+/* Fix toggle button styling */
+.mobile-menu-toggle {
+  display: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: var(--pyro-text);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--pyro-radius-sm);
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1001;
+}
+
+/* Fix navbar buttons and styling to match pyro.host */
+
+/* Desktop nav buttons - clean up styling */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 1rem;
-  z-index: 101;
 }
 
-/* Mobile navigation styles */
-@media (max-width: 768px) {
+/* Style the nav action buttons like pyro.host */
+.nav-actions .pyro-button {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+/* Primary button in navbar - distinctive but not overwhelming */
+.nav-actions .pyro-button.primary {
+  background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
+  color: white;
+  border: none;
+}
+
+.nav-actions .pyro-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 94, 94, 0.25);
+}
+
+/* Secondary button in navbar - cleaner with subtle border */
+.nav-actions .pyro-button.secondary {
+  background-color: transparent;
+  color: var(--pyro-text);
+  border: 1px solid var(--pyro-border);
+}
+
+.nav-actions .pyro-button.secondary:hover {
+  border-color: var(--pyro-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Ensure mobile/desktop visibility is properly controlled */
+@media (min-width: 769px) {
   .desktop-only {
-    display: none !important;
+    display: flex !important;
   }
   
   .mobile-only {
-    display: block;
+    display: none !important;
   }
-  
-  nav {
-    padding: 0.75rem 1rem;
-  }
+}
 
+@media (max-width: 768px) {
+  /* Show the toggle button */
   .mobile-menu-toggle {
-    display: flex !important; /* Force show only on mobile */
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    color: var(--pyro-text);
-    cursor: pointer;
-    padding: 0.5rem;
+    display: flex !important;
+    right: 1.5rem;
   }
   
+  /* Improved mobile menu background styling */
   .nav-links {
     position: fixed;
-    top: 0;
+    top: var(--pyro-header-height);
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(10, 10, 11, 0.95);
-    backdrop-filter: blur(15px);
+    width: 100%;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    gap: 2rem;
-    transform: translateX(-100%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 100;
+    background-color: rgba(10, 10, 11, 0.9); /* Slightly transparent background */
+    backdrop-filter: blur(10px); /* Enhanced blur effect like pyro.host */
+    border-top: 1px solid var(--pyro-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+    padding: 1.5rem;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    height: calc(100vh - var(--pyro-header-height));
+    overflow-y: auto;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; /* Smoother animation */
   }
   
   .nav-links.active {
-    transform: translateX(0);
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
   }
   
-  /* Improved link styling for better visibility */
-  .nav-links a {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--pyro-text);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    display: inline-block;
-    padding: 0.5rem 0;
-  }
-  
-  /* More visible active indicator for mobile */
-  .nav-links a.active {
-    color: var(--pyro-primary);
-  }
-  
-  .nav-links a.active::after {
-    height: 3px;
-    background: var(--pyro-primary);
-    box-shadow: 0 0 10px var(--pyro-primary);
-  }
-  
-  /* Mobile auth buttons */
-  .mobile-auth-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  /* Refine nav links styling */
+  .nav-links li {
     width: 100%;
-    margin-top: 2rem;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--pyro-border);
   }
   
-  .mobile-auth-buttons button {
-    width: 100%;
-    padding: 0.8rem 1.5rem;
-    font-size: 1rem;
-  }
-  
-  .full-width {
-    width: 100%;
-  }
-}
-
-/* Mobile menu toggle button - hide on desktop, show on mobile */
-.mobile-menu-toggle {
-  display: none !important; /* Force hide on all screens by default */
-  background: none;
-  border: none;
-  color: var(--pyro-text);
-  cursor: pointer;
-  padding: 0.5rem;
-  align-items: center;
-  justify-content: center;
-}
-
-/* For very small screens */
-@media (max-width: 380px) {
-  .nav-actions .pyro-button.secondary {
-    display: none; /* Hide login button on very small screens */
-  }
-  
-  .nav-links a {
-    font-size: 1.25rem;
-  }
-}
-
-/* Additional mobile-specific styles */
-
-/* Mobile-only elements */
-.mobile-only {
-  display: none;
-}
-
-/* Mobile auth buttons in menu */
-.mobile-auth-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  margin-top: 2rem;
-}
-
-.full-width {
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .mobile-only {
+  .nav-links li a {
     display: block;
+    padding: 1rem 0.5rem; /* More vertical padding for easier tapping */
+    font-size: 1.1rem; /* Slightly larger font */
+    font-weight: 500;
+    color: var(--pyro-text);
+    transition: var(--pyro-transition);
+  }
+  
+  .nav-links li a:hover,
+  .nav-links li a.active {
+    color: var(--pyro-primary);
+    background-color: rgba(255, 255, 255, 0.03); /* Subtle hover background */
+    padding-left: 1rem; /* Slight indent on hover/active */
+  }
+  
+  /* Login/Signup section styling */
+  .nav-links li.mobile-only {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--pyro-border);
+    padding-top: 1.5rem;
+    border-bottom: none;
+  }
+  
+  /* Login/Signup buttons styling */
+  .nav-links .pyro-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.9rem;
+    margin: 0.75rem 0;
+    border-radius: var(--pyro-radius-sm);
+    transition: all 0.3s ease;
+  }
+  
+  /* Primary button styling (Sign Up) */
+  .nav-links .pyro-button.primary {
+    background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(255, 94, 94, 0.2);
+  }
+  
+  /* Secondary button styling (Login) */
+  .nav-links .pyro-button.secondary {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: var(--pyro-text);
+    border: 1px solid var(--pyro-border);
+  }
+  
+  /* Button hover effects */
+  .nav-links .pyro-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .nav-links .pyro-button.primary:hover {
+    box-shadow: 0 6px 20px rgba(255, 94, 94, 0.3);
+  }
+  
+  .nav-links .pyro-button.secondary:hover {
+    border-color: var(--pyro-primary);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Mobile menu toggle button */
+  .mobile-menu-toggle {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+  }
+  
+  .mobile-menu-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .mobile-menu-toggle svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.5px;
+  }
+
+  /* More specific selector to override .nav-actions display property */
+  .nav-actions.desktop-only {
+    display: none !important;
+  }
+  
+  /* Ensure mobile elements are properly shown */
+  .nav-links li.mobile-only {
+    display: block !important;
+  }
+
+  .logo-container {
+    width: 320px;  /* Increased from 280px */
+    height: 320px; /* Increased from 280px */
+  }
+  
+  .pyro-logo {
+    width: 200px;  /* Increased from 160px */
+  }
+
+  .pyro-logo img {
+    height: 44px; /* Increased from 38px - also larger on mobile */
   }
 }
 
-/* Hero Section */
+/* Enhanced Mobile Navigation Styles */
+
+/* Hero Section - Adjusted to be exactly viewport height minus navbar height */
 .pyro-hero {
-  min-height: 100vh;
-  padding: calc(var(--pyro-header-height) + 3rem) 0 5rem;
+  height: calc(100vh - var(--pyro-header-height));
+  min-height: 600px; /* Fallback minimum height for very small screens */
+  padding: 2rem 0 2rem; /* Reduced padding top/bottom */
   position: relative;
   background: radial-gradient(circle at 50% 50%, var(--pyro-bg-light), var(--pyro-bg) 70%);
   display: flex;
@@ -454,8 +532,8 @@ nav {
 
 .logo-container {
   position: relative;
-  width: 360px;  /* Increased from 300px */
-  height: 360px; /* Increased from 300px */
+  width: 420px;  /* Increased from 360px */
+  height: 420px; /* Increased from 360px */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -479,10 +557,11 @@ nav {
   border: 2px solid rgba(255, 94, 94, 0.1);
   animation: ripple 3s infinite ease-out;
   z-index: -1;
+  box-shadow: 0 0 30px rgba(255, 94, 94, 0.15);
 }
 
 .pyro-logo {
-  width: 200px;  /* Increased from 180px */
+  width: 280px;  /* Increased from 200px for a more prominent logo */
   height: auto;
   filter: drop-shadow(0 0 15px rgba(255, 94, 94, 0.4)); /* Enhanced glow */
   z-index: 2;
@@ -493,6 +572,17 @@ nav {
   width: 100%;
   height: 100%;
   z-index: 1;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.2));
+}
+
+.hardware-crown::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
 
 .hardware-item {
@@ -504,14 +594,24 @@ nav {
   transform: translate(-50%, -50%);
   opacity: 0;
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4)); /* Enhanced shadow */
-  animation: float-in 1s forwards;
-  animation-delay: var(--delay, 0s);
+  animation: float-in 1s forwards, float 3s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s), 1s;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.hardware-item:hover {
+  transform: translate(var(--final-x, 0), var(--final-y, 0)) rotate(var(--rotation, 0)) scale(1.15);
+  filter: drop-shadow(0 0 15px rgba(255, 94, 94, 0.5));
+  z-index: 10;
 }
 
 @keyframes float-in {
   0% {
     transform: translate(-50%, -50%);
     opacity: 0;
+  }
+  30% {
+    opacity: 0.5;
   }
   100% {
     transform: translate(var(--final-x, 0), var(--final-y, 0)) rotate(var(--rotation, 0));
@@ -522,7 +622,10 @@ nav {
 @keyframes ripple {
   0% {
     transform: scale(0.8);
-    opacity: 1;
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.4;
   }
   100% {
     transform: scale(1.3);
@@ -530,25 +633,26 @@ nav {
   }
 }
 
+@keyframes float {
+  0% { transform: translate(var(--final-x, 0), var(--final-y, 0)) rotate(var(--rotation, 0)); }
+  100% { transform: translate(var(--final-x, 0), calc(var(--final-y, 0) - 10px)) rotate(var(--rotation, 0)); }
+}
+
 /* Ensure images are responsive on mobile */
 @media (max-width: 768px) {
   .logo-container {
-    width: 280px;  /* Increased from 240px */
-    height: 280px; /* Increased from 240px */
+    width: 320px;  /* Increased from 280px */
+    height: 320px; /* Increased from 280px */
   }
   
   .pyro-logo {
-    width: 160px;  /* Increased from 140px */
-  }
-  
-  .hardware-item {
-    width: 75px;  /* Increased from 60px */
+    width: 200px;  /* Increased from 160px */
   }
 }
 
 .pyro-scroll-indicator {
   position: absolute;
-  bottom: 2rem;
+  bottom: 1rem; /* Reduced from 2rem to fit better */
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -641,7 +745,7 @@ nav {
   border: 1px solid var(--pyro-border);
   transition: var(--pyro-transition);
   overflow: hidden;
-  animation: fadeIn 0.6s backwards;
+  animation: fadeIn 0.8s ease-out backwards; /* Slower, more eased animation */
   animation-delay: var(--animation-delay, 0s);
 }
 
@@ -649,6 +753,8 @@ nav {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   border-color: var(--accent-color, var(--pyro-primary));
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .category-icon {
@@ -742,6 +848,8 @@ nav {
   transform: translateY(-5px);
   box-shadow: var(--pyro-shadow);
   border-color: rgba(255, 255, 255, 0.2);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .product-badge {
@@ -963,7 +1071,7 @@ nav {
   position: relative;
   border: 1px solid var(--pyro-border);
   transition: var(--pyro-transition);
-  animation: fadeIn 0.6s backwards;
+  animation: fadeIn 0.8s ease-out backwards; /* Slower, more eased animation */
   animation-delay: calc(var(--animation-delay, 0s) + 0.1s);
 }
 
@@ -971,6 +1079,8 @@ nav {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
   border-color: var(--pyro-primary);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .step-number {
@@ -1044,7 +1154,7 @@ nav {
   text-align: center;
   border: 1px solid var(--pyro-border);
   transition: var(--pyro-transition);
-  animation: fadeIn 0.6s backwards;
+  animation: fadeIn 0.8s ease-out backwards; /* Slower, more eased animation */
   animation-delay: var(--animation-delay, 0s);
 }
 
@@ -1052,6 +1162,8 @@ nav {
   transform: translateY(-5px);
   box-shadow: var(--pyro-shadow);
   border-color: var(--pyro-primary);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .use-case-icon {
@@ -1371,7 +1483,7 @@ nav {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(15px); /* Reduced distance for smoother motion */
   }
   to {
     opacity: 1;
@@ -1506,4 +1618,99 @@ nav {
   .section-header h2 {
     font-size: 1.75rem;
   }
+}
+
+/* Page layout to account for fixed navbar */
+.pyro-page {
+  margin-top: var(--pyro-header-height, 60px);
+  padding-top: 2rem; /* Additional padding for spacing */
+}
+
+/* Page header styling */
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 1rem;
+  background: linear-gradient(to right, rgba(255, 94, 94, 0.05), rgba(94, 159, 255, 0.05));
+  border-radius: var(--pyro-radius);
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  background: var(--pyro-text-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+.page-header p {
+  color: var(--pyro-text-muted);
+  font-size: 1.1rem;
+}
+
+/* Page content general styling */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* About page specific styling */
+.about-section {
+  margin-bottom: 3rem;
+}
+
+.about-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: var(--pyro-text);
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.about-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, var(--pyro-primary), transparent);
+}
+
+.about-section p {
+  color: var(--pyro-text-muted);
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  
+  .about-section h2 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Auth Modal Positioning - ensure it appears below navbar */
+.auth-modal {
+  margin-top: var(--pyro-header-height); /* Start content below the navbar */
+  z-index: 1010; /* Higher than navbar's 1000 */
+}
+
+.auth-modal-content {
+  max-height: calc(100vh - var(--pyro-header-height) - 40px);
+  margin-top: var(--pyro-header-height);
+  overflow-y: auto;
+}
+
+/* For React Modal library, if you're using it */
+.ReactModal__Content {
+  margin-top: var(--pyro-header-height) !important;
+  z-index: 1010 !important;
 }
