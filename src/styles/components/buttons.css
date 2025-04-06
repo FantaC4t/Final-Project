@@ -1,0 +1,177 @@
+/* Button styles */
+
+.pyro-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.75rem;
+  border-radius: var(--pyro-radius-sm);
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--pyro-transition);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.pyro-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: all 0.8s ease;
+}
+
+.pyro-button:hover::before {
+  left: 100%;
+}
+
+.pyro-button.primary {
+  background-color: var(--pyro-primary);
+  color: var(--pyro-text);
+}
+
+.pyro-button.secondary {
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--pyro-text);
+  border: 1px solid var(--pyro-border);
+}
+
+.pyro-button.outline {
+  background-color: transparent;
+  border: 1px solid var(--pyro-border);
+  color: var(--pyro-text);
+}
+
+.pyro-button.primary:hover {
+  box-shadow: 0 0 20px rgba(255, 94, 94, 0.3);
+  transform: translateY(-2px);
+}
+
+.pyro-button.secondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.pyro-button.outline:hover {
+  border-color: var(--pyro-primary);
+  color: var(--pyro-primary);
+}
+
+.pyro-button.large {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.pyro-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Button sizes */
+.pyro-button.sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.pyro-button.lg {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+/* Full width button */
+.pyro-button.full-width {
+  width: 100%;
+  justify-content: center;
+}
+
+/* Button variants */
+.pyro-button.gradient {
+  background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
+  color: white;
+  border: none;
+}
+
+.pyro-button.gradient:hover {
+  box-shadow: 0 4px 15px rgba(255, 94, 94, 0.3);
+  transform: translateY(-2px);
+}
+
+.pyro-button.disabled,
+.pyro-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Special styles for nav action buttons */
+.nav-actions .pyro-button {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.nav-actions .pyro-button.primary {
+  background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
+  color: white;
+  border: none;
+}
+
+.nav-actions .pyro-button.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 94, 94, 0.25);
+}
+
+.nav-actions .pyro-button.secondary {
+  background-color: transparent;
+  color: var(--pyro-text);
+  border: 1px solid var(--pyro-border);
+}
+
+.nav-actions .pyro-button.secondary:hover {
+  border-color: var(--pyro-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Compare and Add to Cart buttons */
+.add-to-cart {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--pyro-primary);
+  color: var(--pyro-text);
+  border: none;
+  border-radius: var(--pyro-radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--pyro-transition);
+  text-align: center;
+}
+
+.add-to-cart:hover {
+  background-color: #ff4a4a;
+  box-shadow: 0 0 15px rgba(255, 94, 94, 0.3);
+}
+
+.compare-all-btn {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.06);
+  color: var(--pyro-text);
+  border: 1px solid var(--pyro-border);
+  border-radius: var(--pyro-radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--pyro-transition);
+}
+
+.compare-all-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--pyro-primary);
+}

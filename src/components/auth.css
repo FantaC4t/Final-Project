@@ -359,6 +359,30 @@
     height: 14px;
 }
 
+/* New styles */
+.error-message {
+  color: #e53935;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+input.error {
+  border-color: #e53935;
+}
+
+.auth-error {
+  background-color: rgba(229, 57, 53, 0.1);
+  border-left: 3px solid #e53935;
+  color: #e53935;
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border-radius: 4px;
+}
+
+.server-status {
+  font-family: monospace;
+}
+
 /* Responsive adjustments */
 @media screen and (max-width: 500px) {
     .auth-card {

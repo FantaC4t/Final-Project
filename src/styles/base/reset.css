@@ -1,0 +1,29 @@
+/* Base styles */
+body {
+  font-family: var(--font-sans);
+  background-color: var(--pyro-bg);
+  color: var(--pyro-text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.pyro-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Page layout to account for fixed navbar */
+.pyro-page {
+  margin-top: var(--pyro-header-height, 60px);
+  padding-top: 2rem; /* Additional padding for spacing */
+}
+
+/* General page structure */
+.page-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}

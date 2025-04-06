@@ -1,0 +1,34 @@
+/* Main CSS file importing all modular CSS files */
+
+/* Base */
+@import './base/variables.css';
+@import './base/reset.css';
+@import './base/typography.css';
+
+/* Layout */
+@import './layout/grid.css';
+@import './layout/header.css';
+@import './layout/footer.css';
+
+/* Components */
+@import './components/buttons.css';
+@import './components/cards.css';
+@import './components/auth-modal.css';
+@import './components/forms.css';
+
+/* Sections */
+@import './sections/hero.css';
+@import './sections/categories.css';
+@import './sections/products.css';
+@import './sections/account.css';
+@import './sections/steps.css';
+@import './sections/use-cases.css';
+
+/* Pages */
+@import './pages/about.css';
+@import './pages/compare.css';
+@import './pages/home.css';
+
+/* Utilities */
+@import './utilities/animations.css';
+@import './utilities/helpers.css';

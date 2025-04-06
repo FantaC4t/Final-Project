@@ -1,0 +1,258 @@
+/* Hero section styles */
+
+.pyro-hero {
+  height: calc(100vh - var(--pyro-header-height));
+  min-height: 600px;
+  padding: 2rem 0 2rem;
+  position: relative;
+  background: radial-gradient(circle at 50% 50%, var(--pyro-bg-light), var(--pyro-bg) 70%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.pyro-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 10% 10%, rgba(255, 94, 94, 0.15), transparent 40%),
+              radial-gradient(circle at 90% 90%, rgba(94, 159, 255, 0.15), transparent 40%);
+  z-index: 0;
+}
+
+.pyro-hero-content {
+  max-width: 1400px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.pyro-hero-text {
+  flex: 1;
+  max-width: 600px;
+}
+
+.pyro-title {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.pyro-subtitle {
+  font-size: 1.25rem;
+  color: var(--pyro-text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.pyro-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.pyro-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--pyro-text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--pyro-text-muted);
+  margin-top: 0.25rem;
+}
+
+.pyro-cta-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Hardware crown animation styles */
+.pyro-hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-container {
+  position: relative;
+  width: 420px;
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dark-splash {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(10, 10, 15, 0.8) 0%, transparent 70%);
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.dark-ripple {
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid rgba(255, 94, 94, 0.1);
+  animation: ripple 3s infinite ease-out;
+  z-index: -1;
+  box-shadow: 0 0 30px rgba(255, 94, 94, 0.15);
+}
+
+.hardware-crown {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.2));
+}
+
+.hardware-crown::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  pointer-events: none;
+}
+
+.hardware-item {
+  position: absolute;
+  width: 100px;
+  height: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.4));
+  animation: float-in 1s forwards, float 3s ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s), 1s;
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.hardware-item:hover {
+  transform: translate(var(--final-x, 0), var(--final-y, 0)) rotate(var(--rotation, 0)) scale(1.15);
+  filter: drop-shadow(0 0 15px rgba(255, 94, 94, 0.5));
+  z-index: 10;
+}
+
+.pyro-scroll-indicator {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--pyro-text-muted);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: var(--pyro-transition);
+  cursor: pointer;
+}
+
+.pyro-scroll-indicator:hover {
+  opacity: 1;
+  color: var(--pyro-text);
+}
+
+.pyro-scroll-indicator svg {
+  animation: bounce 2s infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .pyro-title {
+    font-size: 3.5rem;
+  }
+  
+  .pyro-hero-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+  }
+  
+  .pyro-hero-text {
+    max-width: 800px;
+  }
+  
+  .pyro-stats {
+    justify-content: center;
+  }
+  
+  .pyro-cta-buttons {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .logo-container {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .pyro-title {
+    font-size: 2.5rem;
+  }
+  
+  .pyro-stats {
+    gap: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .pyro-hero {
+    padding-top: calc(var(--pyro-header-height) + 2rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .pyro-hero-content {
+    width: 95%;
+  }
+  
+  .pyro-title {
+    font-size: 2rem;
+  }
+  
+  .pyro-subtitle {
+    font-size: 1rem;
+  }
+  
+  .pyro-stats {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .pyro-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}

@@ -8,7 +8,7 @@ import Builder from './components/pages/Builder';
 import Deals from './components/pages/Deals';
 import About from './components/pages/About';
 import Footer from './components/Footer';
-import './pyro-style.css';
+import './styles/main.css';
 
 function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);

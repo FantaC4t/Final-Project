@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --pyro-bg: #0a0a0b;
+  --pyro-bg-light: #15151b;
+  --pyro-primary: #ff5e5e;
+  --pyro-secondary: #5e9fff;
+  --pyro-tertiary: #5effb8;
+  --pyro-quaternary: #ff5ee7;
+  --pyro-text: #ffffff;
+  --pyro-text-muted: rgba(255, 255, 255, 0.6);
+  --pyro-border: rgba(255, 255, 255, 0.12);
+  --pyro-card-bg: rgba(255, 255, 255, 0.05);
+  --pyro-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  --pyro-shadow-sm: 0 5px 10px rgba(0, 0, 0, 0.1);
+  --pyro-radius: 12px;
+  --pyro-radius-sm: 8px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --pyro-header-height: 70px; /* Adjust this to match your actual header height */
+  --pyro-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
