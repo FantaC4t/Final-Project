@@ -1,13 +1,16 @@
 //backend/config/db.js
 const mongoose = require('mongoose');
 
+// Make sure you're connecting to the correct database (easyware)
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host} (${conn.connection.name})`);
-    return true;
+    const conn = await mongoose.connect('mongodb://localhost:27017/easyware', {
+      // options might be here
+    });
+    
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
+    console.error(`Error: ${error.message}`);
     process.exit(1);
   }
 };

@@ -1,51 +1,225 @@
-/* Home Page Styles */
+/* Home Page - Complete Redesign */
 
-/* Hero section animation enhancement */
+/* ======== GLOBAL VARIABLES ======== */
+:root {
+  --home-section-padding: 5rem 0;
+  --home-section-padding-mobile: 3rem 0;
+  --home-container-width: 1400px;
+  --home-card-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --home-card-hover-transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Fix for the unwanted bar below navbar */
+
+/* Adjust hero section to remove the gap */
 .pyro-hero {
-  /* Basic styles are in hero.css, add home-specific extensions here */
+  margin-top: 0; /* Remove any margin that might be causing the gap */
+  padding-top: calc(var(--pyro-header-height) + 6rem); /* Account for fixed header */
+  padding-bottom: 6rem;
   position: relative;
-  animation: gradientShift 20s ease infinite alternate;
+  z-index: 1; /* Ensure proper stacking order */
+  background: linear-gradient(135deg, rgba(30, 30, 40, 0.9) 0%, rgba(18, 18, 26, 0.95) 100%);
+  overflow: hidden;
 }
 
-@keyframes gradientShift {
-  0% {
-    background: radial-gradient(circle at 30% 50%, var(--pyro-bg-light), var(--pyro-bg) 70%);
-  }
-  50% {
-    background: radial-gradient(circle at 50% 30%, var(--pyro-bg-light), var(--pyro-bg) 70%);
-  }
-  100% {
-    background: radial-gradient(circle at 70% 50%, var(--pyro-bg-light), var(--pyro-bg) 70%);
-  }
+/* Fix for any potential body margin issues */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-/* Featured categories with enhanced hover effects */
+/* Ensure proper header spacing - override any conflicting styles */
+.pyro-header + * {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  border-top: none !important;
+}
+
+/* Fix for the app container layout */
+#root, 
+.app-container,
+main {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fix for any potential page container spacing issues */
+.page-container {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Modern background effect */
+.pyro-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 94, 94, 0.15), transparent 30%),
+    radial-gradient(circle at 80% 70%, rgba(94, 159, 255, 0.15), transparent 30%);
+  z-index: 0;
+}
+
+.pyro-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.pyro-hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  background: linear-gradient(90deg, #fff, #e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.pyro-hero-content p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  color: var(--pyro-text-muted);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.hero-buttons .pyro-button {
+  padding: 1rem 2.5rem; /* Slightly wider single button */
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: var(--pyro-radius-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(90deg, var(--pyro-primary), #ff7e7e);
+  border: none;
+}
+
+.hero-buttons .pyro-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Better CTA buttons in hero */
+.pyro-cta-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.pyro-cta-buttons .pyro-button {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pyro-cta-buttons .pyro-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.pyro-cta-buttons .pyro-button svg {
+  height: 1.2rem;
+  width: 1.2rem;
+}
+
+/* ======== CATEGORY SHOWCASE ======== */
 .home-categories {
-  padding: 5rem 0;
+  padding: var(--home-section-padding);
+  background-color: var(--pyro-bg);
+}
+
+.categories-container {
+  max-width: var(--home-container-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+/* New eyebrow text for section headers */
+.section-eyebrow {
+  display: block;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: var(--pyro-primary);
+  margin-bottom: 0.75rem;
+  opacity: 0.9;
+}
+
+.section-subtitle {
+  color: var(--pyro-primary);
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, #fff, #b0b0b0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.section-description {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 1.1rem;
+  color: var(--pyro-text-muted);
+  line-height: 1.7;
 }
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
 .home-category-card {
+  position: relative;
+  height: 220px;
   border-radius: var(--pyro-radius);
   overflow: hidden;
-  position: relative;
-  height: 200px;
-  box-shadow: var(--pyro-shadow-sm);
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  box-shadow: var(--home-card-shadow);
+  transition: var(--home-card-hover-transition);
+  box-sizing: border-box;
 }
 
-.home-category-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-  z-index: 1;
+.home-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
 }
 
 .category-bg {
@@ -53,11 +227,22 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.5s ease;
 }
 
 .home-category-card:hover .category-bg {
   transform: scale(1.05);
+}
+
+.home-category-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.2) 60%, transparent 100%);
+  z-index: 1;
 }
 
 .category-content {
@@ -66,20 +251,36 @@
   left: 0;
   width: 100%;
   padding: 1.5rem;
-  color: var(--pyro-text);
   z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.home-category-card:hover .category-content {
+  transform: translateY(-5px);
 }
 
 .category-content h3 {
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
   font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .category-content p {
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  max-height: 2.8em;
+  line-height: 1.4;
 }
 
 .category-link {
@@ -89,21 +290,16 @@
   color: var(--pyro-primary);
   font-weight: 600;
   font-size: 0.9rem;
-  transition: var(--pyro-transition);
-  text-decoration: none;
+  transition: gap 0.3s ease;
 }
 
-.category-link svg {
-  transition: transform 0.3s ease;
+.home-category-card:hover .category-link {
+  gap: 0.75rem;
 }
 
-.category-link:hover svg {
-  transform: translateX(4px);
-}
-
-/* Featured products with enhanced grid layout */
+/* ======== FEATURED PRODUCTS ======== */
 .home-featured {
-  padding: 5rem 0;
+  padding: var(--home-section-padding);
   background-color: rgba(255, 255, 255, 0.02);
   position: relative;
   overflow: hidden;
@@ -116,30 +312,33 @@
   height: 100%;
   top: 0;
   left: 0;
-  background: radial-gradient(circle at 10% 90%, rgba(255, 94, 94, 0.1), transparent 30%),
-              radial-gradient(circle at 90% 10%, rgba(94, 159, 255, 0.1), transparent 30%);
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(255, 94, 94, 0.07), transparent 25%),
+    radial-gradient(circle at 90% 90%, rgba(94, 159, 255, 0.07), transparent 25%);
   z-index: 0;
 }
 
 .featured-container {
   position: relative;
   z-index: 1;
-  max-width: 1400px;
+  max-width: var(--home-container-width);
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem;
 }
 
 .featured-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
 }
 
 .featured-title {
-  font-size: 2rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-secondary));
+  font-size: 2.2rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #fff, #b0b0b0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -147,18 +346,23 @@
 
 .featured-tabs {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.5rem;
+  border-radius: var(--pyro-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .featured-tab {
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.2rem;
   border-radius: var(--pyro-radius-sm);
-  border: 1px solid transparent;
   background: transparent;
   color: var(--pyro-text-muted);
-  cursor: pointer;
   font-weight: 500;
-  transition: var(--pyro-transition);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .featured-tab:hover {
@@ -166,308 +370,275 @@
 }
 
 .featured-tab.active {
-  background-color: rgba(255, 94, 94, 0.1);
-  color: var(--pyro-primary);
-  border-color: rgba(255, 94, 94, 0.2);
+  background-color: var(--pyro-primary);
+  color: white;
 }
 
 .featured-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
-/* Deal of the day */
-.deal-of-day {
-  margin: 5rem 0;
-  position: relative;
-}
-
-.deal-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  position: relative;
-}
-
-.deal-card {
-  background: linear-gradient(135deg, #1e1e28 0%, #12121a 100%);
+.product-card {
+  background-color: rgba(30, 30, 40, 0.6);
   border-radius: var(--pyro-radius);
   overflow: hidden;
-  display: flex;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--home-card-hover-transition);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--home-card-shadow);
+  box-sizing: border-box;
 }
 
-.deal-image {
-  flex: 1;
-  background-color: rgba(255, 255, 255, 0.03);
-  padding: 3rem;
+.product-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+}
+
+.product-image {
+  height: 220px;
+  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: rgba(255, 255, 255, 0.03);
   position: relative;
   overflow: hidden;
 }
 
-.deal-image img {
-  max-width: 100%;
-  max-height: 400px;
+.product-image img {
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
   transition: transform 0.5s ease;
-  transform: scale(0.9);
 }
 
-.deal-card:hover .deal-image img {
-  transform: scale(1);
+.product-card:hover .product-image img {
+  transform: scale(1.05);
 }
 
-.deal-image::before {
-  content: '';
+.product-badge {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1), transparent 70%);
-}
-
-.deal-content {
-  flex: 1;
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.deal-badge {
+  top: 1rem;
+  left: 1rem;
   background-color: var(--pyro-primary);
   color: white;
+  font-size: 0.7rem;
   font-weight: 700;
-  font-size: 0.8rem;
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
   border-radius: var(--pyro-radius-sm);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  z-index: 10;
 }
 
-.deal-content h2 {
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1rem;
-  line-height: 1.2;
+.product-details {
+  padding: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  box-sizing: border-box;
 }
 
-.deal-content p {
+.product-category {
+  font-size: 0.8rem;
   color: var(--pyro-text-muted);
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
+  margin-bottom: 0.5rem;
+  display: block;
 }
 
-.deal-price {
+.product-title, 
+.product-details h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--pyro-text);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.4;
+  max-height: 3.1em;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.product-price-row {
   display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.product-price {
+  display: flex;
+  flex-direction: column;
 }
 
 .current-price {
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 1.2rem;
+  font-weight: 700;
   color: var(--pyro-primary);
 }
 
 .old-price {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   color: var(--pyro-text-muted);
   text-decoration: line-through;
 }
 
-.discount-percent {
-  background-color: rgba(94, 255, 184, 0.2);
-  color: var(--pyro-tertiary);
-  padding: 0.25rem 0.5rem;
-  border-radius: var(--pyro-radius-sm);
-  font-weight: 600;
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #FFD700;
   font-size: 0.9rem;
 }
 
-.deal-countdown {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.time-unit {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: var(--pyro-radius-sm);
-  padding: 0.75rem;
-  text-align: center;
-  min-width: 70px;
-}
-
-.time-number {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--pyro-text);
-  margin-bottom: 0.25rem;
-}
-
-.time-label {
-  font-size: 0.8rem;
+.rating-count {
   color: var(--pyro-text-muted);
+  font-size: 0.8rem;
+  margin-left: 0.25rem;
 }
 
-.deal-buttons {
+.product-action {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 }
 
-/* Testimonials */
-.home-testimonials {
-  padding: 5rem 0;
-}
-
-.testimonials-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-}
-
-.testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.testimonial-card {
-  background-color: var(--pyro-card-bg);
-  border-radius: var(--pyro-radius);
-  padding: 2rem;
-  border: 1px solid var(--pyro-border);
-  position: relative;
-}
-
-.quote-icon {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  color: rgba(255, 94, 94, 0.2);
-  font-size: 2rem;
-}
-
-.testimonial-text {
-  color: var(--pyro-text);
-  font-style: italic;
-  line-height: 1.8;
-  margin-bottom: 2rem;
-}
-
-.testimonial-author {
+.product-action .pyro-button {
+  flex: 1;
+  padding: 0.6rem 0;
+  font-size: 0.85rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-.author-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
+.product-action .view-btn {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.product-action .cart-btn {
+  background-color: var(--pyro-primary);
+  border: none;
+}
+
+/* Improved compare button style */
+.compare-all-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--pyro-primary);
+  color: white;
+  text-align: center;
+  border-radius: var(--pyro-radius-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  margin-top: 1rem;
+  text-decoration: none;
+}
+
+.compare-all-btn:hover {
+  background: linear-gradient(90deg, var(--pyro-primary), #ff7e7e);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Fix for retailer price text overflow */
+.retailer-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
   overflow: hidden;
 }
 
-.author-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.retailer, 
+.price {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.author-info h4 {
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
+.retailer {
+  max-width: 60%;
+  margin-right: 0.5rem;
 }
 
-.author-info p {
-  font-size: 0.85rem;
-  color: var(--pyro-text-muted);
-}
-
-/* Newsletter */
-.home-newsletter {
-  padding: 6rem 0;
-  background-color: rgba(255, 255, 255, 0.02);
-  position: relative;
-}
-
-.newsletter-container {
-  max-width: 700px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
-  text-align: center;
-}
-
-.newsletter-container h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.newsletter-container p {
-  color: var(--pyro-text-muted);
-  margin-bottom: 2.5rem;
-  font-size: 1.1rem;
-  line-height: 1.7;
-}
-
-.newsletter-form {
-  display: flex;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.newsletter-input {
-  flex: 1;
-  padding: 1rem 1.5rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--pyro-border);
-  border-top-left-radius: var(--pyro-radius-sm);
-  border-bottom-left-radius: var(--pyro-radius-sm);
-  color: var(--pyro-text);
-  font-size: 1rem;
-}
-
-.newsletter-input:focus {
-  outline: none;
-  border-color: var(--pyro-primary);
-}
-
-.newsletter-button {
-  padding: 1rem 2rem;
-  background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
-  color: white;
-  border: none;
-  border-top-right-radius: var(--pyro-radius-sm);
-  border-bottom-right-radius: var(--pyro-radius-sm);
+.price {
+  max-width: 40%;
+  text-align: right;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--pyro-transition);
 }
 
-.newsletter-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 94, 94, 0.2);
+/* Fix for specification tags overflow */
+.product-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
-/* Responsive styles */
+.product-specs span {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--pyro-radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
+}
+
+/* ======== RESPONSIVE STYLES ======== */
+@media (max-width: 1200px) {
+  .categories-grid,
+  .featured-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .deal-image img {
+    max-height: 300px;
+  }
+}
+
 @media (max-width: 992px) {
+  :root {
+    --home-section-padding: 4rem 0;
+  }
+  
+  .pyro-hero-content h1 {
+    font-size: 3rem;
+  }
+  
+  .categories-grid,
+  .featured-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .deal-card {
     flex-direction: column;
   }
   
   .deal-image {
     padding: 2rem;
+    max-height: 300px;
+  }
+  
+  .deal-image img {
+    max-height: 250px;
   }
   
   .deal-content {
@@ -475,42 +646,147 @@
   }
   
   .deal-countdown {
-    justify-content: center;
+    justify-content: flex-start;
+    margin-bottom: 1.5rem;
+  }
+  
+  .section-title,
+  .newsletter-container h2 {
+    font-size: 2.2rem;
   }
 }
 
 @media (max-width: 768px) {
+  :root {
+    --home-section-padding: 3rem 0;
+    --home-section-padding-mobile: 2.5rem 0;
+  }
+  
+  .pyro-hero {
+    padding-top: calc(var(--pyro-header-height) + 4rem); /* Less padding on mobile */
+    padding-bottom: 4rem;
+  }
+  
+  .pyro-hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .pyro-hero-content p {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero-buttons {
+    width: 100%;
+    max-width: 260px; /* Slightly narrower container for the single button */
+    margin: 0 auto;
+  }
+  
+  .hero-buttons .pyro-button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .pyro-cta-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin: 2rem auto 0;
+  }
+  
+  .section-eyebrow {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-header {
+    margin-bottom: 2rem;
+  }
+  
+  .section-title,
+  .featured-title,
+  .newsletter-container h2 {
+    font-size: 2rem;
+  }
+  
+  .section-description,
+  .newsletter-container p {
+    font-size: 1rem;
+  }
+  
   .featured-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    margin-bottom: 1.5rem;
   }
   
   .featured-tabs {
     width: 100%;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
+    white-space: nowrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 0.5rem;
+  }
+  
+  .featured-tabs::-webkit-scrollbar {
+    display: none;
   }
   
   .featured-tab {
-    white-space: nowrap;
+    flex: 0 0 auto;
   }
   
-  .newsletter-form {
-    flex-direction: column;
-    gap: 1rem;
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   
-  .newsletter-input, 
-  .newsletter-button {
-    width: 100%;
-    border-radius: var(--pyro-radius-sm);
+  .categories-container,
+  .featured-container,
+  .deal-container,
+  .testimonials-container,
+  .newsletter-container {
+    padding: 0 1.25rem;
   }
-}
-
-@media (max-width: 576px) {
+  
+  .home-categories,
+  .home-featured,
+  .deal-of-day,
+  .home-testimonials,
+  .home-newsletter {
+    padding: var(--home-section-padding-mobile);
+  }
+  
+  .deal-image {
+    padding: 1.5rem;
+    max-height: 250px;
+  }
+  
+  .deal-image img {
+    max-height: 200px;
+  }
+  
+  .deal-content {
+    padding: 1.5rem;
+  }
+  
   .deal-content h2 {
+    font-size: 2rem;
+  }
+  
+  .deal-content p {
+    font-size: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .current-price {
     font-size: 1.75rem;
+  }
+  
+  .deal-countdown {
+    gap: 0.75rem;
   }
   
   .time-unit {
@@ -519,6 +795,250 @@
   }
   
   .time-number {
+    font-size: 1.25rem;
+  }
+  
+  .newsletter-form {
+    flex-direction: column;
+  }
+  
+  .newsletter-input,
+  .newsletter-button {
+    width: 100%;
+    border-radius: 0;
+  }
+  
+  .newsletter-input {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .category-content h3 {
     font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .category-content p {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    -webkit-line-clamp: 1;
+    max-height: 1.4em;
+  }
+  
+  .product-title, 
+  .product-details h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    -webkit-line-clamp: 1;
+    max-height: 1.4em;
+  }
+  
+  .product-specs span {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .pyro-hero {
+    padding-top: calc(var(--pyro-header-height) + 3rem); /* Even less padding on small devices */
+    padding-bottom: 3rem;
+  }
+  
+  .pyro-hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .section-title,
+  .featured-title,
+  .newsletter-container h2 {
+    font-size: 1.7rem;
+  }
+  
+  .categories-grid,
+  .featured-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .home-category-card {
+    height: 120px; /* Much shorter on mobile */
+  }
+  
+  .category-content {
+    padding: 1rem; /* Smaller padding */
+    bottom: 0;
+    height: auto;
+    max-height: 90px; /* Strict height limit */
+  }
+  
+  .category-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 95%; /* Ensure there's some margin */
+    line-height: 1.3;
+  }
+  
+  .category-content p {
+    display: none; /* Hide description on very small screens */
+  }
+  
+  .category-link {
+    font-size: 0.8rem;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+  
+  .category-link svg {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .product-title, 
+  .product-details h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    -webkit-line-clamp: 1;
+    max-height: 1.3em;
+    line-height: 1.3;
+  }
+  
+  .retailer {
+    font-size: 0.75rem;
+    max-width: 50%;
+  }
+  
+  .price {
+    font-size: 0.8rem;
+    max-width: 50%;
+  }
+  
+  .product-details {
+    padding: 1rem;
+  }
+  
+  .product-specs {
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+    max-height: 2.6rem; /* Limit height to prevent too many tags */
+    overflow: hidden;
+  }
+  
+  .product-specs span {
+    font-size: 0.65rem;
+    padding: 0.2rem 0.35rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .pyro-hero {
+    padding: 7rem 0 3rem;
+  }
+  
+  .pyro-hero-content h1 {
+    font-size: 1.8rem;
+  }
+  
+  .deal-price {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .deal-countdown {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .time-unit {
+    min-width: 45px;
+    padding: 0.35rem;
+  }
+  
+  .time-number {
+    font-size: 1rem;
+  }
+  
+  .time-label {
+    font-size: 0.65rem;
+  }
+  
+  .featured-title,
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .home-category-card {
+    height: 100px;
+  }
+  
+  .category-content {
+    padding: 0.75rem;
+    max-height: 70px;
+  }
+  
+  .category-content h3 {
+    font-size: 1rem;
+    margin-bottom: 0.1rem;
+    max-width: 100%;
+  }
+  
+  .category-content p {
+    display: none;
+  }
+  
+  .category-link {
+    font-size: 0.75rem;
+    margin-top: 0.2rem;
+  }
+  
+  .product-details {
+    padding: 0.75rem;
+  }
+  
+  .product-title, 
+  .product-details h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.4rem;
+  }
+  
+  .product-specs {
+    max-height: 1.8rem;
+    gap: 0.25rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .product-specs span {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.3rem;
+  }
+  
+  .compare-all-btn {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    margin-top: 0.75rem;
+  }
+  
+  /* Optimize for performance */
+  .pyro-hero {
+    animation: none;
+    background: var(--pyro-bg);
+  }
+  
+  .home-featured::before {
+    display: none;
+  }
+  
+  .retailer {
+    max-width: 55%;
+    font-size: 0.8rem;
+  }
+  
+  .price {
+    max-width: 45%;
+    font-size: 0.9rem;
   }
 }

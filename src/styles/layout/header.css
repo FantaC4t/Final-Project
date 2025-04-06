@@ -4,11 +4,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
-  transition: var(--pyro-transition);
-  background-color: rgba(10, 10, 11, 0.3);
-  backdrop-filter: blur(5px);
   height: var(--pyro-header-height, 60px);
+  background-color: rgba(10, 10, 11, 0.9); /* Darker background for better visibility */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1050;
+  transition: var(--pyro-transition);
+  border-bottom: 1px solid var(--pyro-border);
 }
 
 .pyro-header.scrolled {
@@ -110,7 +112,12 @@ nav {
   right: 1.5rem;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1001;
+  z-index: 1060; /* Ensure it's above the nav-links */
+  transition: var(--pyro-transition);
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* Nav action buttons */
@@ -173,6 +180,18 @@ nav {
   background-color: rgba(255, 255, 255, 0.05);
 }
 
+/* Animation for user dropdown */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .user-dropdown {
   position: absolute;
   top: calc(100% + 0.5rem);
@@ -184,6 +203,8 @@ nav {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   z-index: 1000;
   overflow: hidden;
+  animation: dropdownFade 0.2s ease-out forwards;
+  transform-origin: top right;
 }
 
 .user-dropdown-header {
@@ -209,21 +230,59 @@ nav {
   padding: 0.75rem 1rem;
   color: var(--pyro-text);
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
   text-align: left;
   font-size: 0.95rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.user-dropdown-item:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.user-dropdown-item:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.user-dropdown-item:nth-child(4) {
+  animation-delay: 0.15s;
+}
+
+.user-dropdown-item:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .user-dropdown-item:hover {
   background-color: rgba(255, 255, 255, 0.05);
+  transform: translateX(5px);
 }
 
 .user-dropdown-item.logout {
   color: var(--pyro-error, #ff4f4f);
+}
+
+.user-dropdown-item.logout:hover {
+  background-color: rgba(255, 79, 79, 0.1);
+}
+
+.user-dropdown-item:active {
+  transform: scale(0.98);
 }
 
 .user-dropdown-divider {
@@ -243,175 +302,249 @@ nav {
   }
 }
 
+/* Complete fix for mobile navigation display issues */
+
+/* First ensure consistent header height definition is at the TOP of your CSS file */
+:root {
+  --pyro-header-height: 60px;
+}
+
+/* Mobile menu fix - replace the entire media query section */
+
 @media (max-width: 768px) {
-  .mobile-menu-toggle {
-    display: flex !important;
-    right: 1.5rem;
-  }
-  
+  /* Fix nav-links styling without using all: initial */
   .nav-links {
+    /* Reset specific properties instead of all */
+    margin: 0;
+    padding: 1rem;
+    
+    /* Positioning */
     position: fixed;
     top: var(--pyro-header-height);
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    flex-direction: column;
-    background-color: rgba(10, 10, 11, 0.9);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid var(--pyro-border);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    padding: 1.5rem;
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 999;
     height: calc(100vh - var(--pyro-header-height));
+    
+    /* Styling */
+    background-color: var(--pyro-bg);
+    border-top: 1px solid var(--pyro-border);
+    z-index: 1040;
+    
+    /* Display properties */
+    display: none;
+    flex-direction: column;
     overflow-y: auto;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    box-sizing: border-box;
+    
+    /* Font properties - explicitly set to inherit from body */
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
+    font-weight: inherit;
+    
+    /* Remove animations that might interfere */
+    transition: none;
+    transform: none;
+    animation: none;
   }
   
+  /* When active, simply display the menu */
   .nav-links.active {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: all;
+    display: flex;
+  }
+  
+  /* Fix for the mobile My Account button specifically */
+  .mobile-user-info .pyro-button,
+  .mobile-user-info .pyro-button.secondary {
+    /* Reset any inherited styles */
+    all: unset;
+    
+    /* Apply proper styling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    
+    /* Typography */
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--pyro-text);
+    
+    /* Visual styling */
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--pyro-border);
+    border-radius: var(--pyro-radius-sm);
+    cursor: pointer;
+  }
+  
+  /* Fix logout button styling */
+  .mobile-user-info .pyro-button.outline {
+    background-color: transparent;
+    color: var(--pyro-text-muted);
+  }
+  
+  /* Fix any additional styling needed */
+  .mobile-user-info {
+    padding: 1.25rem;
+    margin-top: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: var(--pyro-radius);
+    border: 1px solid var(--pyro-border);
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .user-greeting {
+    all: unset;
+    display: block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    color: var(--pyro-text);
+    line-height: 1.5;
+  }
+  
+  .mobile-user-info .pyro-button.secondary {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--pyro-border);
+    color: var(--pyro-text);
+  }
+  
+  .mobile-user-info .pyro-button.outline {
+    background-color: transparent;
+    border: 1px solid var(--pyro-border);
+    color: var(--pyro-text-muted);
+  }
+  
+  .mobile-user-info .pyro-button:last-child {
+    margin-bottom: 0;
+  }
+  
+  .mobile-user-info .pyro-button:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+  
+  .mobile-user-info .pyro-button.outline:hover {
+    border-color: var(--pyro-text-muted);
+  }
+  
+  .mobile-user-info .pyro-button:active {
+    transform: translateY(1px);
+    opacity: 0.9;
   }
   
   .nav-links li {
     width: 100%;
     padding: 0;
     margin: 0;
-    border-bottom: 1px solid var(--pyro-border);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .nav-links li:last-child {
+    border-bottom: none;
   }
   
   .nav-links li a {
     display: block;
     padding: 1rem 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     color: var(--pyro-text);
+    text-decoration: none;
     transition: var(--pyro-transition);
   }
   
-  .nav-links li a:hover,
-  .nav-links li a.active {
+  .nav-links li a:hover {
     color: var(--pyro-primary);
-    background-color: rgba(255, 255, 255, 0.03);
-    padding-left: 1rem;
   }
   
-  .nav-links li.mobile-only {
-    margin-top: 1.5rem;
-    border-top: 1px solid var(--pyro-border);
-    padding-top: 1.5rem;
-    border-bottom: none;
-  }
-  
-  .nav-links .pyro-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    font-size: 1rem;
-    font-weight: 600;
-    padding: 0.9rem;
-    margin: 0.75rem 0;
-    border-radius: var(--pyro-radius-sm);
-    transition: all 0.3s ease;
-  }
-  
-  .nav-links .pyro-button.primary {
-    background: linear-gradient(90deg, var(--pyro-primary), var(--pyro-quaternary));
-    color: white;
-    border: none;
-    box-shadow: 0 4px 15px rgba(255, 94, 94, 0.2);
-  }
-  
-  .nav-links .pyro-button.secondary {
-    background-color: rgba(255, 255, 255, 0.06);
-    color: var(--pyro-text);
-    border: 1px solid var(--pyro-border);
-  }
-  
-  .nav-links .pyro-button:hover {
-    transform: translateY(-2px);
-  }
-  
-  .nav-links .pyro-button.primary:hover {
-    box-shadow: 0 6px 20px rgba(255, 94, 94, 0.3);
-  }
-  
-  .nav-links .pyro-button.secondary:hover {
-    border-color: var(--pyro-primary);
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
+  /* Force the mobile toggle button to display */
   .mobile-menu-toggle {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
+    display: flex !important;
+    z-index: 1060;
   }
   
-  .mobile-menu-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  /* Make sure the logo is properly aligned */
+  .pyro-logo {
+    max-width: 180px;
+    margin-right: auto;
   }
   
-  .mobile-menu-toggle svg {
-    width: 22px;
-    height: 22px;
-    stroke-width: 1.5px;
+  /* Fix the nav container for mobile */
+  .nav-container {
+    padding: 0 1rem;
+    justify-content: flex-start;
   }
-
-  .nav-actions.desktop-only {
+  
+  /* Ensure desktop elements are hidden */
+  .desktop-only {
     display: none !important;
   }
   
-  .nav-links li.mobile-only {
-    display: block !important;
-  }
-
-  .logo-container {
-    width: 320px;
-    height: 320px;
-  }
-  
-  .pyro-logo {
-    width: 200px;
-  }
-
-  .pyro-logo img {
-    height: 44px;
-  }
-  
-  /* Mobile user profile */
-  li.mobile-only.user-profile-mobile {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.5rem 0;
-  }
-  
-  .mobile-user-info {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    margin: 0;
-  }
-  
-  .mobile-user-info .pyro-button {
-    width: 100%;
-    box-sizing: border-box;
+  /* Show mobile-only elements */
+  .mobile-only {
     display: block;
-    margin: 0.5rem 0;
-    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .pyro-logo {
+    max-width: 160px;
   }
   
-  .user-greeting {
-    padding: 0 1rem;
-    box-sizing: border-box;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
+  .pyro-logo img {
+    height: 36px;
   }
   
-  .mobile-user-info:after {
-    content: "";
-    display: table;
-    clear: both;
+  .mobile-menu-toggle {
+    right: 1rem;
+    width: 38px;
+    height: 38px;
   }
+  
+  .nav-container {
+    padding: 0 0.75rem;
+  }
+  
+  .nav-links {
+    padding: 0.75rem;
+  }
+  
+  .nav-links li a {
+    padding: 0.9rem 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Add main content spacing to prevent navbar overlap */
+main, 
+.main-content, 
+.page-content {
+  margin-top: var(--pyro-header-height, 60px);
+  min-height: calc(100vh - var(--pyro-header-height, 60px));
+}
+
+/* Specific fix for the hero section */
+.pyro-hero {
+  margin-top: var(--pyro-header-height, 60px);
+}
+
+/* Fix for specific pages that might have different layout */
+body > .container,
+body > .app-container,
+#root > div:first-child > div:nth-child(2) {
+  padding-top: var(--pyro-header-height, 60px);
 }

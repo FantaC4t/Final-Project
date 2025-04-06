@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-function Navigation({ openLogin, openSignup }) {
+// Update the function signature to accept isLoggedIn
+function Navigation({ openLogin, openSignup, isLoggedIn, handleLogout: parentHandleLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -36,25 +37,55 @@ function Navigation({ openLogin, openSignup }) {
     };
   }, []);
   
+  // Update toggleMenu function to prevent background scrolling
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+    const newMenuState = !menuOpen;
+    setMenuOpen(newMenuState);
+    
+    // Toggle body class to prevent scrolling
+    if (newMenuState) {
+      document.body.classList.add('menu-open');
+      document.body.style.top = `-${window.scrollY}px`; // Remember scroll position
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.classList.remove('menu-open');
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1); // Restore scroll position
+    }
+    
     // Close user menu if open
-    if (userMenuOpen) setUserMenuOpen(false);
+    if (userMenuOpen) {
+      setUserMenuOpen(false);
+    }
   };
+
+  // Add cleanup function
+  useEffect(() => {
+    return () => {
+      document.body.classList.remove('menu-open');
+      document.body.style.top = '';
+    };
+  }, []);
   
   const toggleUserMenu = (e) => {
     e.preventDefault();
     setUserMenuOpen(!userMenuOpen);
   };
   
+  // Updated handleLogout to call the parent's handleLogout as well
   const handleLogout = () => {
     // Clear user data from localStorage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     
-    // Update state
+    // Update local state
     setUser(null);
     setUserMenuOpen(false);
+    
+    // Call parent's logout handler if provided
+    if (parentHandleLogout) {
+      parentHandleLogout();
+    }
     
     // Redirect to home page
     navigate('/');

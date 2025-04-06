@@ -19,6 +19,11 @@
   z-index: 0;
 }
 
+.pyro-account-section:before,
+.pyro-account-section:after {
+  content: none; /* Ensure pseudo-elements don't show when parent is hidden */
+}
+
 .account-content {
   max-width: 1000px;
   margin: 0 auto;

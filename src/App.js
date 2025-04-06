@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/pages/Home';
 import Navigation from './components/Navigation';
@@ -13,6 +13,50 @@ import './styles/main.css';
 function App() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authModalTab, setAuthModalTab] = useState('login');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+  
+  // Extract this to a separate function so it can be called after logout
+  const checkAuthStatus = async () => {
+    // Check for token in localStorage
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      try {
+        const res = await fetch('/api/auth/me', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (res.ok) {
+          setIsLoggedIn(true);
+        } else {
+          // Token invalid, remove it
+          localStorage.removeItem('token');
+          setIsLoggedIn(false);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    } else {
+      setIsLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    // Clear the token from localStorage
+    localStorage.removeItem('token');
+    
+    // Update state to reflect logged out status
+    setIsLoggedIn(false);
+    
+    // Optional: Redirect to home page
+    window.location.href = '/';
+  };
 
   const openLoginModal = () => {
     setAuthModalTab('login');
@@ -26,6 +70,8 @@ function App() {
 
   const closeAuthModal = () => {
     setAuthModalOpen(false);
+    // Check auth status after modal closes in case user just logged in
+    checkAuthStatus();
   };
 
   return (
@@ -37,13 +83,22 @@ function App() {
           initialTab={authModalTab}
         />
         
-        {/* Navigation in App level to be available on all pages */}
+        {/* Pass isLoggedIn and handleLogout to Navigation */}
         <div className="pyro-header">
-          <Navigation openLogin={openLoginModal} openSignup={openSignupModal} />
+          <Navigation 
+            openLogin={openLoginModal} 
+            openSignup={openSignupModal} 
+            isLoggedIn={isLoggedIn}
+            handleLogout={handleLogout}
+          />
         </div>
         
         <Routes>
-          <Route path="/" element={<Home openLogin={openLoginModal} openSignup={openSignupModal} />} />
+          <Route path="/" element={<Home 
+            openLogin={openLoginModal} 
+            openSignup={openSignupModal} 
+            isLoggedIn={isLoggedIn} 
+          />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/builder" element={<Builder />} />
           <Route path="/deals" element={<Deals />} />

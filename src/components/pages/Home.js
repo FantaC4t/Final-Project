@@ -1,8 +1,9 @@
-// Desc: Home page component
+// Improved Home component with cleaner hero section and better UX
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function Home({ openLogin, openSignup }) {
+function Home({ openLogin, openSignup, isLoggedIn }) {
   const [hovered, setHovered] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -23,14 +24,6 @@ function Home({ openLogin, openSignup }) {
     };
   }, []);
 
-  // Scroll to features section
-  const scrollToFeatures = () => {
-    const featuresSection = document.querySelector('.pyro-categories');
-    if (featuresSection) {
-      featuresSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
   const categories = [
     { id: 'gpu', name: 'Graphics Cards', icon: 'hardware/gpu.png', color: '#ff5e5e' },
     { id: 'cpu', name: 'Processors', icon: 'hardware/cpu.png', color: '#5e9fff' },
@@ -48,7 +41,7 @@ function Home({ openLogin, openSignup }) {
   return (
     <div className="pyro-container">
       
-      {/* Hero Section */}
+      {/* Hero Section - Simplified with direct CTA buttons */}
       <section className="pyro-hero">
         <div className="pyro-hero-content">
           <div className="pyro-hero-text">
@@ -74,6 +67,7 @@ function Home({ openLogin, openSignup }) {
               </div>
             </div>
             
+            {/* Main CTA buttons - direct actions instead of generic "Shop Now" */}
             <div className="pyro-cta-buttons">
               <Link to="/compare" className="pyro-button primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -113,20 +107,15 @@ function Home({ openLogin, openSignup }) {
           </div>
         </div>
         
-        <div className="pyro-scroll-indicator" onClick={scrollToFeatures}>
-          <span>Explore</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="7 13 12 18 17 13"></polyline>
-            <polyline points="7 6 12 11 17 6"></polyline>
-          </svg>
-        </div>
+        {/* Removed hero-buttons and scroll-indicator sections */}
       </section>
       
-      {/* How It Works Section */}
+      {/* How It Works Section - Enhanced with smooth transitions */}
       <section className="pyro-how-it-works">
         <div className="section-header">
+          <span className="section-eyebrow">Simple Process</span>
           <h2>How It Works</h2>
-          <p>Simple steps to find the best deals on computer hardware</p>
+          <p>Find the best deals on computer hardware in just a few steps</p>
         </div>
         
         <div className="steps-container">
@@ -160,9 +149,10 @@ function Home({ openLogin, openSignup }) {
         </div>
       </section>
       
-      {/* Use Cases Section */}
+      {/* Use Cases Section - Better visual design */}
       <section className="pyro-use-cases">
         <div className="section-header">
+          <span className="section-eyebrow">Tailored Solutions</span>
           <h2>Shop By Use Case</h2>
           <p>Optimized recommendations for your specific needs</p>
         </div>
@@ -190,9 +180,10 @@ function Home({ openLogin, openSignup }) {
         </div>
       </section>
       
-      {/* Categories Section */}
+      {/* Categories Section - Enhanced visuals */}
       <section className="pyro-categories">
         <div className="section-header">
+          <span className="section-eyebrow">Hardware Selection</span>
           <h2>Browse Categories</h2>
           <p>Find components by category to build or upgrade your PC</p>
         </div>
@@ -225,9 +216,10 @@ function Home({ openLogin, openSignup }) {
         </div>
       </section>
       
-      {/* Price Comparison Examples */}
+      {/* Featured Deals - Better visual hierarchy */}
       <section className="pyro-featured">
         <div className="section-header">
+          <span className="section-eyebrow">Current Savings</span>
           <h2>Featured Deals</h2>
           <p>The hottest hardware deals from across the web</p>
         </div>
@@ -258,7 +250,7 @@ function Home({ openLogin, openSignup }) {
                   <span className="price">$1,229.99</span>
                 </div>
               </div>
-              <button className="compare-all-btn">Compare All Prices</button>
+              <Link to="/compare/gpu/rtx-4080-super" className="compare-all-btn">Compare All Prices</Link>
             </div>
           </div>
           
@@ -287,7 +279,7 @@ function Home({ openLogin, openSignup }) {
                   <span className="price">$154.99</span>
                 </div>
               </div>
-              <button className="compare-all-btn">Compare All Prices</button>
+              <Link to="/compare/cooling/arctic-liquid-iii" className="compare-all-btn">Compare All Prices</Link>
             </div>
           </div>
           
@@ -316,7 +308,7 @@ function Home({ openLogin, openSignup }) {
                   <span className="price">$119.99</span>
                 </div>
               </div>
-              <button className="compare-all-btn">Compare All Prices</button>
+              <Link to="/compare/peripherals/mechanical-keyboard" className="compare-all-btn">Compare All Prices</Link>
             </div>
           </div>
         </div>
@@ -326,45 +318,48 @@ function Home({ openLogin, openSignup }) {
         </div>
       </section>
       
-      {/* Account Section */}
-      <section className="pyro-account-section">
-        <div className="account-content">
-          <div className="account-text">
-            <h2>Create Your Account</h2>
-            <p>Track price drops, save builds, and get personalized deals for the components you care about.</p>
+      {/* Account Section - conditionally rendered with improved design */}
+      {!isLoggedIn && (
+        <section className="pyro-account-section">
+          <div className="account-content">
+            <div className="account-text">
+              <span className="section-eyebrow">Personalized Experience</span>
+              <h2>Create Your Account</h2>
+              <p>Track price drops, save builds, and get personalized deals for the components you care about.</p>
+              
+              <ul className="account-benefits">
+                <li>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Price drop alerts for your wishlist
+                </li>
+                <li>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Save and share custom PC builds
+                </li>
+                <li>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Personalized deal recommendations
+                </li>
+              </ul>
+            </div>
             
-            <ul className="account-benefits">
-              <li>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Price drop alerts for your wishlist
-              </li>
-              <li>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Save and share custom PC builds
-              </li>
-              <li>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Personalized deal recommendations
-              </li>
-            </ul>
+            <div className="account-buttons">
+              <button onClick={openSignup} className="pyro-button primary large">
+                Create Free Account
+              </button>
+              <button onClick={openLogin} className="pyro-button secondary large">
+                Sign In
+              </button>
+            </div>
           </div>
-          
-          <div className="account-buttons">
-            <button onClick={openSignup} className="pyro-button primary large">
-              Create Free Account
-            </button>
-            <button onClick={openLogin} className="pyro-button secondary large">
-              Sign In
-            </button>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }

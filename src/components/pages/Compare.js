@@ -1,65 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { FiSearch, FiFilter, FiShoppingCart, FiBarChart2, FiStar, FiChevronDown, FiX } from 'react-icons/fi';
+import { 
+  FiSearch, FiFilter, FiShoppingCart, FiBarChart2, FiStar, 
+  FiChevronDown, FiX, FiMonitor, FiCpu, FiServer, 
+  FiHardDrive, FiGrid, FiBattery, FiBox, FiWind 
+} from 'react-icons/fi';
+import PricePrediction from '../PricePrediction';
 
 // Mock data for demonstration
 const mockRetailers = ['Amazon', 'Newegg', 'Best Buy', 'Micro Center', 'B&H Photo'];
 const mockCategories = ['Graphics Cards', 'Processors', 'Memory', 'Storage', 'Motherboards', 'Power Supplies', 'Cases', 'Cooling'];
 
 // Mock search results with local image paths
-const mockResults = [
-  {
-    id: 1,
-    name: 'NVIDIA RTX 4070 Ti',
-    image: '/assets/hardware/gpu.png',
-    category: 'Graphics Cards',
-    specs: ['12GB GDDR6X', '7680 CUDA Cores', '2.6 GHz'],
-    avgRating: 4.7,
-    numReviews: 324,
-    prices: [
-      { retailer: 'Amazon', price: 799.99, inStock: true },
-      { retailer: 'Newegg', price: 789.99, inStock: true },
-      { retailer: 'Best Buy', price: 819.99, inStock: false },
-      { retailer: 'Micro Center', price: 779.99, inStock: true },
-    ],
-    lowestPrice: 779.99,
-    priceHistory: [800, 820, 810, 790, 780]
-  },
-  {
-    id: 2,
-    name: 'AMD Radeon RX 7900 XTX',
-    image: '/assets/hardware/gpu.png',
-    category: 'Graphics Cards',
-    specs: ['24GB GDDR6', '12288 Stream Processors', '2.5 GHz'],
-    avgRating: 4.5,
-    numReviews: 256,
-    prices: [
-      { retailer: 'Amazon', price: 929.99, inStock: true },
-      { retailer: 'Newegg', price: 949.99, inStock: true },
-      { retailer: 'Best Buy', price: 969.99, inStock: true },
-      { retailer: 'B&H Photo', price: 939.99, inStock: false },
-    ],
-    lowestPrice: 929.99,
-    priceHistory: [1000, 980, 950, 940, 930]
-  },
-  {
-    id: 3,
-    name: 'Intel Core i9-14900K',
-    image: '/assets/hardware/cpu.png', // Assuming you have a CPU image
-    category: 'Processors',
-    specs: ['24 Cores (8P+16E)', '5.8 GHz Max Turbo', 'DDR5-5600'],
-    avgRating: 4.8,
-    numReviews: 189,
-    prices: [
-      { retailer: 'Amazon', price: 569.99, inStock: true },
-      { retailer: 'Newegg', price: 549.99, inStock: true },
-      { retailer: 'Best Buy', price: 589.99, inStock: true },
-      { retailer: 'Micro Center', price: 529.99, inStock: true },
-    ],
-    lowestPrice: 529.99,
-    priceHistory: [600, 590, 575, 560, 530]
-  }
-];
-
 function Compare() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
@@ -72,19 +23,124 @@ function Compare() {
   const [priceHistoryModal, setPriceHistoryModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
 
+  // Add these new state variables for "applied" filters
+  const [appliedPriceRange, setAppliedPriceRange] = useState([0, 2000]);
+  const [appliedSortBy, setAppliedSortBy] = useState('lowest');
+  const [appliedInStockOnly, setAppliedInStockOnly] = useState(false);
+
+  // Add this new state variable
+  const [isFilterClosing, setIsFilterClosing] = useState(false);
+
+  // Add this new state variable for products
+  const [products, setProducts] = useState([]);
+
+  // Add useState for tracking expanded items
+  const [expandedItems, setExpandedItems] = useState({});
+
+  // Add toggle function
+  const toggleExpand = (itemId) => {
+    setExpandedItems({
+      ...expandedItems,
+      [itemId]: !expandedItems[itemId]
+    });
+  };
+
+  // Update filterResults to use the products from state
+  const filterResults = (filterPriceRange, filterSortBy, filterInStockOnly, productData = products) => {
+    // Start with all products
+    let filtered = [...productData];
+    
+    // Apply search term filter
+    if (searchTerm) {
+      filtered = filtered.filter(
+        item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.specs.some(spec => spec.toLowerCase().includes(searchTerm.toLowerCase()))
+      );
+    }
+    
+    // Apply category filter
+    if (selectedCategory !== 'All Categories') {
+      filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+    
+    // Apply price range filter
+    filtered = filtered.filter(
+      item => item.lowestPrice >= filterPriceRange[0] && item.lowestPrice <= filterPriceRange[1]
+    );
+    
+    // Apply in-stock filter
+    if (filterInStockOnly) {
+      filtered = filtered.filter(
+        item => item.prices.some(price => price.inStock)
+      );
+    }
+    
+    // Apply sorting
+    if (filterSortBy === 'lowest') {
+      filtered.sort((a, b) => a.lowestPrice - b.lowestPrice);
+    } else if (filterSortBy === 'highest') {
+      filtered.sort((a, b) => b.lowestPrice - a.lowestPrice);
+    } else if (filterSortBy === 'rating') {
+      filtered.sort((a, b) => b.avgRating - a.avgRating);
+    }
+    
+    return filtered;
+  };
+
   // Simulate search functionality
   useEffect(() => {
-    if (searchTerm) {
-      // In a real app, this would be an API call
-      const filteredResults = mockResults.filter(
-        item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setSearchResults(filteredResults);
-    } else {
-      setSearchResults([]);
+    // CHANGE: Allow showing results even without search terms
+    // Using applied filter values instead of pending ones
+    setSearchResults(filterResults(appliedPriceRange, appliedSortBy, appliedInStockOnly));
+    
+  }, [searchTerm, selectedCategory, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        console.log('Fetching products...');
+        
+        // Use explicit URL
+        const response = await fetch('http://localhost:5000/api/products');
+        console.log('Response status:', response.status);
+        
+        // Get response text first to debug
+        const responseText = await response.text();
+        console.log('Raw response:', responseText);
+        
+        // Try parsing as JSON
+        try {
+          const data = JSON.parse(responseText);
+          console.log('Parsed data:', data);
+          
+          if (!data.data || !Array.isArray(data.data)) {
+            console.warn('API returned invalid data structure:', data);
+            return;
+          }
+          
+          console.log(`Fetched ${data.data.length} products`);
+          
+          // Process data
+          setProducts(data.data);
+          setSearchResults(data.data);
+        } catch (parseError) {
+          console.error('Failed to parse response as JSON:', parseError);
+          console.log('First 100 chars of response:', responseText.substring(0, 100));
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (searchResults.length > 0) {
+      console.log('First product ID:', searchResults[0]._id);
+      console.log('Full first product:', searchResults[0]);
     }
-  }, [searchTerm]);
+  }, [searchResults]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -94,15 +150,17 @@ function Compare() {
   };
 
   const handleAddToCompare = (item) => {
-    if (compareItems.find(i => i.id === item.id)) {
-      setCompareItems(compareItems.filter(i => i.id !== item.id));
+    // Use _id instead of id
+    if (compareItems.find(i => i._id === item._id)) {
+      setCompareItems(compareItems.filter(i => i._id !== item._id));
     } else {
       setCompareItems([...compareItems, item]);
     }
   };
 
   const isItemInCompare = (itemId) => {
-    return compareItems.some(item => item.id === itemId);
+    // Use _id instead of id
+    return compareItems.some(item => item._id === itemId);
   };
 
   const handleViewPriceHistory = (item) => {
@@ -112,6 +170,41 @@ function Compare() {
 
   const closeModal = () => {
     setPriceHistoryModal(false);
+  };
+
+  // Update handleApplyFilters to apply the pending filters
+  const handleApplyFilters = () => {
+    setAppliedPriceRange(priceRange);
+    setAppliedSortBy(sortBy);
+    setAppliedInStockOnly(inStockOnly);
+  };
+
+  // Update handleResetFilters to reset both pending and applied filters
+  const handleResetFilters = () => {
+    // Reset pending filters
+    setPriceRange([0, 2000]);
+    setSortBy('lowest');
+    setInStockOnly(false);
+    
+    // Reset applied filters
+    setAppliedPriceRange([0, 2000]);
+    setAppliedSortBy('lowest');
+    setAppliedInStockOnly(false);
+  };
+
+  // Replace the current filter button click handler
+  const toggleFilters = () => {
+    if (showFilters) {
+      // Start closing animation
+      setIsFilterClosing(true);
+      // Remove from DOM after animation completes
+      setTimeout(() => {
+        setShowFilters(false);
+        setIsFilterClosing(false);
+      }, 300); // Match animation duration
+    } else {
+      setShowFilters(true);
+    }
   };
 
   return (
@@ -154,7 +247,7 @@ function Compare() {
               <button 
                 type="button" 
                 className="filter-button"
-                onClick={() => setShowFilters(!showFilters)}
+                onClick={toggleFilters}
               >
                 <FiFilter /> Filters
               </button>
@@ -162,18 +255,32 @@ function Compare() {
           </form>
 
           {/* Advanced filters panel */}
-          {showFilters && (
-            <div className="filter-panel">
+          {(showFilters || isFilterClosing) && (
+            <div className={`filter-panel ${isFilterClosing ? 'filter-panel-closing' : ''}`}>
               <div className="filter-section">
                 <h3>Price Range</h3>
-                <div className="price-slider">
+                <div className="price-labels">
+                  <span>$0</span>
+                  <span>$2000</span>
+                </div>
+                <div 
+                  className="price-slider"
+                  style={{ 
+                    '--left-percent': `${(priceRange[0]/2000)*100}%`,
+                    '--right-percent': `${100 - (priceRange[1]/2000)*100}%` 
+                  }}
+                >
                   <input
                     type="range"
                     min="0"
                     max="2000"
                     step="50"
                     value={priceRange[0]}
-                    onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                    onChange={(e) => {
+                      const newMin = parseInt(e.target.value);
+                      // Ensure minimum doesn't exceed maximum
+                      setPriceRange([Math.min(newMin, priceRange[1] - 50), priceRange[1]]);
+                    }}
                   />
                   <input
                     type="range"
@@ -181,11 +288,15 @@ function Compare() {
                     max="2000"
                     step="50"
                     value={priceRange[1]}
-                    onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
+                    onChange={(e) => {
+                      const newMax = parseInt(e.target.value);
+                      // Ensure maximum isn't less than minimum
+                      setPriceRange([priceRange[0], Math.max(newMax, priceRange[0] + 50)]);
+                    }}
                   />
-                  <div className="price-range-display">
-                    ${priceRange[0]} - ${priceRange[1]}
-                  </div>
+                </div>
+                <div className="price-range-display">
+                  ${priceRange[0]} - ${priceRange[1]}
                 </div>
               </div>
 
@@ -193,13 +304,7 @@ function Compare() {
                 <h3>Sort By</h3>
                 <div className="radio-group">
                   <label className="radio-container">
-                    <input 
-                      type="radio" 
-                      name="sortBy" 
-                      value="lowest" 
-                      checked={sortBy === 'lowest'}
-                      onChange={() => setSortBy('lowest')}
-                    />
+                    <input type="radio" name="sortBy" value="lowest" checked={sortBy === 'lowest'} onChange={() => setSortBy('lowest')} />
                     <span className="radio-mark"></span>
                     Lowest Price
                   </label>
@@ -242,8 +347,18 @@ function Compare() {
               </div>
 
               <div className="filter-actions">
-                <button className="pyro-button secondary">Reset Filters</button>
-                <button className="pyro-button primary">Apply Filters</button>
+                <button 
+                  className="pyro-button secondary"
+                  onClick={handleResetFilters}
+                >
+                  Reset Filters
+                </button>
+                <button 
+                  className="pyro-button primary"
+                  onClick={handleApplyFilters}
+                >
+                  Apply Filters
+                </button>
               </div>
             </div>
           )}
@@ -263,7 +378,7 @@ function Compare() {
             </div>
             <div className="comparison-items">
               {compareItems.map(item => (
-                <div key={item.id} className="comparison-item">
+                <div key={item._id} className="comparison-item">
                   <img src={item.image} alt={item.name} />
                   <div className="comparison-item-name">{item.name}</div>
                   <button 
@@ -283,123 +398,157 @@ function Compare() {
           </div>
         )}
 
-        {/* Search results */}
-        {searchResults.length > 0 ? (
+        {/* Search results - UPDATE THIS CONDITIONAL */}
+        {searchResults && searchResults.length > 0 ? (
           <div className="search-results">
-            <h2>Search Results ({searchResults.length})</h2>
+            <h2>
+              {searchTerm || selectedCategory !== 'All Categories' 
+                ? `Search Results (${searchResults.length})` 
+                : `All Components (${searchResults.length})`}
+            </h2>
             <div className="results-list">
               {searchResults.map(item => (
-                <div key={item.id} className="result-card">
-                  <div className="result-image">
-                    <img src={item.image} alt={item.name} />
-                  </div>
-                  <div className="result-details">
-                    <h3>{item.name}</h3>
-                    <div className="result-category">{item.category}</div>
-                    
-                    <div className="result-specs">
-                      {item.specs.map((spec, index) => (
-                        <span key={index} className="spec-tag">{spec}</span>
-                      ))}
+                <div 
+                  key={item._id} 
+                  className={`result-card ${expandedItems[item._id] ? 'expanded' : ''}`}
+                >
+                  <div 
+                    className="result-card-header" 
+                    onClick={() => toggleExpand(item._id)}
+                  >
+                    <div className="result-card-header-top">
+                      <div className="result-image">
+                        <img src={item.image} alt={item.name} />
+                      </div>
+                      
+                      <div className="result-summary">
+                        <h3>{item.name}</h3>
+                        <div className="result-meta">
+                          <div className="result-category">{item.category}</div>
+                          <div className="result-rating">
+                            <div className="rating-stars">
+                              <FiStar className="star-filled" />
+                              <span>{item.avgRating}</span>
+                            </div>
+                            <span className="review-count">({item.numReviews})</span>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     
-                    <div className="result-rating">
-                      <div className="rating-stars">
-                        <FiStar className="star-filled" />
-                        <span>{item.avgRating}</span>
+                    <div className="result-card-header-bottom">
+                      <div className="price-value">${item.lowestPrice}</div>
+                      <div className="expand-toggle">
+                        {expandedItems[item._id] ? 'Hide details' : 'Show details'} 
+                        <FiChevronDown className={`expand-icon ${expandedItems[item._id] ? 'expanded' : ''}`} />
                       </div>
-                      <span className="review-count">({item.numReviews} reviews)</span>
                     </div>
                   </div>
                   
-                  <div className="result-pricing">
-                    <div className="best-price">
-                      <div className="price-label">Best Price:</div>
-                      <div className="price-value">${item.lowestPrice}</div>
-                      <div className="price-retailer">
-                        at {item.prices.find(p => p.price === item.lowestPrice)?.retailer}
-                      </div>
-                    </div>
-                    
-                    <div className="price-history">
-                      <FiBarChart2 />
-                      <span>Price trend: {item.priceHistory[0] > item.priceHistory[item.priceHistory.length - 1] ? 'Decreasing' : 'Increasing'}</span>
-                    </div>
-                    
-                    <div className="price-comparison">
-                      <h4>Compare Prices:</h4>
-                      <div className="retailer-prices">
-                        {item.prices.map((price, idx) => (
-                          <div 
-                            key={idx} 
-                            className={`retailer-price ${price.price === item.lowestPrice ? 'best' : ''}`}
-                          >
-                            <div className="retailer">{price.retailer}</div>
-                            <div className="price">${price.price}</div>
-                            <div className="stock-status">
-                              {price.inStock ? 'In Stock' : 'Out of Stock'}
-                            </div>
+                  <div className="result-card-details">
+                    <div className="details-container">
+                      <div className="product-info">
+                        <div className="result-specs">
+                          {item.specs.map((spec, index) => (
+                            <span key={index} className="spec-tag">{spec}</span>
+                          ))}
+                        </div>
+                        
+                        {/* Add best price here - will show on desktop, hide on mobile */}
+                        <div className="best-price">
+                          <div className="price-label">Best Price:</div>
+                          <div className="price-value">${item.lowestPrice}</div>
+                          <div className="price-retailer">
+                            at {item.prices.find(p => p.price === item.lowestPrice)?.retailer}
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    </div>
-                    
-                    <div className="result-actions">
-                      <button 
-                        className="pyro-button secondary"
-                        onClick={() => handleViewPriceHistory(item)}
-                      >
-                        <FiBarChart2 /> View Price History
-                      </button>
-                      <button 
-                        className={`pyro-button ${isItemInCompare(item.id) ? 'primary' : 'outline'}`}
-                        onClick={() => handleAddToCompare(item)}
-                      >
-                        {isItemInCompare(item.id) ? 'Remove from Compare' : 'Add to Compare'}
-                      </button>
+                      
+                      <div className="pricing-details">
+                        {/* Keep best price here too - will hide on desktop, show on mobile */}
+                        <div className="best-price">
+                          <div className="price-label">Best Price:</div>
+                          <div className="price-value">${item.lowestPrice}</div>
+                          <div className="price-retailer">
+                            at {item.prices.find(p => p.price === item.lowestPrice)?.retailer}
+                          </div>
+                        </div>
+                        
+                        <div className="price-history">
+                          <FiBarChart2 />
+                          <span>Price trend: {item.priceHistory[0] > item.priceHistory[item.priceHistory.length - 1] ? 'Decreasing' : 'Increasing'}</span>
+                        </div>
+                        
+                        <PricePrediction productId={item._id} />
+                        
+                        <div className="price-comparison">
+                          <h4>Compare Prices:</h4>
+                          <div className="retailer-prices">
+                            {item.prices.map((price, idx) => (
+                              <div 
+                                key={idx} 
+                                className={`retailer-price ${price.price === item.lowestPrice ? 'best' : ''}`}
+                              >
+                                <div className="retailer">{price.retailer}</div>
+                                <div className="price">${price.price}</div>
+                                <div className="stock-status">
+                                  {price.inStock ? 'In Stock' : 'Out of Stock'}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        
+                        <div className="result-actions">
+                          <button 
+                            className="pyro-button secondary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleViewPriceHistory(item);
+                            }}
+                          >
+                            <FiBarChart2 /> View Price History
+                          </button>
+                          <button 
+                            className={`pyro-button ${isItemInCompare(item._id) ? 'primary' : 'outline'}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddToCompare(item);
+                            }}
+                          >
+                            {isItemInCompare(item._id) ? 'Remove from Compare' : 'Add to Compare'}
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        ) : searchTerm ? (
-          <div className="no-results">
-            <h2>No results found for "{searchTerm}"</h2>
-            <p>Try different keywords or browse categories</p>
+        ) : products && products.length > 0 ? (
+          <div className="no-filtered-results">
+            <h2>No products match your current filters</h2>
+            <p>Try adjusting your search criteria or filters</p>
+            <button 
+              className="pyro-button primary"
+              onClick={() => {
+                // Reset filters and show all products
+                setSearchTerm('');
+                setSelectedCategory('All Categories');
+                setAppliedPriceRange([0, 2000]);
+                setAppliedInStockOnly(false);
+                setAppliedSortBy('lowest');
+                setSearchResults(products);
+              }}
+            >
+              Show All Products
+            </button>
           </div>
         ) : (
-          <div className="search-suggestions">
-            <h2>Popular Components</h2>
-            <div className="suggestion-categories">
-              {mockCategories.map(category => (
-                <div 
-                  key={category} 
-                  className="suggestion-category"
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setSearchTerm(category);
-                  }}
-                >
-                  <div className="category-icon">
-                    {/* This would ideally be specific icons for each category */}
-                    {category === 'Graphics Cards' && <FiBarChart2 />}
-                    {category === 'Processors' && <FiBarChart2 />}
-                    {category !== 'Graphics Cards' && category !== 'Processors' && <FiBarChart2 />}
-                  </div>
-                  <div className="category-name">{category}</div>
-                </div>
-              ))}
-            </div>
-            
-            <h2>Popular Searches</h2>
-            <div className="popular-searches">
-              <button onClick={() => setSearchTerm('RTX 4080')}>NVIDIA RTX 4080</button>
-              <button onClick={() => setSearchTerm('Ryzen 7900X')}>AMD Ryzen 9 7900X</button>
-              <button onClick={() => setSearchTerm('DDR5 Memory')}>DDR5 Memory</button>
-              <button onClick={() => setSearchTerm('SSD NVMe')}>NVMe SSDs</button>
-              <button onClick={() => setSearchTerm('Gaming Motherboard')}>Gaming Motherboards</button>
-            </div>
+          <div className="loading-products">
+            <h2>Loading products...</h2>
+            <p>If nothing appears, there may be an issue connecting to the database</p>
           </div>
         )}
       </div>
@@ -463,6 +612,10 @@ function Compare() {
                       : 'Increasing ↑'}
                   </strong>
                 </div>
+              </div>
+              
+              <div className="price-prediction-section">
+                <PricePrediction productId={currentItem._id} />
               </div>
             </div>
           </div>
