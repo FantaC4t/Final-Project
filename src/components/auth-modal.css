@@ -2,6 +2,8 @@
 
 .modal-open {
   overflow: hidden;
+  /* Remove position: fixed since we're applying it directly in JS */
+  /* Don't set width and height here, let the JS handle it */
 }
 
 .auth-modal-overlay {
@@ -15,9 +17,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000; /* Significantly higher than navbar */
   padding: 1rem;
   overflow-y: auto; /* Enable scrolling */
+  box-sizing: border-box; /* Ensure padding is included in dimensions */
 }
 
 .auth-modal-content {
@@ -31,9 +34,10 @@
   overflow: hidden;
   animation: modalFadeIn 0.3s ease-out;
   border: 1px solid var(--pyro-border);
-  margin: 2.5rem 0; /* Add margin to prevent it from touching the edges */
+  margin: auto; /* Center vertically and horizontally */
   max-height: calc(100vh - 5rem); /* Maximum height with margin */
   overflow-y: auto; /* Allow internal scrolling */
+  z-index: 2001; /* Above the overlay */
 }
 
 .auth-modal-content::before {
@@ -398,5 +402,50 @@
   
   .social-auth {
     flex-direction: column;
+  }
+  
+  .auth-modal-overlay {
+    padding-top: 90px; /* Even more padding on smaller screens */
+  }
+}
+
+/* Fix modal positioning for mobile */
+@media (max-width: 768px) {
+  .auth-modal-overlay {
+    padding-top: 80px; /* Increase padding for navbar */
+    align-items: flex-start; /* Align at the top on mobile */
+  }
+  
+  .auth-modal-content {
+    margin-top: 0; /* Remove extra margin since we have padding */
+    max-width: calc(100% - 2rem); /* Full width minus padding */
+  }
+  
+  .auth-modal-content {
+    margin: var(--pyro-header-height, 60px) auto auto auto;
+    max-height: calc(100vh - var(--pyro-header-height, 60px) - 2rem);
+  }
+}
+
+/* Add better handling for mobile */
+@media (max-width: 768px) {
+  .auth-modal-overlay {
+    align-items: flex-start; /* Start from top on mobile */
+    padding-top: var(--pyro-header-height, 60px); /* Use header height variable */
+  }
+}
+
+/* Make header stay fixed during modal */
+body.modal-open .pyro-header {
+  position: fixed !important;
+  width: 100%;
+  z-index: 1050;
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-overflow-scrolling: touch) {
+  body.modal-open {
+    position: fixed;
+    width: 100%;
   }
 }

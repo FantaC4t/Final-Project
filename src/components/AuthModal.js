@@ -29,24 +29,42 @@ function AuthModal({ isOpen, onClose, initialTab = 'login' }) {
   }, [activeTab]);
 
   useEffect(() => {
-    // Prevent body scrolling when modal is open
-    if (isOpen) {
-      document.body.classList.add('modal-open');
-    } else {
-      document.body.classList.remove('modal-open');
-    }
-    
     // Reset active tab when modal opens
     if (isOpen) {
       setActiveTab(initialTab);
       setError(''); // Clear any previous errors
     }
+  }, [isOpen, initialTab]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      // Store current scroll position before locking
+      const scrollY = window.scrollY;
+      document.body.classList.add('modal-open');
+      document.body.style.position = 'fixed'; // Use position fixed instead of top
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+    } else {
+      // Restore scroll position when modal closes
+      const scrollY = document.body.style.top;
+      document.body.classList.remove('modal-open');
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
     
-    // Cleanup
+    // Cleanup on unmount
     return () => {
       document.body.classList.remove('modal-open');
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
     };
-  }, [isOpen, initialTab]);
+  }, [isOpen]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

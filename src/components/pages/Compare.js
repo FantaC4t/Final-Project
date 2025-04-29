@@ -37,12 +37,24 @@ function Compare() {
   // Add useState for tracking expanded items
   const [expandedItems, setExpandedItems] = useState({});
 
-  // Add toggle function
+  // Add toggle function to scroll to the expanded item
   const toggleExpand = (itemId) => {
+    // Toggle the expanded state
     setExpandedItems({
       ...expandedItems,
       [itemId]: !expandedItems[itemId]
     });
+    
+    // If we're expanding the item, scroll to it after a short delay
+    // to allow the DOM to update
+    if (!expandedItems[itemId]) {
+      setTimeout(() => {
+        const element = document.getElementById(`result-card-${itemId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
   };
 
   // Update filterResults to use the products from state
@@ -207,6 +219,15 @@ function Compare() {
     }
   };
 
+  // Add this helper function to properly close filters
+  const closeFilters = () => {
+    setIsFilterClosing(true);
+    setTimeout(() => {
+      setShowFilters(false);
+      setIsFilterClosing(false);
+    }, 300); // Match animation duration
+  };
+
   return (
     <div className="pyro-page compare-page">
       <div className="page-header">
@@ -257,6 +278,17 @@ function Compare() {
           {/* Advanced filters panel */}
           {(showFilters || isFilterClosing) && (
             <div className={`filter-panel ${isFilterClosing ? 'filter-panel-closing' : ''}`}>
+              <div className="filter-panel-header">
+                <h2>Filter Options</h2>
+                <button 
+                  className="filter-panel-close"
+                  onClick={closeFilters}
+                  aria-label="Close filters"
+                >
+                  <FiX size={24} />
+                </button>
+              </div>
+
               <div className="filter-section">
                 <h3>Price Range</h3>
                 <div className="price-labels">
@@ -351,11 +383,14 @@ function Compare() {
                   className="pyro-button secondary"
                   onClick={handleResetFilters}
                 >
-                  Reset Filters
+                  Reset
                 </button>
                 <button 
                   className="pyro-button primary"
-                  onClick={handleApplyFilters}
+                  onClick={() => {
+                    handleApplyFilters();
+                    closeFilters(); // Close panel after applying
+                  }}
                 >
                   Apply Filters
                 </button>
@@ -411,6 +446,7 @@ function Compare() {
                 <div 
                   key={item._id} 
                   className={`result-card ${expandedItems[item._id] ? 'expanded' : ''}`}
+                  id={`result-card-${item._id}`}
                 >
                   <div 
                     className="result-card-header" 

@@ -4,10 +4,10 @@ import Home from './components/pages/Home';
 import Navigation from './components/Navigation';
 import AuthModal from './components/AuthModal';
 import Compare from './components/pages/Compare';
-import Builder from './components/pages/Builder';
+import PCBuilder from './components/pages/PCBuilder'; // Changed from Builder to PCBuilder
 import Deals from './components/pages/Deals';
 import About from './components/pages/About';
-import Footer from './components/Footer';
+import Footer from './components/layout/Footer'; // Update path to match your structure
 import './styles/main.css';
 
 function App() {
@@ -100,7 +100,7 @@ function App() {
             isLoggedIn={isLoggedIn} 
           />} />
           <Route path="/compare" element={<Compare />} />
-          <Route path="/builder" element={<Builder />} />
+          <Route path="/builder" element={<PCBuilder />} /> {/* Updated to use PCBuilder component */}
           <Route path="/deals" element={<Deals />} />
           <Route path="/about" element={<About />} />
         </Routes>

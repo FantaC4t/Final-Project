@@ -44,6 +44,11 @@ const ProductSchema = new mongoose.Schema({
   popularity: {
     type: Number,
     default: 0.5
+  },
+  // Add the compatibility field as a mixed type schema to support all component types
+  compatibility: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
   }
 }, {
   timestamps: true,
