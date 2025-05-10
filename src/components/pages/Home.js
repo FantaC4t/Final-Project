@@ -2,6 +2,17 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FiCpu, FiHardDrive, FiServer, FiMonitor, FiGrid } from 'react-icons/fi';
+import { BsCpu, BsGpuCard, BsMotherboard, BsDeviceSsd, BsFillCpuFill } from 'react-icons/bs';
+import { CgSmartphoneRam } from 'react-icons/cg';
+import { MdOutlineSdStorage } from 'react-icons/md';
+import { RiComputerLine } from 'react-icons/ri';
+import { FaFan, FaKeyboard, FaNetworkWired } from 'react-icons/fa';
+import { BiPowerOff } from 'react-icons/bi';
+import { IoGameController } from 'react-icons/io5';
+import { HiOutlineDesktopComputer } from 'react-icons/hi';
+import { MdOutlineVideoSettings } from 'react-icons/md';
+import { BsBriefcase } from 'react-icons/bs';
 
 function Home({ openLogin, openSignup, isLoggedIn }) {
   const [hovered, setHovered] = useState(null);
@@ -25,17 +36,54 @@ function Home({ openLogin, openSignup, isLoggedIn }) {
   }, []);
 
   const categories = [
-    { id: 'gpu', name: 'Graphics Cards', icon: 'hardware/gpu.png', color: '#ff5e5e' },
-    { id: 'cpu', name: 'Processors', icon: 'hardware/cpu.png', color: '#5e9fff' },
-    { id: 'motherboard', name: 'Motherboards', icon: 'hardware/ram.webp', color: '#5effb8' },
-    { id: 'peripherals', name: 'Peripherals', icon: 'hardware/keeb.webp', color: '#ff5ee7' }
+    { id: 'gpu', name: 'Graphics Cards', icon: <BsGpuCard size={32} />, color: '#ff5e5e' },
+    { id: 'cpu', name: 'Processors', icon: <BsCpu size={32} />, color: '#5e9fff' },
+    { id: 'motherboard', name: 'Motherboards', icon: <BsMotherboard size={32} />, color: '#5effb8' },
+    { id: 'memory', name: 'Memory', icon: <CgSmartphoneRam size={32} />, color: '#ffdb5e' },
+    { id: 'storage', name: 'Storage', icon: <MdOutlineSdStorage size={32} />, color: '#b05eff' },
+    { id: 'psu', name: 'Power Supplies', icon: <BiPowerOff size={32} />, color: '#5effdb' },
+    { id: 'case', name: 'Cases', icon: <RiComputerLine size={32} />, color: '#ff915e' },
+    { id: 'cooling', name: 'Cooling', icon: <FaFan size={32} />, color: '#5e9fff' },
+    { id: 'peripherals', name: 'Peripherals', icon: <FaKeyboard size={32} />, color: '#ff5ee7' }
   ];
 
+  // Update your useCases array to include descriptions
   const useCases = [
-    { id: 'gaming', name: 'Gaming', icon: '🎮', description: 'Optimized for high FPS and ray tracing' },
-    { id: 'productivity', name: 'Productivity', icon: '💼', description: 'Multitasking and professional applications' },
-    { id: 'content', name: 'Content Creation', icon: '🎬', description: 'Video editing and 3D rendering' },
-    { id: 'budget', name: 'Budget', icon: '💰', description: 'Best performance per dollar' }
+    { 
+      id: 'gaming', 
+      name: 'Gaming', 
+      icon: <IoGameController size={32} />, 
+      color: '#ff5e5e',
+      description: 'High-performance components for smooth gameplay and stunning visuals' 
+    },
+    { 
+      id: 'office', 
+      name: 'Office Work', 
+      icon: <BsBriefcase size={32} />, 
+      color: '#5e9fff',
+      description: 'Reliable and efficient systems for productivity and multitasking' 
+    },
+    { 
+      id: 'content', 
+      name: 'Content Creation', 
+      icon: <MdOutlineVideoSettings size={32} />, 
+      color: '#5effb8',
+      description: 'Powerful hardware for video editing, 3D rendering, and graphic design' 
+    },
+    { 
+      id: 'server', 
+      name: 'Servers & NAS', 
+      icon: <FaNetworkWired size={32} />, 
+      color: '#b05eff',
+      description: 'Reliable solutions for data storage, networking, and home servers' 
+    },
+    { 
+      id: 'workstation', 
+      name: 'Workstation', 
+      icon: <HiOutlineDesktopComputer size={32} />, 
+      color: '#ff915e',
+      description: 'Professional-grade components for demanding computational tasks' 
+    }
   ];
 
   return (
@@ -92,14 +140,18 @@ function Home({ openLogin, openSignup, isLoggedIn }) {
             <div className="logo-container">
               <div className="dark-splash"></div>
               <div className="hardware-crown">
-                <img src="/assets/hardware/cpu.png" className="hardware-item" alt="CPU" 
-                     style={{"--final-x": "0px", "--final-y": "-120px", "--rotation": "0deg", "--delay": "0.1s"}} />
-                <img src="/assets/hardware/gpu.png" className="hardware-item" alt="GPU" 
-                     style={{"--final-x": "100px", "--final-y": "-60px", "--rotation": "-10deg", "--delay": "0.3s"}} />
-                <img src="/assets/hardware/ram.webp" className="hardware-item" alt="RAM" 
-                     style={{"--final-x": "100px", "--final-y": "60px", "--rotation": "-15deg", "--delay": "0.5s"}} />
-                <img src="/assets/hardware/motherboard.png" className="hardware-item" alt="Motherboard" 
-                     style={{"--final-x": "0px", "--final-y": "120px", "--rotation": "0deg", "--delay": "0.7s"}} />
+                <div className="hardware-item" style={{"--final-x": "0px", "--final-y": "-120px", "--rotation": "0deg", "--delay": "0.1s"}}>
+                  <BsCpu size={64} className="hardware-svg-icon" />
+                </div>
+                <div className="hardware-item" style={{"--final-x": "100px", "--final-y": "-60px", "--rotation": "-10deg", "--delay": "0.3s"}}>
+                  <BsGpuCard size={64} className="hardware-svg-icon" />
+                </div>
+                <div className="hardware-item" style={{"--final-x": "100px", "--final-y": "60px", "--rotation": "-15deg", "--delay": "0.5s"}}>
+                  <CgSmartphoneRam size={64} className="hardware-svg-icon" />
+                </div>
+                <div className="hardware-item" style={{"--final-x": "0px", "--final-y": "120px", "--rotation": "0deg", "--delay": "0.7s"}}>
+                  <BsMotherboard size={64} className="hardware-svg-icon" />
+                </div>
               </div>
               <img src="/assets/EasyWare.png" alt="EasyWare Logo" className="pyro-logo" />
               <div className="dark-ripple"></div>
@@ -111,108 +163,84 @@ function Home({ openLogin, openSignup, isLoggedIn }) {
       </section>
       
       {/* How It Works Section - Enhanced with smooth transitions */}
-      <section className="pyro-how-it-works">
-        <div className="section-header">
-          <span className="section-eyebrow">Simple Process</span>
-          <h2>How It Works</h2>
-          <p>Find the best deals on computer hardware in just a few steps</p>
-        </div>
-        
-        <div className="steps-container">
-          <div className="step-card">
-            <div className="step-number">1</div>
-            <div className="step-icon">💲</div>
-            <h3>Set Your Budget</h3>
-            <p>Define how much you want to spend and we'll find options within your price range</p>
+      <section className="pyro-home-section how-it-works-section">
+        <div className="pyro-container">
+          <div className="section-header">
+            <h2>How It Works</h2>
+            <p>Build your dream PC in just a few steps</p>
           </div>
           
-          <div className="step-card">
-            <div className="step-number">2</div>
-            <div className="step-icon">🎯</div>
-            <h3>Choose Your Use Case</h3>
-            <p>Tell us what you'll use your PC for, and we'll recommend optimized components</p>
-          </div>
-          
-          <div className="step-card">
-            <div className="step-number">3</div>
-            <div className="step-icon">👍</div>
-            <h3>Set Preferences</h3>
-            <p>Select brands, performance factors, and features that matter to you</p>
-          </div>
-          
-          <div className="step-card">
-            <div className="step-number">4</div>
-            <div className="step-icon">🔍</div>
-            <h3>Compare Results</h3>
-            <p>We'll scan across retailers to find the best deals matching your criteria</p>
+          <div className="steps-container">
+            <div className="step">
+              <div className="step-number">1</div>
+              <div className="step-icon">
+                <BsGpuCard size={40} />
+              </div>
+              <h3>Pick Your Parts</h3>
+              <p>Browse through our wide selection of components or start with a template build</p>
+            </div>
+            
+            <div className="step">
+              <div className="step-number">2</div>
+              <div className="step-icon">
+                <BsFillCpuFill size={40} />
+              </div>
+              <h3>Automatic Compatibility</h3>
+              <p>Our system ensures all your components work together perfectly</p>
+            </div>
+            
+            <div className="step">
+              <div className="step-number">3</div>
+              <div className="step-icon">
+                <RiComputerLine size={40} />
+              </div>
+              <h3>Compare & Save</h3>
+              <p>Find the best prices from our trusted retailers and save money</p>
+            </div>
           </div>
         </div>
       </section>
       
       {/* Use Cases Section - Better visual design */}
-      <section className="pyro-use-cases">
-        <div className="section-header">
-          <span className="section-eyebrow">Tailored Solutions</span>
-          <h2>Shop By Use Case</h2>
-          <p>Optimized recommendations for your specific needs</p>
-        </div>
-        
-        <div className="use-cases-grid">
-          {useCases.map((useCase, index) => (
-            <div 
-              className="use-case-card" 
-              key={useCase.id}
-              style={{
-                '--animation-delay': `${index * 0.1}s`
-              }}
-            >
-              <div className="use-case-icon">{useCase.icon}</div>
-              <h3>{useCase.name}</h3>
-              <p>{useCase.description}</p>
-              <Link to={`/use-case/${useCase.id}`} className="use-case-link">
-                <span>View Recommendations</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Link>
-            </div>
-          ))}
+      <section className="pyro-home-section use-cases-section">
+        <div className="pyro-container">
+          <div className="section-header">
+            <h2>Shop by Use Case</h2>
+            <p>Find the perfect PC for your needs</p>
+          </div>
+          
+          <div className="use-cases-grid">
+            {useCases.map(useCase => (
+              <div key={useCase.id} className="use-case-card">
+                <div className="use-case-icon" style={{ backgroundColor: `${useCase.color}15`, color: useCase.color }}>
+                  {useCase.icon}
+                </div>
+                <h3>{useCase.name}</h3>
+                <p>{useCase.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
       
       {/* Categories Section - Enhanced visuals */}
-      <section className="pyro-categories">
-        <div className="section-header">
-          <span className="section-eyebrow">Hardware Selection</span>
-          <h2>Browse Categories</h2>
-          <p>Find components by category to build or upgrade your PC</p>
-        </div>
-        
-        <div className="category-grid">
-          {categories.map((category, index) => (
-            <div 
-              className="category-card" 
-              key={category.id}
-              onMouseEnter={() => setHovered(category.id)}
-              onMouseLeave={() => setHovered(null)}
-              style={{
-                '--accent-color': category.color,
-                '--animation-delay': `${index * 0.1}s`
-              }}
-            >
-              <div className="category-icon">
-                <img src={`/assets/${category.icon}`} alt={category.name} />
+      <section className="pyro-home-section categories-section">
+        <div className="pyro-container">
+          <div className="section-header">
+            <h2>Shop by Category</h2>
+            <p>Find the perfect components for your build</p>
+          </div>
+          
+          <div className="categories-grid">
+            {categories.map(category => (
+              <div key={category.id} className="category-card">
+                <div className="category-icon" style={{ backgroundColor: `${category.color}15`, color: category.color }}>
+                  {category.icon}
+                </div>
+                <h3>{category.name}</h3>
               </div>
-              <h3>{category.name}</h3>
-              <div className={`hover-indicator ${hovered === category.id ? 'active' : ''}`}></div>
-              <Link to={`/compare/${category.id}`} className="category-link">
-                <span>Compare Prices</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                </svg>
-              </Link>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
       

@@ -201,10 +201,180 @@ main {
   line-height: 1.7;
 }
 
+/* Update these styles for the categories grid */
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--card-background, rgba(255, 255, 255, 0.06));
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.category-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+/* Add styles for use cases grid */
+.use-cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.use-case-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: var(--card-background, rgba(255, 255, 255, 0.06));
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.use-case-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.use-case-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.use-case-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.use-case-card p {
+  flex-grow: 1;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.use-case-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  color: var(--accent-color, #ff5e5e);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* Add styles for how it works section */
+.how-it-works-section {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+.steps-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 300px;
+  position: relative;
+}
+
+.step-number {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  background: var(--accent-color, #ff5e5e);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background-color: var(--card-background, rgba(255, 255, 255, 0.06));
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  color: var(--accent-color, #ff5e5e);
+}
+
+@media (max-width: 768px) {
+  .steps-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .step {
+    margin-bottom: 3rem;
+  }
+
+  .use-case-card p {
+    display: block;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+  
+  /* Simple fix to ensure contrast */
+  .use-case-card, .category-card {
+    background-color: rgba(30, 30, 40, 0.6);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
 }
 
 .home-category-card {
@@ -381,7 +551,8 @@ main {
 }
 
 .product-card {
-  background-color: rgba(30, 30, 40, 0.6);
+  background-color: var(--card-background, rgba(255, 255, 255, 0.06)) !important;
+  backdrop-filter: blur(10px);
   border-radius: var(--pyro-radius);
   overflow: hidden;
   transition: var(--home-card-hover-transition);
@@ -402,7 +573,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: transparent !important; /* Force transparent background */
   position: relative;
   overflow: hidden;
 }
@@ -410,8 +581,9 @@ main {
 .product-image img {
   max-width: 90%;
   max-height: 90%;
-  object-fit: contain;
+  object-fit: contain; /* Keep aspect ratio without stretching */
   transition: transform 0.5s ease;
+  mix-blend-mode: normal; /* Try normal first */
 }
 
 .product-card:hover .product-image img {
@@ -590,6 +762,110 @@ main {
   text-overflow: ellipsis;
   max-width: 100%;
   display: inline-block;
+}
+
+/* Add these styles to fix the white background behind images */
+.category-icon img, .product-image img, .hardware-item {
+  background-color: transparent !important; /* Force transparent background */
+  object-fit: contain; /* Keep aspect ratio without stretching */
+  mix-blend-mode: normal; /* Try normal first */
+}
+
+/* For dark backgrounds where you need the images to stand out better */
+.pyro-hero .hardware-item {
+  mix-blend-mode: screen; /* Makes light parts visible against dark backgrounds */
+  filter: brightness(1.2); /* Increase brightness for better visibility */
+}
+
+/* Remove any background colors that might be causing issues */
+.category-icon, .product-image, .hardware-crown {
+  background-color: transparent !important;
+}
+
+/* Fix the logo container */
+.logo-container {
+  background: transparent;
+}
+
+/* Add more specific styling for hardware images */
+.hardware-item {
+  filter: drop-shadow(0 0 10px rgba(0, 100, 255, 0.5));
+  max-width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.hardware-item:hover {
+  transform: scale(1.05);
+}
+
+/* Ensure image containers have the right dimensions */
+.category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+}
+
+.category-icon img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Add these styles for SVG icons */
+.category-svg-icon {
+  width: 40px;
+  height: 40px;
+  color: inherit;
+}
+
+.category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  color: var(--pyro-primary-color, #0066cc);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Hardware crown SVG styling */
+.hardware-svg-icon {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  color: white;
+}
+
+.hardware-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: float-in 1s forwards cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-delay: var(--delay, 0s);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes float-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(calc(-50% + var(--final-x, 0)), calc(-50% + var(--final-y, 0))) 
+               scale(1) rotate(var(--rotation, 0deg));
+  }
 }
 
 /* ======== RESPONSIVE STYLES ======== */
@@ -836,6 +1112,84 @@ main {
     font-size: 0.7rem;
     padding: 0.2rem 0.4rem;
   }
+
+  /* Improve text visibility on mobile */
+  /* Adjust the hero section for mobile */
+  .pyro-hero {
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+    text-align: center;
+  }
+  
+  .pyro-hero h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+  }
+  
+  .pyro-hero p {
+    font-size: 1rem;
+    margin: 0 auto 2rem;
+    max-width: 100%;
+  }
+  
+  /* Adjust section headers */
+  .section-header h2 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .section-header p {
+    font-size: 1rem;
+  }
+  
+  /* Make cards more compact on mobile */
+  .category-card, .use-case-card {
+    padding: 1rem;
+  }
+  
+  /* Improve grid layout on mobile */
+  .categories-grid, .use-cases-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+    gap: 1rem;
+  }
+  
+  /* Adjust icon sizes for mobile */
+  .category-icon, .use-case-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .category-icon svg, .use-case-icon svg {
+    width: 30px;
+    height: 30px;
+  }
+  
+  /* Make sure text doesn't overflow on small screens */
+  .category-card h3, .use-case-card h3 {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    word-break: break-word;
+  }
+  
+  .use-case-card p {
+    font-size: 0.9rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  /* Fix hardware crown for mobile */
+  .hardware-crown {
+    max-width: 300px;
+    max-height: 300px;
+    margin: 0 auto;
+  }
+  
+  .hardware-item svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
 }
 
 @media (max-width: 576px) {
@@ -898,10 +1252,10 @@ main {
   
   .product-title, 
   .product-details h3 {
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
     -webkit-line-clamp: 1;
-    max-height: 1.3em;
+    max-height: 1.4em;
     line-height: 1.3;
   }
   
@@ -1040,5 +1394,12 @@ main {
   .price {
     max-width: 45%;
     font-size: 0.9rem;
+  }
+}
+
+/* Extra adjustments for very small screens */
+@media (max-width: 380px) {
+  .categories-grid, .use-cases-grid {
+    grid-template-columns: 1fr; /* 1 column on very small screens */
   }
 }

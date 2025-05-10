@@ -8,6 +8,8 @@ import {
 import { IoGameController } from 'react-icons/io5'; // or use any other icon set
 import axios from 'axios';
 import '../../styles/pages/pc-builder.css';
+import Recommendations from '../Recommendations';
+import { Link } from 'react-router-dom';
 
 function PCBuilder() {
   // State for PC components
@@ -1088,6 +1090,19 @@ const generateSuggestedBuild = () => {
         </div>
       </div>
     )}
+    
+    {/* Add recommendations at the bottom of the builder page */}
+    <div className="builder-section recommendations-section">
+      <Recommendations 
+        userId={null}  // Set to null since userId isn't needed yet
+        currentBuild={components} 
+      />
+      <div className="see-all-recommendations">
+        <Link to="/recommendations" className="see-all-link">
+          See all recommendations →
+        </Link>
+      </div>
+    </div>
   </div>
 );
 }

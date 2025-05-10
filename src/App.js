@@ -8,6 +8,7 @@ import PCBuilder from './components/pages/PCBuilder'; // Changed from Builder to
 import Deals from './components/pages/Deals';
 import About from './components/pages/About';
 import Footer from './components/layout/Footer'; // Update path to match your structure
+import RecommendationsPage from './components/pages/Recommendations'; // Added import for RecommendationsPage
 import './styles/main.css';
 
 function App() {
@@ -103,6 +104,7 @@ function App() {
           <Route path="/builder" element={<PCBuilder />} /> {/* Updated to use PCBuilder component */}
           <Route path="/deals" element={<Deals />} />
           <Route path="/about" element={<About />} />
+          <Route path="/recommendations" element={<RecommendationsPage />} /> {/* Added route for RecommendationsPage */}
         </Routes>
         
         <Footer />

@@ -1,0 +1,164 @@
+.recommendations-container {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--bg-secondary, #f5f7f9);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.recommendations-container h2 {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary, #333);
+  font-weight: 600;
+  text-align: center;
+  position: relative;
+}
+
+.recommendations-container h2:after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: var(--primary-color, #0066cc);
+  border-radius: 2px;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.recommendation-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+}
+
+.recommendation-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  background-color: #fafafa;
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.recommendation-details {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.recommendation-details h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary, #333);
+  line-height: 1.4;
+  /* Allow up to 2 lines of text */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 2.8rem;
+}
+
+.recommendation-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.recommendation-specs span {
+  background-color: #f0f5ff;
+  color: var(--primary-color, #0066cc);
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.recommendation-price {
+  margin-top: auto;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color, #0066cc);
+  margin-bottom: 0.75rem;
+}
+
+.add-to-build-btn {
+  background-color: var(--primary-color, #0066cc);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-to-build-btn:hover {
+  background-color: var(--primary-dark, #0055aa);
+}
+
+.loading-spinner, .error-message {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.loading-spinner {
+  color: var(--text-secondary, #666);
+}
+
+.error-message {
+  color: var(--error, #e74c3c);
+}
+
+/* Make it match your PCBuilder theme */
+.recommendations-container {
+  /* Match any specific theme colors from your PCBuilder */
+  background-color: var(--bg-secondary, #f5f7f9);
+}
+
+@media (max-width: 768px) {
+  .recommendations-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  
+  .recommendation-details h3 {
+    font-size: 0.9rem;
+  }
+  
+  .recommendation-price {
+    font-size: 1rem;
+  }
+}

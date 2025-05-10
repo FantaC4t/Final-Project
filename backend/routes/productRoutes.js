@@ -74,6 +74,23 @@ router.get('/', async (req, res) => {
   }
 });
 
+// In backend/routes/productRoutes.js
+// @route   GET /api/products/popular
+// @desc    Get popular products
+// @access  Public
+router.get('/popular', async (req, res) => {
+  try {
+    // For now, return all products sorted by popularity
+    const products = await Product.find({})
+      .sort({ popularity: -1, numReviews: -1 })
+      .limit(8);
+    
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // GET single product by ID
 router.get('/:id', async (req, res) => {
   try {

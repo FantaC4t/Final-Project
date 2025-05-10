@@ -34,31 +34,291 @@ const mockProducts = [
       pciSlots: 2.5, // How many slots it takes up
       interfaceType: 'PCIe 4.0 x16',
       recommendedPSU: 750 // Watts
-    }
+    },
+    // Added recommendation fields
+    brand: 'NVIDIA',
+    popularity: 92,
+    performanceTier: 'highend',
+    useCases: ['gaming', '4k gaming', 'content creation']
   },
   {
     name: 'AMD Radeon RX 7900 XTX',
     image: '/assets/hardware/gpu.png',
     category: 'Graphics Cards',
     specs: ['24GB GDDR6', '12288 Stream Processors', '2.5 GHz', '287mm Length', 'PCIe 4.0 x16'],
-    avgRating: 4.5,
-    numReviews: 256,
+    avgRating: 4.7,
+    numReviews: 156,
     prices: [
-      { retailer: 'Amazon', price: 929.99, inStock: true },
-      { retailer: 'Newegg', price: 949.99, inStock: true },
-      { retailer: 'Best Buy', price: 969.99, inStock: true },
-      { retailer: 'B&H Photo', price: 939.99, inStock: false },
+      { retailer: 'Amazon', price: 949.99, inStock: true },
+      { retailer: 'Newegg', price: 969.99, inStock: true },
+      { retailer: 'Best Buy', price: 979.99, inStock: true },
+      { retailer: 'Micro Center', price: 949.99, inStock: true },
     ],
-    lowestPrice: 929.99,
-    priceHistory: [1000, 980, 950, 940, 930],
+    lowestPrice: 949.99,
+    priceHistory: [1000, 990, 980, 960, 950],
     compatibility: {
-      powerRequirement: 800, // Watts
-      length: 287, // mm
-      height: 125, // mm
-      pciSlots: 2.7, // How many slots it takes up
+      powerRequirement: 800,
+      length: 287,
+      height: 130,
+      pciSlots: 2.5,
       interfaceType: 'PCIe 4.0 x16',
-      recommendedPSU: 850 // Watts
-    }
+      recommendedPSU: 800
+    },
+    // Added recommendation fields
+    brand: 'AMD',
+    popularity: 90,
+    performanceTier: 'highend',
+    useCases: ['gaming', '4k gaming', 'content creation']
+  },
+  {
+    name: 'NVIDIA GeForce RTX 4060 Ti',
+    image: '/assets/hardware/gpu.png',
+    category: 'Graphics Cards',
+    specs: ['8GB GDDR6', '4352 CUDA Cores', '2.5 GHz', '238mm Length', 'PCIe 4.0 x16'],
+    avgRating: 4.5,
+    numReviews: 203,
+    prices: [
+      { retailer: 'Amazon', price: 399.99, inStock: true },
+      { retailer: 'Newegg', price: 409.99, inStock: true },
+      { retailer: 'Best Buy', price: 419.99, inStock: true },
+      { retailer: 'Micro Center', price: 389.99, inStock: true },
+    ],
+    lowestPrice: 389.99,
+    priceHistory: [420, 410, 400, 390],
+    compatibility: {
+      powerRequirement: 500,
+      length: 238,
+      height: 100,
+      pciSlots: 2,
+      interfaceType: 'PCIe 4.0 x16',
+      recommendedPSU: 550
+    },
+    // Added recommendation fields
+    brand: 'NVIDIA',
+    popularity: 94,
+    performanceTier: 'midrange',
+    useCases: ['gaming', '1440p gaming', 'content creation']
+  },
+  {
+    name: 'AMD Radeon RX 6700 XT',
+    image: '/assets/hardware/gpu.png',
+    category: 'Graphics Cards',
+    specs: ['12GB GDDR6', '2560 Stream Processors', '2.4 GHz', '267mm Length', 'PCIe 4.0 x16'],
+    avgRating: 4.4,
+    numReviews: 198,
+    prices: [
+      { retailer: 'Amazon', price: 369.99, inStock: true },
+      { retailer: 'Newegg', price: 379.99, inStock: true },
+      { retailer: 'Best Buy', price: 389.99, inStock: true },
+      { retailer: 'Micro Center', price: 359.99, inStock: true },
+    ],
+    lowestPrice: 359.99,
+    priceHistory: [400, 390, 380, 370, 360],
+    compatibility: {
+      powerRequirement: 650,
+      length: 267,
+      height: 110,
+      pciSlots: 2,
+      interfaceType: 'PCIe 4.0 x16',
+      recommendedPSU: 650
+    },
+    // Added recommendation fields
+    brand: 'AMD',
+    popularity: 88,
+    performanceTier: 'midrange',
+    useCases: ['gaming', '1440p gaming', 'content creation']
+  },
+  {
+    name: 'NVIDIA GeForce RTX 4050 Mobile',
+    image: '/assets/hardware/gpu.png',
+    category: 'Graphics Cards',
+    specs: ['6GB GDDR6', '2560 CUDA Cores', '1.6 GHz', 'Laptop GPU', 'PCIe 4.0 x8'],
+    avgRating: 4.2,
+    numReviews: 134,
+    prices: [
+      { retailer: 'Amazon', price: 1099.99, inStock: true, note: 'Part of laptop' },
+      { retailer: 'Best Buy', price: 1199.99, inStock: true, note: 'Part of laptop' },
+      { retailer: 'Newegg', price: 1149.99, inStock: false, note: 'Part of laptop' },
+    ],
+    lowestPrice: 1099.99,
+    priceHistory: [1200, 1150, 1100],
+    compatibility: {
+      powerRequirement: 75,
+      length: 'N/A (Mobile)',
+      height: 'N/A (Mobile)',
+      pciSlots: 'N/A (Mobile)',
+      interfaceType: 'PCIe 4.0 x8',
+      recommendedPSU: 'N/A (Mobile)'
+    },
+    // Added recommendation fields
+    brand: 'NVIDIA',
+    popularity: 82,
+    performanceTier: 'budget',
+    useCases: ['mobile gaming', 'student use', 'productivity']
+  },
+  
+  // CPUs
+  {
+    name: 'Intel Core i9-14900K',
+    image: '/assets/hardware/cpu.png',
+    category: 'Processors',
+    specs: ['24 Cores (8P+16E)', '32 Threads', '3.2 GHz Base', '6.0 GHz Boost', 'LGA 1700 Socket'],
+    avgRating: 4.8,
+    numReviews: 178,
+    prices: [
+      { retailer: 'Amazon', price: 589.99, inStock: true },
+      { retailer: 'Newegg', price: 579.99, inStock: true },
+      { retailer: 'Best Buy', price: 599.99, inStock: true },
+      { retailer: 'Micro Center', price: 569.99, inStock: true },
+    ],
+    lowestPrice: 569.99,
+    priceHistory: [599, 589, 579, 569],
+    compatibility: {
+      socket: 'LGA 1700',
+      tdp: 125,
+      compatibleChipsets: ['Z790', 'Z690', 'B760', 'B660', 'H770', 'H670']
+    },
+    // Added recommendation fields
+    brand: 'Intel',
+    popularity: 93,
+    performanceTier: 'highend',
+    useCases: ['gaming', 'content creation', 'workstation', 'overclocking']
+  },
+  {
+    name: 'AMD Ryzen 9 7950X',
+    image: '/assets/hardware/cpu.png',
+    category: 'Processors',
+    specs: ['16 Cores', '32 Threads', '4.5 GHz Base', '5.7 GHz Boost', 'AM5 Socket'],
+    avgRating: 4.9,
+    numReviews: 209,
+    prices: [
+      { retailer: 'Amazon', price: 579.99, inStock: true },
+      { retailer: 'Newegg', price: 569.99, inStock: true },
+      { retailer: 'Best Buy', price: 589.99, inStock: true },
+      { retailer: 'Micro Center', price: 549.99, inStock: true },
+    ],
+    lowestPrice: 549.99,
+    priceHistory: [599, 589, 579, 569, 549],
+    compatibility: {
+      socket: 'AM5',
+      tdp: 170,
+      compatibleChipsets: ['X670E', 'X670', 'B650E', 'B650']
+    },
+    // Added recommendation fields
+    brand: 'AMD',
+    popularity: 94,
+    performanceTier: 'highend',
+    useCases: ['gaming', 'content creation', 'workstation', 'multiprocessing']
+  },
+  {
+    name: 'Intel Core i5-14600K',
+    image: '/assets/hardware/cpu.png',
+    category: 'Processors',
+    specs: ['14 Cores (6P+8E)', '20 Threads', '3.5 GHz Base', '5.3 GHz Boost', 'LGA 1700 Socket'],
+    avgRating: 4.7,
+    numReviews: 245,
+    prices: [
+      { retailer: 'Amazon', price: 329.99, inStock: true },
+      { retailer: 'Newegg', price: 319.99, inStock: true },
+      { retailer: 'Best Buy', price: 339.99, inStock: true },
+      { retailer: 'Micro Center', price: 309.99, inStock: true },
+    ],
+    lowestPrice: 309.99,
+    priceHistory: [349, 339, 329, 319, 309],
+    compatibility: {
+      socket: 'LGA 1700',
+      tdp: 125,
+      compatibleChipsets: ['Z790', 'Z690', 'B760', 'B660', 'H770', 'H670']
+    },
+    // Added recommendation fields
+    brand: 'Intel',
+    popularity: 96,
+    performanceTier: 'midrange',
+    useCases: ['gaming', 'productivity', 'streaming', 'everyday use']
+  },
+  {
+    name: 'AMD Ryzen 5 7600X',
+    image: '/assets/hardware/cpu.png',
+    category: 'Processors',
+    specs: ['6 Cores', '12 Threads', '4.7 GHz Base', '5.3 GHz Boost', 'AM5 Socket'],
+    avgRating: 4.6,
+    numReviews: 289,
+    prices: [
+      { retailer: 'Amazon', price: 249.99, inStock: true },
+      { retailer: 'Newegg', price: 239.99, inStock: true },
+      { retailer: 'Best Buy', price: 259.99, inStock: true },
+      { retailer: 'Micro Center', price: 229.99, inStock: true },
+    ],
+    lowestPrice: 229.99,
+    priceHistory: [279, 269, 259, 249, 239, 229],
+    compatibility: {
+      socket: 'AM5',
+      tdp: 105,
+      compatibleChipsets: ['X670E', 'X670', 'B650E', 'B650']
+    },
+    // Added recommendation fields
+    brand: 'AMD',
+    popularity: 95,
+    performanceTier: 'midrange',
+    useCases: ['gaming', 'productivity', 'streaming', 'everyday use']
+  },
+  
+  // Memory/RAM
+  {
+    name: 'Corsair Vengeance RGB Pro 32GB',
+    image: '/assets/hardware/ram.png',
+    category: 'Memory',
+    specs: ['32GB (2x16GB)', 'DDR4-3600', 'CL18', 'RGB'],
+    avgRating: 4.8,
+    numReviews: 342,
+    prices: [
+      { retailer: 'Amazon', price: 109.99, inStock: true },
+      { retailer: 'Newegg', price: 114.99, inStock: true },
+      { retailer: 'Best Buy', price: 119.99, inStock: true },
+      { retailer: 'Micro Center', price: 104.99, inStock: true },
+    ],
+    lowestPrice: 104.99,
+    priceHistory: [129, 119, 114, 109, 104],
+    compatibility: {
+      memoryType: 'DDR4',
+      capacity: 32, // GB
+      speed: 3600, // MHz
+      latency: 'CL18',
+      voltage: 1.35 // V
+    },
+    // Added recommendation fields
+    brand: 'Corsair',
+    popularity: 93,
+    performanceTier: 'midrange',
+    useCases: ['gaming', 'multitasking', 'rgb builds', 'content creation']
+  },
+  {
+    name: 'G.Skill Trident Z5 RGB 32GB',
+    image: '/assets/hardware/ram.png',
+    category: 'Memory',
+    specs: ['32GB (2x16GB)', 'DDR5-6000', 'CL36', 'RGB'],
+    avgRating: 4.7,
+    numReviews: 167,
+    prices: [
+      { retailer: 'Amazon', price: 159.99, inStock: true },
+      { retailer: 'Newegg', price: 154.99, inStock: true },
+      { retailer: 'Best Buy', price: 169.99, inStock: false },
+      { retailer: 'Micro Center', price: 149.99, inStock: true },
+    ],
+    lowestPrice: 149.99,
+    priceHistory: [179, 169, 159, 149],
+    compatibility: {
+      memoryType: 'DDR5',
+      capacity: 32, // GB
+      speed: 6000, // MHz
+      latency: 'CL36',
+      voltage: 1.35 // V
+    },
+    // Added recommendation fields
+    brand: 'G.Skill',
+    popularity: 90,
+    performanceTier: 'highend',
+    useCases: ['gaming', 'overclocking', 'content creation', 'enthusiast builds']
   },
   {
     name: 'NVIDIA RTX 4080',
