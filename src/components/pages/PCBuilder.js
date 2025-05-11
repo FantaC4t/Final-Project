@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   FiCpu, FiHardDrive, FiServer, FiMonitor, FiGrid, FiBox, 
   FiBattery, FiWind, FiPlus, FiTrash2, FiAlertCircle, 
   FiCheck, FiX, FiActivity, FiDollarSign,
-  FiSliders, FiTool 
+  FiSliders, FiTool, FiShoppingCart, FiSave 
 } from 'react-icons/fi';
-import { IoGameController } from 'react-icons/io5'; // or use any other icon set
+import { IoGameController } from 'react-icons/io5';
 import axios from 'axios';
 import '../../styles/pages/pc-builder.css';
 import Recommendations from '../Recommendations';
@@ -41,16 +41,224 @@ function PCBuilder() {
   // State for selected category and current selection
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [currentSelection, setCurrentSelection] = useState(null);
-  
-  // State for price summary
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [compatibilityMode, setCompatibilityMode] = useState(true);
+  const [compatibilityIssues, setCompatibilityIssues] = useState({});
   const [priceSummary, setPriceSummary] = useState({
-    total: 0,
-    lowestPrice: 0,
-    savings: 0
+    subtotal: 0,
+    tax: 0,
+    shipping: 0,
+    total: 0
   });
   
-  // State for compatibility issues
-  const [compatibilityIssues, setCompatibilityIssues] = useState([]);
+  // Helper functions for compatibility checking
+  
+  // Enhanced socket compatibility check function
+  const areSocketsCompatible = (socket1, socket2) => {
+    if (!socket1 || !socket2) return true; // If either is missing, assume compatible
+    
+    // Convert both to strings and lowercase for comparison
+    const s1 = String(socket1).toLowerCase();
+    const s2 = String(socket2).toLowerCase();
+    
+    // Direct match
+    if (s1 === s2) return true;
+    
+    // Handle LGA/AM cases - check if one contains the other
+    if (s1.includes(s2) || s2.includes(s1)) return true;
+    
+    // Extract numeric part for partial matching (e.g., "LGA 1151" and "1151")
+    const numericPart1 = s1.match(/\d+/g);
+    const numericPart2 = s2.match(/\d+/g);
+    
+    if (numericPart1 && numericPart2) {
+      // If both have numeric parts, check if they match
+      return numericPart1.some(n1 => numericPart2.includes(n1));
+    }
+    
+    return false;
+  };
+  
+  // Enhanced RAM compatibility check function
+  const isRAMCompatible = (motherboardRamType, ramType) => {
+    if (!motherboardRamType || !ramType) return true; // If either is missing, assume compatible
+    
+    const mbRAM = String(motherboardRamType).toLowerCase();
+    const ram = String(ramType).toLowerCase();
+    
+    // Direct match
+    if (mbRAM === ram) return true;
+    
+    // Look for common identifiers: ddr4, ddr5, etc.
+    const mbIdentifiers = mbRAM.match(/(ddr\d+)/gi) || [];
+    const ramIdentifiers = ram.match(/(ddr\d+)/gi) || [];
+    
+    return ramIdentifiers.length > 0 && mbIdentifiers.some(id => 
+      ramIdentifiers.some(rid => rid.toLowerCase() === id.toLowerCase())
+    );
+  };
+  
+  // Function to get value from multiple possible property paths
+  const getPropertyValue = (obj, properties) => {
+    if (!obj) return null;
+    
+    for (const prop of properties) {
+      const value = prop.split('.').reduce((o, key) => o && o[key] !== undefined ? o[key] : undefined, obj);
+      if (value !== undefined) return value;
+    }
+    
+    return null;
+  };
+  
+  // Enhanced function to filter compatible components
+  const filterCompatibleComponents = useCallback((category, partsList) => {
+    // If compatibility mode is off or no parts to filter, return all
+    if (!compatibilityMode || !partsList || partsList.length === 0) return partsList;
+    
+    let filtered = [...partsList];
+    
+    // Get current components for compatibility checking
+    const currentCPU = components.cpu;
+    const currentMotherboard = components.motherboard;
+    const currentRAM = components.memory;
+    const currentGPU = components.gpu;
+    const currentCase = components.case;
+    
+    switch(category) {
+      case 'cpu':
+        if (currentMotherboard) {
+          // Filter CPUs that match the motherboard socket
+          filtered = filtered.filter(cpu => {
+            // Get socket info from multiple possible locations
+            const cpuSocket = getPropertyValue(cpu, ['socket', 'compatibility.socket', 'specs.socket']);
+            const mbSocket = getPropertyValue(currentMotherboard, ['socket', 'compatibility.socket', 'specs.socket']);
+            
+            return areSocketsCompatible(cpuSocket, mbSocket);
+          });
+        }
+        break;
+        
+      case 'motherboard':
+        if (currentCPU) {
+          // Filter motherboards that match the CPU socket
+          filtered = filtered.filter(mb => {
+            const mbSocket = getPropertyValue(mb, ['socket', 'compatibility.socket', 'specs.socket']);
+            const cpuSocket = getPropertyValue(currentCPU, ['socket', 'compatibility.socket', 'specs.socket']);
+            
+            return areSocketsCompatible(mbSocket, cpuSocket);
+          });
+        }
+        
+        if (currentRAM) {
+          // Filter motherboards compatible with the selected RAM
+          filtered = filtered.filter(mb => {
+            const mbRAMType = getPropertyValue(mb, ['memoryType', 'compatibility.memoryType', 'specs.memoryType']);
+            const ramType = getPropertyValue(currentRAM, ['type', 'memoryType', 'compatibility.type', 'specs.type']);
+            
+            return isRAMCompatible(mbRAMType, ramType);
+          });
+        }
+        break;
+        
+      case 'memory':
+        if (currentMotherboard) {
+          // Filter RAM compatible with the selected motherboard
+          filtered = filtered.filter(ram => {
+            const ramType = getPropertyValue(ram, ['type', 'memoryType', 'compatibility.type', 'specs.type']);
+            const mbRAMType = getPropertyValue(currentMotherboard, ['memoryType', 'compatibility.memoryType', 'specs.memoryType']);
+            
+            return isRAMCompatible(mbRAMType, ramType);
+          });
+        }
+        break;
+        
+      case 'gpu':
+        if (currentCase) {
+          // Filter GPUs that fit in the case
+          filtered = filtered.filter(gpu => {
+            const gpuLength = getPropertyValue(gpu, ['length', 'compatibility.length', 'dimensions.length', 'specs.length']);
+            const maxGPULength = getPropertyValue(currentCase, ['maxGPULength', 'compatibility.maxGPULength', 'dimensions.maxGPULength', 'specs.maxGPULength']);
+            
+            // If we can't determine dimensions, assume compatible
+            if (!gpuLength || !maxGPULength) return true;
+            
+            // Convert to numbers and compare
+            return Number(gpuLength) <= Number(maxGPULength);
+          });
+        }
+        break;
+        
+      case 'case':
+        if (currentGPU) {
+          // Filter cases that can fit the GPU
+          filtered = filtered.filter(pc_case => {
+            const maxGPULength = getPropertyValue(pc_case, ['maxGPULength', 'compatibility.maxGPULength', 'dimensions.maxGPULength', 'specs.maxGPULength']);
+            const gpuLength = getPropertyValue(currentGPU, ['length', 'compatibility.length', 'dimensions.length', 'specs.length']);
+            
+            // If we can't determine dimensions, assume compatible
+            if (!gpuLength || !maxGPULength) return true;
+            
+            // Convert to numbers and compare
+            return Number(maxGPULength) >= Number(gpuLength);
+          });
+        }
+        break;
+        
+      case 'psu':
+        // Calculate estimated power requirements based on components
+        let estimatedWattage = 0;
+        
+        if (currentCPU) {
+          const cpuTDP = getPropertyValue(currentCPU, ['tdp', 'compatibility.tdp', 'specs.tdp', 'powerConsumption']);
+          estimatedWattage += cpuTDP ? Number(cpuTDP) : 65; // Default TDP
+        }
+        
+        if (currentGPU) {
+          const gpuPower = getPropertyValue(currentGPU, ['tdp', 'powerConsumption', 'compatibility.powerRequirement', 'specs.powerConsumption', 'specs.tdp']);
+          estimatedWattage += gpuPower ? Number(gpuPower) : 150; // Default GPU power
+        }
+        
+        // Add base system power + 20% buffer
+        estimatedWattage = estimatedWattage + 150;
+        const recommendedWattage = Math.ceil(estimatedWattage * 1.2);
+        
+        // Filter PSUs that can handle the estimated wattage
+        filtered = filtered.filter(psu => {
+          let wattage = getPropertyValue(psu, ['wattage', 'power', 'compatibility.wattage', 'specs.wattage']);
+          
+          // If wattage is a string, try to extract the number
+          if (typeof wattage === 'string') {
+            const match = wattage.match(/(\d+)/);
+            wattage = match ? Number(match[1]) : 0;
+          } else if (typeof wattage === 'number') {
+            // Keep it as is
+          } else {
+            // If no wattage info, check if any spec item contains wattage information
+            if (psu.specs && Array.isArray(psu.specs)) {
+              for (const spec of psu.specs) {
+                if (typeof spec === 'string') {
+                  const wattMatch = spec.match(/(\d+)[^\d]*w/i);
+                  if (wattMatch) {
+                    wattage = Number(wattMatch[1]);
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          
+          return !wattage || Number(wattage) >= recommendedWattage;
+        });
+        break;
+        
+      default:
+        // No specific compatibility filtering for other categories
+        break;
+    }
+    
+    return filtered;
+  }, [components, compatibilityMode]);
   
   // Add these state variables to your PCBuilder component
   const [builderMode, setBuilderMode] = useState('advanced'); // 'simple' or 'advanced'
@@ -432,21 +640,16 @@ const addToBuild = (component) => {
   };
   
   // Update the getCompatibilityClass function to properly check for compatibility issues
-const getCompatibilityClass = () => {
-  // Check if we have any compatibility issues
-  if (compatibilityIssues && compatibilityIssues.length > 0) {
-    console.log('Incompatible: ', compatibilityIssues); // Add logging to debug
-    return 'incompatible';
+const getCompatibilityClass = (category) => {
+  if (!compatibilityIssues || !compatibilityIssues[category]) {
+    return "component-status-neutral";
   }
   
-  // Check if any component is selected
-  const hasComponents = Object.values(components).some(component => component !== null);
-  
-  if (hasComponents) {
-    return 'compatible';
+  if (compatibilityIssues[category].length > 0) {
+    return "component-status-incompatible";
   }
   
-  return '';
+  return "component-status-compatible";
 };
   
   // Helper function to get key compatibility features for display
@@ -651,6 +854,175 @@ const generateSuggestedBuild = () => {
   setSuggestedBuild(build);
   
   return build;
+};
+
+const checkCompatibilityIssues = useCallback(() => {
+  const issues = {};
+  
+  // CPU and Motherboard compatibility
+  if (components.cpu && components.motherboard) {
+    const cpuSocket = getPropertyValue(components.cpu, ['socket', 'compatibility.socket', 'specs.socket']);
+    const mbSocket = getPropertyValue(components.motherboard, ['socket', 'compatibility.socket', 'specs.socket']);
+    
+    if (cpuSocket && mbSocket && !areSocketsCompatible(cpuSocket, mbSocket)) {
+      issues.cpu = issues.cpu || [];
+      issues.motherboard = issues.motherboard || [];
+      
+      issues.cpu.push({
+        message: `CPU socket ${cpuSocket} may not be compatible with motherboard socket ${mbSocket}`,
+        severity: 'high'
+      });
+      
+      issues.motherboard.push({
+        message: `Motherboard socket ${mbSocket} may not be compatible with CPU socket ${cpuSocket}`,
+        severity: 'high'
+      });
+    }
+  }
+  
+  // Memory and Motherboard compatibility
+  if (components.memory && components.motherboard) {
+    const ramType = getPropertyValue(components.memory, ['type', 'memoryType', 'compatibility.type', 'specs.type']);
+    const mbRAMType = getPropertyValue(components.motherboard, ['memoryType', 'compatibility.memoryType', 'specs.memoryType']);
+    
+    if (ramType && mbRAMType && !isRAMCompatible(mbRAMType, ramType)) {
+      issues.memory = issues.memory || [];
+      issues.motherboard = issues.motherboard || [];
+      
+      issues.memory.push({
+        message: `Memory type ${ramType} may not be compatible with motherboard memory type ${mbRAMType}`,
+        severity: 'high'
+      });
+      
+      issues.motherboard.push({
+        message: `Motherboard memory type ${mbRAMType} may not be compatible with memory type ${ramType}`,
+        severity: 'high'
+      });
+    }
+  }
+  
+  // GPU and Case compatibility
+  if (components.gpu && components.case) {
+    const gpuLength = getPropertyValue(components.gpu, ['length', 'compatibility.length', 'dimensions.length', 'specs.length']);
+    const maxGPULength = getPropertyValue(components.case, ['maxGPULength', 'compatibility.maxGPULength', 'dimensions.maxGPULength', 'specs.maxGPULength']);
+    
+    if (gpuLength && maxGPULength && Number(gpuLength) > Number(maxGPULength)) {
+      issues.gpu = issues.gpu || [];
+      issues.case = issues.case || [];
+      
+      issues.gpu.push({
+        message: `GPU length (${gpuLength}mm) exceeds case's maximum GPU length (${maxGPULength}mm)`,
+        severity: 'high'
+      });
+      
+      issues.case.push({
+        message: `Case maximum GPU length (${maxGPULength}mm) is less than GPU length (${gpuLength}mm)`,
+        severity: 'high'
+      });
+    }
+  }
+  
+  // Power Supply adequacy
+  if ((components.cpu || components.gpu) && components.psu) {
+    let estimatedWattage = 0;
+    
+    if (components.cpu) {
+      const cpuTDP = getPropertyValue(components.cpu, ['tdp', 'compatibility.tdp', 'specs.tdp', 'powerConsumption']);
+      estimatedWattage += cpuTDP ? Number(cpuTDP) : 65;
+    }
+    
+    if (components.gpu) {
+      const gpuPower = getPropertyValue(components.gpu, ['tdp', 'powerConsumption', 'compatibility.powerRequirement', 'specs.powerConsumption', 'specs.tdp']);
+      estimatedWattage += gpuPower ? Number(gpuPower) : 150;
+    }
+    
+    // Add base system power + buffer
+    estimatedWattage += 150;
+    const recommendedWattage = Math.ceil(estimatedWattage * 1.2);
+    
+    const psuWattage = getPropertyValue(components.psu, ['wattage', 'power', 'compatibility.wattage', 'specs.wattage']);
+    let wattageValue = 0;
+    
+    if (typeof psuWattage === 'string') {
+      const match = psuWattage.match(/(\d+)/);
+      wattageValue = match ? Number(match[1]) : 0;
+    } else if (typeof psuWattage === 'number') {
+      wattageValue = psuWattage;
+    }
+    
+    if (wattageValue < recommendedWattage) {
+      issues.psu = issues.psu || [];
+      
+      issues.psu.push({
+        message: `Power supply (${wattageValue}W) may be insufficient for system needs (recommended ${recommendedWattage}W)`,
+        severity: 'medium'
+      });
+    }
+  }
+  
+  setCompatibilityIssues(issues);
+}, [components, getPropertyValue, areSocketsCompatible, isRAMCompatible]);
+
+// Call the checkCompatibilityIssues function whenever components change
+useEffect(() => {
+  checkCompatibilityIssues();
+}, [components, checkCompatibilityIssues]);
+
+// Add this function to display compatibility issues
+const renderCompatibilityIssues = (category) => {
+  if (!compatibilityIssues[category] || compatibilityIssues[category].length === 0) {
+    return null;
+  }
+  
+  return (
+    <div className="compatibility-issues">
+      {compatibilityIssues[category].map((issue, index) => (
+        <div key={index} className={`compatibility-issue issue-${issue.severity}`}>
+          <FiAlertCircle className="issue-icon" />
+          <span className="issue-message">{issue.message}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// Near line ~1188, replace your renderPriceSummary function with this version:
+const renderPriceSummary = () => {
+  // Simple helper function defined inline to avoid external dependencies
+  const formatPrice = (price) => {
+    if (price === undefined || price === null || isNaN(price)) {
+      return '$0.00';
+    }
+    return '$' + price.toFixed(2);
+  };
+  
+  return (
+    <div className="price-summary">
+      <h3>Price Summary</h3>
+      <div className="price-breakdown">
+        <div className="price-row">
+          <span>Subtotal</span>
+          <span>{formatPrice(priceSummary.subtotal)}</span>
+        </div>
+        <div className="price-row">
+          <span>Tax (8%)</span>
+          <span>{formatPrice(priceSummary.tax)}</span>
+        </div>
+        <div className="price-row">
+          <span>Shipping</span>
+          <span>
+            {priceSummary.shipping === 0 
+              ? 'Free' 
+              : formatPrice(priceSummary.shipping)}
+          </span>
+        </div>
+        <div className="price-row total">
+          <span>Total</span>
+          <span>{formatPrice(priceSummary.total)}</span>
+        </div>
+      </div>
+    </div>
+  );
 };
 
   return (
@@ -946,6 +1318,7 @@ const generateSuggestedBuild = () => {
                           <span key={idx} className="compat-feature">{feature}</span>
                         ))}
                       </div>
+                      {renderCompatibilityIssues(category)}
                     </>
                   ) : (
                     <div className="select-prompt">
@@ -972,63 +1345,14 @@ const generateSuggestedBuild = () => {
         </div>
         
         <div className="build-summary">
-          <div className="compatibility-status">
-            <h3>Build Status</h3>
-            <div className={`status-indicator ${getCompatibilityClass()}`}>
-              {compatibilityIssues.length > 0 ? (
-                <>
-                  <FiAlertCircle size={18} />
-                  <span>Compatibility Issues Detected</span>
-                </>
-              ) : Object.values(components).some(component => component !== null) ? (
-                <>
-                  <FiCheck size={18} />
-                  <span>Compatible Build</span>
-                </>
-              ) : (
-                <span>Start by selecting components</span>
-              )}
-            </div>
-            
-            {compatibilityIssues.length > 0 && (
-              <div className="compatibility-issues">
-                {compatibilityIssues.map((issue, index) => (
-                  <div key={index} className="issue">
-                    <FiAlertCircle size={16} />
-                    <span>{issue}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          {renderPriceSummary()}
           
-          <div className="price-summary">
-            <h3>Price Summary</h3>
-            <div className="price-breakdown">
-              <div className="price-row">
-                <span>Total:</span>
-                <span className="price">${priceSummary.total}</span>
-              </div>
-              <div className="price-row">
-                <span>Lowest Prices:</span>
-                <span className="price best">${priceSummary.lowestPrice}</span>
-              </div>
-              <div className="price-row savings">
-                <span>Potential Savings:</span>
-                <span className="price savings">${priceSummary.savings}</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="action-buttons">
-            <button 
-              className="pyro-button primary"
-              disabled={Object.values(components).every(comp => comp === null) || compatibilityIssues.length > 0}
-            >
-              Save Build
+          <div className="actions">
+            <button className="pyro-button primary">
+              <FiShoppingCart className="button-icon" /> Checkout
             </button>
             <button className="pyro-button secondary">
-              Share Build
+              <FiSave className="button-icon" /> Save Build
             </button>
           </div>
         </div>

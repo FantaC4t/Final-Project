@@ -873,3 +873,180 @@
   flex: 1;
   padding: 0.75rem;
 }
+
+/* Add this to your pc-builder.css file */
+.compatibility-toggle {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0 1rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 24px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .toggle-slider {
+  background-color: #3498db;
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-label {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Add these styles for compatibility issues */
+.compatibility-issues {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+}
+
+.compatibility-issue {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.25rem 0;
+  gap: 0.5rem;
+}
+
+.issue-high {
+  color: var(--pyro-danger, #ff4d4f);
+}
+
+.issue-medium {
+  color: var(--pyro-warning, #faad14);
+}
+
+.issue-low {
+  color: var(--pyro-info, #1890ff);
+}
+
+.issue-icon {
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+}
+
+.issue-message {
+  line-height: 1.2;
+}
+
+/* Component status styling */
+.component-status-compatible {
+  border-color: var(--pyro-success, #52c41a);
+}
+
+.component-status-incompatible {
+  border-color: var(--pyro-danger, #ff4d4f);
+}
+
+.component-status-neutral {
+  /* Use your default border color */
+}
+
+/* Add this to the component selection modal */
+.compatibility-toggle {
+  margin: 0.75rem 1rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Price Summary Styles */
+.price-summary {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.price-summary h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--pyro-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 0.5rem;
+}
+
+.price-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.price-row.total {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--pyro-primary);
+}
+
+.build-summary .actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.build-summary .actions button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.button-icon {
+  font-size: 1.1rem;
+}

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   FiSearch, FiFilter, FiShoppingCart, FiBarChart2, FiStar, 
   FiChevronDown, FiX, FiMonitor, FiCpu, FiServer, 
-  FiHardDrive, FiGrid, FiBattery, FiBox, FiWind 
+  FiHardDrive, FiGrid, FiBattery, FiBox, FiWind,
+  FiChevronLeft, FiChevronRight
 } from 'react-icons/fi';
+import axios from 'axios';
 import PricePrediction from '../PricePrediction';
 
 // Mock data for demonstration
@@ -22,17 +24,16 @@ function Compare() {
   const [compareItems, setCompareItems] = useState([]);
   const [priceHistoryModal, setPriceHistoryModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Add these new state variables for "applied" filters
   const [appliedPriceRange, setAppliedPriceRange] = useState([0, 2000]);
   const [appliedSortBy, setAppliedSortBy] = useState('lowest');
   const [appliedInStockOnly, setAppliedInStockOnly] = useState(false);
 
-  // Add this new state variable
   const [isFilterClosing, setIsFilterClosing] = useState(false);
 
-  // Add this new state variable for products
   const [products, setProducts] = useState([]);
+  const [showCompareView, setShowCompareView] = useState(false); // New state for comparison view
 
   // Add useState for tracking expanded items
   const [expandedItems, setExpandedItems] = useState({});
@@ -40,18 +41,19 @@ function Compare() {
   // Add toggle function to scroll to the expanded item
   const toggleExpand = (itemId) => {
     // Toggle the expanded state
-    setExpandedItems({
-      ...expandedItems,
-      [itemId]: !expandedItems[itemId]
-    });
+    setExpandedItems(prev => ({ // Use functional update for safety
+      ...prev,
+      [itemId]: !prev[itemId]
+    }));
     
     // If we're expanding the item, scroll to it after a short delay
     // to allow the DOM to update
-    if (!expandedItems[itemId]) {
+    // Check the new state, not the old one (expandedItems[itemId] would be the old state here)
+    if (!expandedItems[itemId]) { // This condition means it *was* false, so it's *now* true (expanding)
       setTimeout(() => {
         const element = document.getElementById(`result-card-${itemId}`);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); // 'nearest' or 'center' might be better
         }
       }, 100);
     }
@@ -227,6 +229,285 @@ function Compare() {
       setIsFilterClosing(false);
     }, 300); // Match animation duration
   };
+
+  // Function to toggle an item in the compare list
+  const toggleCompareItem = (product) => {
+    setCompareItems(prevItems => {
+      if (prevItems.find(item => item._id === product._id)) {
+        return prevItems.filter(item => item._id !== product._id);
+      } else if (prevItems.length < 4) { // Limit to comparing, e.g., 4 items
+        return [...prevItems, product];
+      }
+      return prevItems; // If already 4 items, don't add more
+    });
+  };
+
+  // Function to handle opening the compare view
+  const handleOpenCompareView = () => {
+    if (compareItems.length > 0) {
+      setShowCompareView(true);
+    }
+  };
+
+  // Function to handle closing the compare view
+  const handleCloseCompareView = () => {
+    setShowCompareView(false);
+  };
+  
+  // Placeholder for fetching products - replace with your actual fetch logic
+  useEffect(() => {
+    // Simulating fetching products
+    const fetchedProducts = [
+      // Add mock product data here if you don't have backend integration yet
+      // Example:
+      // { _id: '1', name: 'NVIDIA GeForce RTX 4080', category: 'Graphics Cards', image: '/assets/hardware/graphicscards.png', specs: ['16GB GDDR6X', 'DLSS 3', 'Ray Tracing'], avgRating: 4.8, numReviews: 250, prices: [{ retailer: 'Amazon', price: 1199.99, inStock: true }], lowestPrice: 1199.99, brand: 'NVIDIA', popularity: 95, performanceTier: 'highend', useCases: ['4K Gaming', 'VR', 'Content Creation'], compatibility: { powerRequirement: 320, length: 304, recommendedPSU: 750 } },
+      // { _id: '2', name: 'AMD Ryzen 9 7950X', category: 'Processors', image: '/assets/hardware/processors.png', specs: ['16 Cores / 32 Threads', '5.7 GHz Boost', 'AM5 Socket'], avgRating: 4.9, numReviews: 180, prices: [{ retailer: 'Newegg', price: 549.00, inStock: true }], lowestPrice: 549.00, brand: 'AMD', popularity: 92, performanceTier: 'highend', useCases: ['Gaming', 'Rendering', 'Multitasking'], compatibility: { socket: 'AM5', tdp: 170, compatibleChipsets: ['X670', 'B650'] } },
+    ];
+    setProducts(fetchedProducts);
+    setSearchResults(fetchedProducts); // Initially show all products or based on default filters
+  }, []);
+
+
+  // Placeholder for search and filter logic
+  useEffect(() => {
+    let filtered = products;
+
+    if (selectedCategory !== 'All Categories') {
+      filtered = filtered.filter(p => p.category === selectedCategory);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    filtered = filtered.filter(p => p.lowestPrice >= appliedPriceRange[0] && p.lowestPrice <= appliedPriceRange[1]);
+    if (appliedInStockOnly) {
+      filtered = filtered.filter(p => p.prices.some(priceInfo => priceInfo.inStock));
+    }
+    // Add sorting logic based on appliedSortBy
+    if (appliedSortBy === 'lowest') {
+        filtered.sort((a, b) => a.lowestPrice - b.lowestPrice);
+    } else if (appliedSortBy === 'highest') {
+        filtered.sort((a, b) => b.lowestPrice - a.lowestPrice);
+    } else if (appliedSortBy === 'rating') {
+        filtered.sort((a, b) => b.avgRating - a.avgRating);
+    }
+
+
+    setSearchResults(filtered);
+  }, [searchTerm, selectedCategory, products, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
+
+  // Replace the visibleItemCount and allFilteredResults with pagination controls
+  const [paginationSettings, setPaginationSettings] = useState({
+    currentPage: 1,
+    itemsPerPage: 20,
+    totalItems: 0,
+    totalPages: 1
+  });
+  
+  // Function to change items per page
+  const handleItemsPerPageChange = (e) => {
+    const newItemsPerPage = parseInt(e.target.value);
+    setPaginationSettings(prev => ({
+      ...prev,
+      itemsPerPage: newItemsPerPage,
+      currentPage: 1, // Reset to first page when changing items per page
+    }));
+  };
+  
+  // Function to change page
+  const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > paginationSettings.totalPages) return;
+    setPaginationSettings(prev => ({
+      ...prev,
+      currentPage: newPage
+    }));
+    
+    // Scroll to top when changing pages for better UX
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Modified filtering/pagination effect
+  useEffect(() => {
+    let filtered = products;
+
+    // Apply all your existing filters
+    if (selectedCategory !== 'All Categories') {
+      filtered = filtered.filter(p => p.category === selectedCategory);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter(p => p.name && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    }
+    filtered = filtered.filter(p => 
+      typeof p.lowestPrice === 'number' && 
+      p.lowestPrice >= appliedPriceRange[0] && 
+      p.lowestPrice <= appliedPriceRange[1]
+    );
+    if (appliedInStockOnly) {
+      filtered = filtered.filter(p => Array.isArray(p.prices) && p.prices.some(priceInfo => priceInfo.inStock));
+    }
+    
+    // Apply sorting
+    if (appliedSortBy === 'lowest') {
+        filtered.sort((a, b) => (a.lowestPrice || Infinity) - (b.lowestPrice || Infinity));
+    } else if (appliedSortBy === 'highest') {
+        filtered.sort((a, b) => (b.lowestPrice || -Infinity) - (a.lowestPrice || -Infinity));
+    } else if (appliedSortBy === 'rating') {
+        filtered.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
+    }
+
+    // Update total count and pages
+    const totalFilteredItems = filtered.length;
+    const totalPages = Math.ceil(totalFilteredItems / paginationSettings.itemsPerPage);
+    
+    // Update pagination settings
+    setPaginationSettings(prev => ({
+      ...prev,
+      totalItems: totalFilteredItems,
+      totalPages: totalPages > 0 ? totalPages : 1,
+      currentPage: prev.currentPage > totalPages ? 1 : prev.currentPage
+    }));
+
+    // Calculate start and end indices for the current page
+    const startIndex = (paginationSettings.currentPage - 1) * paginationSettings.itemsPerPage;
+    const endIndex = startIndex + paginationSettings.itemsPerPage;
+    
+    // Only set the items for the current page
+    setSearchResults(filtered.slice(startIndex, endIndex));
+
+  }, [
+    searchTerm, 
+    selectedCategory, 
+    products, 
+    appliedPriceRange, 
+    appliedSortBy, 
+    appliedInStockOnly, 
+    paginationSettings.currentPage, 
+    paginationSettings.itemsPerPage
+  ]);
+
+  const getCategoryIcon = (category) => {
+    switch (category) {
+      case 'Processors': return <FiCpu className="mr-2" />;
+      case 'Graphics Cards': return <FiMonitor className="mr-2" />;
+      case 'Motherboards': return <FiServer className="mr-2" />;
+      case 'Memory': return <FiGrid className="mr-2" />; // Or a more specific RAM icon if available
+      case 'Storage': return <FiHardDrive className="mr-2" />;
+      case 'Power Supplies': return <FiBattery className="mr-2" />;
+      case 'Cases': return <FiBox className="mr-2" />;
+      case 'Cooling': return <FiWind className="mr-2" />;
+      default: return <FiGrid className="mr-2" />;
+    }
+  };
+
+  // Pagination UI component with styled controls
+const PaginationControls = () => {
+  const { currentPage, totalPages, itemsPerPage, totalItems } = paginationSettings;
+  
+  // Generate page numbers to display (show current page, and neighbors)
+  const getPageNumbers = () => {
+    let pages = [];
+    const maxPagesToShow = 5;
+    
+    if (totalPages <= maxPagesToShow) {
+      // If we have fewer pages than our max, show all pages
+      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+    } else {
+      // Always include first page, last page, current page, and neighbors of current page
+      const leftNeighbor = Math.max(1, currentPage - 1);
+      const rightNeighbor = Math.min(totalPages, currentPage + 1);
+      
+      pages = [1]; // Always start with page 1
+      
+      if (leftNeighbor > 2) {
+        pages.push('...'); // Ellipsis if there's a gap
+      }
+      
+      // Add neighbors and current page if they're not already included
+      for (let i = leftNeighbor; i <= rightNeighbor; i++) {
+        if (i !== 1 && i !== totalPages) { // Avoid duplicates
+          pages.push(i);
+        }
+      }
+      
+      if (rightNeighbor < totalPages - 1) {
+        pages.push('...'); // Ellipsis if there's a gap
+      }
+      
+      if (totalPages > 1) {
+        pages.push(totalPages); // Always end with last page
+      }
+    }
+    
+    return pages;
+  };
+
+  return (
+    <div className="pagination-container">
+      <div className="pagination-info">
+        <div className="pagination-count">
+          Showing {(currentPage - 1) * itemsPerPage + 1}-{Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} items
+        </div>
+        
+        <div className="pagination-items-per-page">
+          <label htmlFor="items-per-page">Items per page:</label>
+          <select 
+            id="items-per-page"
+            value={itemsPerPage}
+            onChange={handleItemsPerPageChange}
+            className="pagination-select"
+          >
+            <option value={10}>10</option>
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </select>
+        </div>
+      </div>
+      
+      <div className="pagination-buttons">
+        <button 
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className={`pagination-button ${currentPage === 1 ? 'pagination-button-disabled' : ''}`}
+          aria-label="Previous page"
+        >
+          <FiChevronLeft size={18} />
+        </button>
+        
+        {getPageNumbers().map((page, index) => (
+          page === '...' ? (
+            <span key={`ellipsis-${index}`} className="pagination-ellipsis">...</span>
+          ) : (
+            <button
+              key={`page-${page}`}
+              onClick={() => handlePageChange(page)}
+              className={`pagination-button ${page === currentPage ? 'pagination-button-active' : ''}`}
+            >
+              {page}
+            </button>
+          )
+        ))}
+        
+        <button 
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`pagination-button ${currentPage === totalPages ? 'pagination-button-disabled' : ''}`}
+          aria-label="Next page"
+        >
+          <FiChevronRight size={18} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Add this helper function near the top of your component or outside it
+const truncateText = (text, maxLength = 20) => {
+  if (!text) return 'Product';
+  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
+};
 
   return (
     <div className="pyro-page compare-page">
@@ -454,11 +735,13 @@ function Compare() {
                   >
                     <div className="result-card-header-top">
                       <div className="result-image">
-                        <img src={item.image} alt={item.name} />
+                        <img src={item.image || `https://via.placeholder.com/300x200/777777/FFFFFF?text=${encodeURIComponent(truncateText(item.name, 15))}`} alt={item.name} />
                       </div>
                       
                       <div className="result-summary">
-                        <h3>{item.name}</h3>
+                        <h3 className="product-name">
+                          {item.name || 'Unnamed Product'}
+                        </h3>
                         <div className="result-meta">
                           <div className="result-category">{item.category}</div>
                           <div className="result-rating">
@@ -587,6 +870,16 @@ function Compare() {
             <p>If nothing appears, there may be an issue connecting to the database</p>
           </div>
         )}
+
+        {/* Add Load More Button */}
+        {paginationSettings.totalItems > 0 && <PaginationControls />}
+
+        {/* Show a message when no products match filters */}
+        {searchResults.length === 0 && products.length > 0 && (
+          <div className="text-center py-10">
+            <p className="text-xl text-gray-400">No products match your current filters.</p>
+          </div>
+        )}
       </div>
 
       {priceHistoryModal && currentItem && (
@@ -657,6 +950,93 @@ function Compare() {
           </div>
         </div>
       )}
+
+      {/* Comparison Modal/View */}
+      {showCompareView && compareItems.length > 0 && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ease-in-out">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-xl w-full max-w-7xl max-h-[90vh] flex flex-col"> {/* Increased max-width */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-indigo-400">Compare Products ({compareItems.length})</h2>
+              <button onClick={handleCloseCompareView} className="text-gray-400 hover:text-white">
+                <FiX size={24} />
+              </button>
+            </div>
+            
+            <div className="flex-grow overflow-y-auto pr-2"> {/* Added pr-2 for scrollbar spacing */}
+              <div className={`grid grid-cols-1 md:grid-cols-${Math.min(compareItems.length, 4)} gap-4`}>
+                {compareItems.map(item => (
+                  <div key={item._id} className="bg-gray-700 p-4 rounded-lg shadow flex flex-col">
+                    <img 
+                      src={item.image || `https://via.placeholder.com/200x150/777777/FFFFFF?text=${encodeURIComponent(truncateText(item.name, 15))}`} 
+                      alt={item.name} 
+                      className="w-full h-40 object-contain rounded-md mb-3 bg-gray-600" // Added bg for placeholder
+                    />
+                    <h3 className="product-name">
+                      {item.name || 'Unnamed Product'}
+                    </h3>
+                    <p className="text-sm text-gray-400 mb-1">{item.category}</p>
+                    <p className="text-2xl font-bold text-green-400 mb-2">${item.lowestPrice?.toFixed(2)}</p>
+                    
+                    <div className="text-xs text-gray-300 space-y-1 mb-3 border-t border-gray-600 pt-2 mt-2">
+                      <p><strong>Brand:</strong> {item.brand}</p>
+                      <p><strong>Rating:</strong> {item.avgRating?.toFixed(1)} <FiStar className="inline text-yellow-400 mb-0.5"/> ({item.numReviews} reviews)</p>
+                      <p><strong>Performance:</strong> <span className="capitalize">{item.performanceTier}</span></p>
+                      <p><strong>Popularity:</strong> {item.popularity}%</p>
+                    </div>
+
+                    <div className="mb-3 border-t border-gray-600 pt-2">
+                      <h4 className="text-sm font-semibold text-indigo-400 mb-1">Key Specs:</h4>
+                      <ul className="list-disc list-inside text-xs text-gray-300 space-y-0.5 max-h-24 overflow-y-auto">
+                        {item.specs?.map((spec, index) => <li key={index}>{spec}</li>)}
+                        {(!item.specs || item.specs.length === 0) && <li>No specs available.</li>}
+                      </ul>
+                    </div>
+                    
+                    <div className="mb-3 border-t border-gray-600 pt-2">
+                      <h4 className="text-sm font-semibold text-indigo-400 mb-1">Use Cases:</h4>
+                      <ul className="list-disc list-inside text-xs text-gray-300 space-y-0.5">
+                        {item.useCases?.map((useCase, index) => <li key={index}>{useCase}</li>)}
+                        {(!item.useCases || item.useCases.length === 0) && <li>N/A</li>}
+                      </ul>
+                    </div>
+
+                    {item.compatibility && Object.keys(item.compatibility).length > 0 && (
+                      <div className="border-t border-gray-600 pt-2">
+                        <h4 className="text-sm font-semibold text-indigo-400 mb-1">Compatibility:</h4>
+                        <ul className="list-disc list-inside text-xs text-gray-300 space-y-0.5">
+                          {Object.entries(item.compatibility).map(([key, value]) => {
+                            if (value === null || value === undefined || value === '') return null;
+                            // Simple formatting for array values
+                            const displayValue = Array.isArray(value) ? value.join(', ') : String(value);
+                            // Add units or specific labels based on key
+                            let formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                            let unit = '';
+                            if (key.toLowerCase().includes('tdp') || key.toLowerCase().includes('powerrequirement') || key.toLowerCase().includes('wattage') || key.toLowerCase().includes('recommendedpsu')) unit = 'W';
+                            else if (key.toLowerCase().includes('length') || key.toLowerCase().includes('height') || key.toLowerCase().includes('maxgpulegnth') || key.toLowerCase().includes('maxcoolerheight')) unit = 'mm';
+                            else if (key.toLowerCase().includes('capacity') && item.category === 'Storage') unit = 'GB'; // Assuming GB for storage
+                            else if (key.toLowerCase().includes('speed') && item.category === 'Memory') unit = 'MHz';
+                            else if (key.toLowerCase().includes('maxmemory') && item.category === 'Motherboards') unit = 'GB';
+
+
+                            return <li key={key}><strong>{formattedKey}:</strong> {displayValue}{unit}</li>;
+                          })}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button 
+                onClick={() => { setCompareItems([]); setShowCompareView(false); }}
+                className="mt-6 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center mx-auto"
+            >
+                <FiX className="mr-2"/> Clear Comparison & Close
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
