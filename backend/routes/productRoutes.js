@@ -60,7 +60,7 @@ router.get('/', async (req, res) => {
     
     // Extract query parameters with defaults
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
+    const limit = parseInt(req.query.limit) || 100000;
     const sortBy = req.query.sortBy || 'lowest';
     const category = req.query.category || null;
     const search = req.query.search || null;

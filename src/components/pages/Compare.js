@@ -15,165 +15,188 @@ const mockCategories = ['Graphics Cards', 'Processors', 'Memory', 'Storage', 'Mo
 // Mock search results with local image paths
 function Compare() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  // const [allFetchedProducts, setAllFetchedProducts] = useState([]); // We might not need this if we always fetch per page
+  const [products, setProducts] = useState([]); // This will hold the products for the current page/filters
+  const [searchResults, setSearchResults] = useState([]); // This will be the same as products or a subset if further client-side manipulation is needed (but ideally not for primary filtering)
+  
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [showFilters, setShowFilters] = useState(false);
-  const [priceRange, setPriceRange] = useState([0, 2000]);
-  const [sortBy, setSortBy] = useState('lowest');
-  const [inStockOnly, setInStockOnly] = useState(false);
-  const [compareItems, setCompareItems] = useState([]);
-  const [priceHistoryModal, setPriceHistoryModal] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFilterClosing, setIsFilterClosing] = useState(false); // For filter panel animation
 
+  // States for PENDING filter values (what user selects in UI)
+  const [pendingPriceRange, setPendingPriceRange] = useState([0, 2000]);
+  const [pendingSortBy, setPendingSortBy] = useState('lowest');
+  const [pendingInStockOnly, setPendingInStockOnly] = useState(false);
+
+  // States for APPLIED filter values (what's actually sent to backend)
   const [appliedPriceRange, setAppliedPriceRange] = useState([0, 2000]);
   const [appliedSortBy, setAppliedSortBy] = useState('lowest');
   const [appliedInStockOnly, setAppliedInStockOnly] = useState(false);
+  
+  const [compareItems, setCompareItems] = useState([]);
+  const [showCompareView, setShowCompareView] = useState(false); // For the comparison modal
+  const [priceHistoryModal, setPriceHistoryModal] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
+  
+  const [isLoading, setIsLoading] = useState(true); // For initial load and filter changes
+  // const [isLoadingMore, setIsLoadingMore] = useState(false); // isLoading should cover this
 
-  const [isFilterClosing, setIsFilterClosing] = useState(false);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    itemsPerPage: 20, // Default items per page, can be changed by user
+    totalItems: 0,
+    totalPages: 1,
+  });
 
-  const [products, setProducts] = useState([]);
-  const [showCompareView, setShowCompareView] = useState(false); // New state for comparison view
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  // Add useState for tracking expanded items
+  // Main data fetching effect - relies on backend for filtering and pagination
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setIsLoading(true);
+
+      const params = new URLSearchParams({
+        page: pagination.currentPage.toString(),
+        limit: pagination.itemsPerPage.toString(),
+        sortBy: appliedSortBy, // Use applied sort by
+      });
+
+      if (debouncedSearchTerm) params.append('search', debouncedSearchTerm);
+      if (selectedCategory && selectedCategory !== 'All Categories') params.append('category', selectedCategory);
+      
+      // Use applied price range and in-stock status
+      params.append('minPrice', appliedPriceRange[0].toString());
+      params.append('maxPrice', appliedPriceRange[1].toString());
+      if (appliedInStockOnly) params.append('inStock', 'true');
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/products?${params.toString()}`);
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: `HTTP error! status: ${response.status}` }));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
+        if (data.success) {
+          setProducts(data.products);
+          setSearchResults(data.products); // Directly use fetched products
+          setPagination(prev => ({
+            ...prev,
+            totalItems: data.totalItems,
+            totalPages: data.totalPages,
+            // currentPage is already set or updated by handlePageChange/filter apply
+          }));
+        } else {
+          console.error("Failed to fetch products:", data.message);
+          setProducts([]);
+          setSearchResults([]);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setProducts([]);
+        setSearchResults([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
+
+  }, [
+    pagination.currentPage,
+    pagination.itemsPerPage,
+    debouncedSearchTerm, 
+    selectedCategory, 
+    appliedPriceRange, // Use applied filters as dependencies
+    appliedSortBy, 
+    appliedInStockOnly
+  ]);
+
+  // Effect to reset to page 1 when APPLIED filters change (excluding pagination itself)
+  // This might be redundant if handleApplyFilters already resets the page.
+  // Consider if debouncedSearchTerm or selectedCategory should also reset page immediately or wait for "Apply"
+  useEffect(() => {
+    // If search term or category changes directly (not through "Apply Filters" button), reset page
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+  }, [debouncedSearchTerm, selectedCategory]);
+
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= pagination.totalPages && newPage !== pagination.currentPage) {
+      setPagination(prev => ({ ...prev, currentPage: newPage }));
+      window.scrollTo(0, 0); // Scroll to top on page change
+    }
+  };
+  
+  function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+    useEffect(() => {
+      const handler = setTimeout(() => {
+        setDebouncedValue(value);
+      }, delay);
+      return () => {
+        clearTimeout(handler);
+      };
+    }, [value, delay]);
+    return debouncedValue;
+  }
+
   const [expandedItems, setExpandedItems] = useState({});
 
-  // Add toggle function to scroll to the expanded item
   const toggleExpand = (itemId) => {
-    // Toggle the expanded state
-    setExpandedItems(prev => ({ // Use functional update for safety
+    setExpandedItems(prev => ({
       ...prev,
       [itemId]: !prev[itemId]
     }));
-    
-    // If we're expanding the item, scroll to it after a short delay
-    // to allow the DOM to update
-    // Check the new state, not the old one (expandedItems[itemId] would be the old state here)
-    if (!expandedItems[itemId]) { // This condition means it *was* false, so it's *now* true (expanding)
+    if (!expandedItems[itemId]) {
       setTimeout(() => {
         const element = document.getElementById(`result-card-${itemId}`);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); // 'nearest' or 'center' might be better
+            element.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
       }, 100);
     }
   };
 
-  // Update filterResults to use the products from state
-  const filterResults = (filterPriceRange, filterSortBy, filterInStockOnly, productData = products) => {
-    // Start with all products
-    let filtered = [...productData];
-    
-    // Apply search term filter
-    if (searchTerm) {
-      filtered = filtered.filter(
-        item => item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.specs.some(spec => spec.toLowerCase().includes(searchTerm.toLowerCase()))
-      );
-    }
-    
-    // Apply category filter
-    if (selectedCategory !== 'All Categories') {
-      filtered = filtered.filter(item => item.category === selectedCategory);
-    }
-    
-    // Apply price range filter
-    filtered = filtered.filter(
-      item => item.lowestPrice >= filterPriceRange[0] && item.lowestPrice <= filterPriceRange[1]
-    );
-    
-    // Apply in-stock filter
-    if (filterInStockOnly) {
-      filtered = filtered.filter(
-        item => item.prices.some(price => price.inStock)
-      );
-    }
-    
-    // Apply sorting
-    if (filterSortBy === 'lowest') {
-      filtered.sort((a, b) => a.lowestPrice - b.lowestPrice);
-    } else if (filterSortBy === 'highest') {
-      filtered.sort((a, b) => b.lowestPrice - a.lowestPrice);
-    } else if (filterSortBy === 'rating') {
-      filtered.sort((a, b) => b.avgRating - a.avgRating);
-    }
-    
-    return filtered;
-  };
+  // REMOVE the old client-side filterResults function
+  // const filterResults = (...) => { ... };
 
-  // Simulate search functionality
-  useEffect(() => {
-    // CHANGE: Allow showing results even without search terms
-    // Using applied filter values instead of pending ones
-    setSearchResults(filterResults(appliedPriceRange, appliedSortBy, appliedInStockOnly));
-    
-  }, [searchTerm, selectedCategory, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
+  // REMOVE the old useEffect that called filterResults
+  // useEffect(() => {
+  //   setSearchResults(filterResults(appliedPriceRange, appliedSortBy, appliedInStockOnly));
+  // }, [searchTerm, selectedCategory, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        console.log('Fetching products...');
-        
-        // Use explicit URL
-        const response = await fetch('http://localhost:5000/api/products');
-        console.log('Response status:', response.status);
-        
-        // Get response text first to debug
-        const responseText = await response.text();
-        console.log('Raw response:', responseText);
-        
-        // Try parsing as JSON
-        try {
-          const data = JSON.parse(responseText);
-          console.log('Parsed data:', data);
-          
-          if (!data.data || !Array.isArray(data.data)) {
-            console.warn('API returned invalid data structure:', data);
-            return;
-          }
-          
-          console.log(`Fetched ${data.data.length} products`);
-          
-          // Process data
-          setProducts(data.data);
-          setSearchResults(data.data);
-        } catch (parseError) {
-          console.error('Failed to parse response as JSON:', parseError);
-          console.log('First 100 chars of response:', responseText.substring(0, 100));
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-    
-    fetchProducts();
-  }, []);
+  // REMOVE the old useEffect that fetched ALL products initially (around line 200 in your full file)
+  // useEffect(() => {
+  //   const fetchProducts = async () => { ... };
+  //   fetchProducts();
+  // }, []);
 
-  useEffect(() => {
-    if (searchResults.length > 0) {
-      console.log('First product ID:', searchResults[0]._id);
-      console.log('Full first product:', searchResults[0]);
-    }
-  }, [searchResults]);
+  // REMOVE the old useEffect that logged searchResults[0] (around line 218)
+  // useEffect(() => { ... }, [searchResults]);
+
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // In a real app, this would trigger the API call
-    // For this demo, the useEffect handles the filtering
-    console.log('Searching for:', searchTerm);
+    // The main useEffect will trigger a refetch due to debouncedSearchTerm changing.
+    // We also need to ensure that if the user clicks "Search", it applies immediately
+    // and resets to page 1.
+    setPagination(prev => ({ ...prev, currentPage: 1 })); 
+    // The main useEffect will pick up debouncedSearchTerm.
   };
 
   const handleAddToCompare = (item) => {
-    // Use _id instead of id
-    if (compareItems.find(i => i._id === item._id)) {
-      setCompareItems(compareItems.filter(i => i._id !== item._id));
-    } else {
-      setCompareItems([...compareItems, item]);
-    }
+    setCompareItems(prevItems => {
+      if (prevItems.find(i => i._id === item._id)) {
+        return prevItems.filter(i => i._id !== item._id);
+      } else if (prevItems.length < 4) { // Limit to 4 items
+        return [...prevItems, item];
+      }
+      return prevItems;
+    });
   };
 
   const isItemInCompare = (itemId) => {
-    // Use _id instead of id
     return compareItems.some(item => item._id === itemId);
   };
 
@@ -186,206 +209,90 @@ function Compare() {
     setPriceHistoryModal(false);
   };
 
-  // Update handleApplyFilters to apply the pending filters
   const handleApplyFilters = () => {
-    setAppliedPriceRange(priceRange);
-    setAppliedSortBy(sortBy);
-    setAppliedInStockOnly(inStockOnly);
+    setAppliedPriceRange(pendingPriceRange);
+    setAppliedSortBy(pendingSortBy);
+    setAppliedInStockOnly(pendingInStockOnly);
+    setPagination(prev => ({ ...prev, currentPage: 1 })); // Reset to page 1 when applying new filters
+    closeFilters(); // Close panel after applying
   };
 
-  // Update handleResetFilters to reset both pending and applied filters
   const handleResetFilters = () => {
-    // Reset pending filters
-    setPriceRange([0, 2000]);
-    setSortBy('lowest');
-    setInStockOnly(false);
+    // Reset pending filters in UI
+    setPendingPriceRange([0, 2000]);
+    setPendingSortBy('lowest');
+    setPendingInStockOnly(false);
     
-    // Reset applied filters
+    // Reset applied filters to trigger refetch with defaults
     setAppliedPriceRange([0, 2000]);
     setAppliedSortBy('lowest');
     setAppliedInStockOnly(false);
+    // Also reset search term and category if desired
+    setSearchTerm('');
+    setSelectedCategory('All Categories');
+
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
   };
 
-  // Replace the current filter button click handler
   const toggleFilters = () => {
     if (showFilters) {
-      // Start closing animation
       setIsFilterClosing(true);
-      // Remove from DOM after animation completes
       setTimeout(() => {
         setShowFilters(false);
         setIsFilterClosing(false);
-      }, 300); // Match animation duration
+      }, 300); 
     } else {
+      // When opening filters, sync pending states with currently applied ones
+      setPendingPriceRange(appliedPriceRange);
+      setPendingSortBy(appliedSortBy);
+      setPendingInStockOnly(appliedInStockOnly);
       setShowFilters(true);
     }
   };
 
-  // Add this helper function to properly close filters
   const closeFilters = () => {
     setIsFilterClosing(true);
     setTimeout(() => {
       setShowFilters(false);
       setIsFilterClosing(false);
-    }, 300); // Match animation duration
+    }, 300);
   };
 
-  // Function to toggle an item in the compare list
-  const toggleCompareItem = (product) => {
-    setCompareItems(prevItems => {
-      if (prevItems.find(item => item._id === product._id)) {
-        return prevItems.filter(item => item._id !== product._id);
-      } else if (prevItems.length < 4) { // Limit to comparing, e.g., 4 items
-        return [...prevItems, product];
-      }
-      return prevItems; // If already 4 items, don't add more
-    });
+  const toggleCompareItem = (product) => { // This seems to be a duplicate of handleAddToCompare
+    handleAddToCompare(product); // Reuse existing logic
   };
 
-  // Function to handle opening the compare view
   const handleOpenCompareView = () => {
     if (compareItems.length > 0) {
       setShowCompareView(true);
     }
   };
 
-  // Function to handle closing the compare view
   const handleCloseCompareView = () => {
     setShowCompareView(false);
   };
   
-  // Placeholder for fetching products - replace with your actual fetch logic
-  useEffect(() => {
-    // Simulating fetching products
-    const fetchedProducts = [
-      // Add mock product data here if you don't have backend integration yet
-      // Example:
-      // { _id: '1', name: 'NVIDIA GeForce RTX 4080', category: 'Graphics Cards', image: '/assets/hardware/graphicscards.png', specs: ['16GB GDDR6X', 'DLSS 3', 'Ray Tracing'], avgRating: 4.8, numReviews: 250, prices: [{ retailer: 'Amazon', price: 1199.99, inStock: true }], lowestPrice: 1199.99, brand: 'NVIDIA', popularity: 95, performanceTier: 'highend', useCases: ['4K Gaming', 'VR', 'Content Creation'], compatibility: { powerRequirement: 320, length: 304, recommendedPSU: 750 } },
-      // { _id: '2', name: 'AMD Ryzen 9 7950X', category: 'Processors', image: '/assets/hardware/processors.png', specs: ['16 Cores / 32 Threads', '5.7 GHz Boost', 'AM5 Socket'], avgRating: 4.9, numReviews: 180, prices: [{ retailer: 'Newegg', price: 549.00, inStock: true }], lowestPrice: 549.00, brand: 'AMD', popularity: 92, performanceTier: 'highend', useCases: ['Gaming', 'Rendering', 'Multitasking'], compatibility: { socket: 'AM5', tdp: 170, compatibleChipsets: ['X670', 'B650'] } },
-    ];
-    setProducts(fetchedProducts);
-    setSearchResults(fetchedProducts); // Initially show all products or based on default filters
-  }, []);
+  // REMOVE the old placeholder useEffect for fetching products (around line 288)
+  // useEffect(() => { ... setProducts(fetchedProducts); ... }, []);
 
+  // REMOVE the old client-side filtering useEffect (around line 300)
+  // useEffect(() => { ... setSearchResults(filtered); ... }, [searchTerm, ...]);
 
-  // Placeholder for search and filter logic
-  useEffect(() => {
-    let filtered = products;
+  // REMOVE the old paginationSettings state and its related useEffect (around line 397)
+  // const [paginationSettings, setPaginationSettings] = useState({ ... });
+  // const handleItemsPerPageChange = (e) => { ... setPaginationSettings(...); };
+  // useEffect(() => { ... client side filtering and pagination ... }, [..., paginationSettings.currentPage, paginationSettings.itemsPerPage]);
 
-    if (selectedCategory !== 'All Categories') {
-      filtered = filtered.filter(p => p.category === selectedCategory);
-    }
-    if (searchTerm) {
-      filtered = filtered.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-    filtered = filtered.filter(p => p.lowestPrice >= appliedPriceRange[0] && p.lowestPrice <= appliedPriceRange[1]);
-    if (appliedInStockOnly) {
-      filtered = filtered.filter(p => p.prices.some(priceInfo => priceInfo.inStock));
-    }
-    // Add sorting logic based on appliedSortBy
-    if (appliedSortBy === 'lowest') {
-        filtered.sort((a, b) => a.lowestPrice - b.lowestPrice);
-    } else if (appliedSortBy === 'highest') {
-        filtered.sort((a, b) => b.lowestPrice - a.lowestPrice);
-    } else if (appliedSortBy === 'rating') {
-        filtered.sort((a, b) => b.avgRating - a.avgRating);
-    }
-
-
-    setSearchResults(filtered);
-  }, [searchTerm, selectedCategory, products, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
-
-  // Replace the visibleItemCount and allFilteredResults with pagination controls
-  const [paginationSettings, setPaginationSettings] = useState({
-    currentPage: 1,
-    itemsPerPage: 20,
-    totalItems: 0,
-    totalPages: 1
-  });
-  
-  // Function to change items per page
+  // NEW: Handler for itemsPerPage change using the new `pagination` state
   const handleItemsPerPageChange = (e) => {
     const newItemsPerPage = parseInt(e.target.value);
-    setPaginationSettings(prev => ({
+    setPagination(prev => ({
       ...prev,
       itemsPerPage: newItemsPerPage,
-      currentPage: 1, // Reset to first page when changing items per page
+      currentPage: 1, // Reset to first page
     }));
   };
-  
-  // Function to change page
-  const handlePageChange = (newPage) => {
-    if (newPage < 1 || newPage > paginationSettings.totalPages) return;
-    setPaginationSettings(prev => ({
-      ...prev,
-      currentPage: newPage
-    }));
-    
-    // Scroll to top when changing pages for better UX
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-  };
 
-  // Modified filtering/pagination effect
-  useEffect(() => {
-    let filtered = products;
-
-    // Apply all your existing filters
-    if (selectedCategory !== 'All Categories') {
-      filtered = filtered.filter(p => p.category === selectedCategory);
-    }
-    if (searchTerm) {
-      filtered = filtered.filter(p => p.name && p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
-    filtered = filtered.filter(p => 
-      typeof p.lowestPrice === 'number' && 
-      p.lowestPrice >= appliedPriceRange[0] && 
-      p.lowestPrice <= appliedPriceRange[1]
-    );
-    if (appliedInStockOnly) {
-      filtered = filtered.filter(p => Array.isArray(p.prices) && p.prices.some(priceInfo => priceInfo.inStock));
-    }
-    
-    // Apply sorting
-    if (appliedSortBy === 'lowest') {
-        filtered.sort((a, b) => (a.lowestPrice || Infinity) - (b.lowestPrice || Infinity));
-    } else if (appliedSortBy === 'highest') {
-        filtered.sort((a, b) => (b.lowestPrice || -Infinity) - (a.lowestPrice || -Infinity));
-    } else if (appliedSortBy === 'rating') {
-        filtered.sort((a, b) => (b.avgRating || 0) - (a.avgRating || 0));
-    }
-
-    // Update total count and pages
-    const totalFilteredItems = filtered.length;
-    const totalPages = Math.ceil(totalFilteredItems / paginationSettings.itemsPerPage);
-    
-    // Update pagination settings
-    setPaginationSettings(prev => ({
-      ...prev,
-      totalItems: totalFilteredItems,
-      totalPages: totalPages > 0 ? totalPages : 1,
-      currentPage: prev.currentPage > totalPages ? 1 : prev.currentPage
-    }));
-
-    // Calculate start and end indices for the current page
-    const startIndex = (paginationSettings.currentPage - 1) * paginationSettings.itemsPerPage;
-    const endIndex = startIndex + paginationSettings.itemsPerPage;
-    
-    // Only set the items for the current page
-    setSearchResults(filtered.slice(startIndex, endIndex));
-
-  }, [
-    searchTerm, 
-    selectedCategory, 
-    products, 
-    appliedPriceRange, 
-    appliedSortBy, 
-    appliedInStockOnly, 
-    paginationSettings.currentPage, 
-    paginationSettings.itemsPerPage
-  ]);
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -403,45 +310,46 @@ function Compare() {
 
   // Pagination UI component with styled controls
 const PaginationControls = () => {
-  const { currentPage, totalPages, itemsPerPage, totalItems } = paginationSettings;
+  // Use the new `pagination` state
+  const { currentPage, totalPages, itemsPerPage, totalItems } = pagination; 
   
-  // Generate page numbers to display (show current page, and neighbors)
   const getPageNumbers = () => {
     let pages = [];
     const maxPagesToShow = 5;
-    
+    let startPage, endPage;
+
     if (totalPages <= maxPagesToShow) {
-      // If we have fewer pages than our max, show all pages
-      pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+      startPage = 1;
+      endPage = totalPages;
     } else {
-      // Always include first page, last page, current page, and neighbors of current page
-      const leftNeighbor = Math.max(1, currentPage - 1);
-      const rightNeighbor = Math.min(totalPages, currentPage + 1);
-      
-      pages = [1]; // Always start with page 1
-      
-      if (leftNeighbor > 2) {
-        pages.push('...'); // Ellipsis if there's a gap
-      }
-      
-      // Add neighbors and current page if they're not already included
-      for (let i = leftNeighbor; i <= rightNeighbor; i++) {
-        if (i !== 1 && i !== totalPages) { // Avoid duplicates
-          pages.push(i);
-        }
-      }
-      
-      if (rightNeighbor < totalPages - 1) {
-        pages.push('...'); // Ellipsis if there's a gap
-      }
-      
-      if (totalPages > 1) {
-        pages.push(totalPages); // Always end with last page
+      if (currentPage <= Math.ceil(maxPagesToShow / 2)) {
+        startPage = 1;
+        endPage = maxPagesToShow;
+      } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - Math.floor(maxPagesToShow / 2);
+        endPage = currentPage + Math.floor(maxPagesToShow / 2);
       }
     }
-    
-    return pages;
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    if (startPage > 1) {
+      pages.unshift('...');
+      pages.unshift(1);
+    }
+    if (endPage < totalPages) {
+      pages.push('...');
+      pages.push(totalPages);
+    }
+    return pages.filter((item, index) => pages.indexOf(item) === index); // Remove duplicates if any
   };
+
+  if (totalItems === 0) return null; // Don't show pagination if no items
 
   return (
     <div className="pagination-container">
@@ -455,8 +363,9 @@ const PaginationControls = () => {
           <select 
             id="items-per-page"
             value={itemsPerPage}
-            onChange={handleItemsPerPageChange}
+            onChange={handleItemsPerPageChange} // Ensure this uses the new handler
             className="pagination-select"
+            disabled={isLoading}
           >
             <option value={10}>10</option>
             <option value={20}>20</option>
@@ -469,8 +378,8 @@ const PaginationControls = () => {
       <div className="pagination-buttons">
         <button 
           onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`pagination-button ${currentPage === 1 ? 'pagination-button-disabled' : ''}`}
+          disabled={currentPage === 1 || isLoading}
+          className={`pagination-button ${currentPage === 1 || isLoading ? 'pagination-button-disabled' : ''}`}
           aria-label="Previous page"
         >
           <FiChevronLeft size={18} />
@@ -483,7 +392,8 @@ const PaginationControls = () => {
             <button
               key={`page-${page}`}
               onClick={() => handlePageChange(page)}
-              className={`pagination-button ${page === currentPage ? 'pagination-button-active' : ''}`}
+              disabled={isLoading}
+              className={`pagination-button ${page === currentPage ? 'pagination-button-active' : ''} ${isLoading ? 'pagination-button-disabled' : ''}`}
             >
               {page}
             </button>
@@ -492,8 +402,8 @@ const PaginationControls = () => {
         
         <button 
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`pagination-button ${currentPage === totalPages ? 'pagination-button-disabled' : ''}`}
+          disabled={currentPage === totalPages || isLoading}
+          className={`pagination-button ${currentPage === totalPages || isLoading ? 'pagination-button-disabled' : ''}`}
           aria-label="Next page"
         >
           <FiChevronRight size={18} />
@@ -502,12 +412,22 @@ const PaginationControls = () => {
     </div>
   );
 };
+// ... (rest of your component, including the return statement)
+// Ensure all filter UI elements (price slider, sort by radio, in-stock checkbox)
+// update the PENDING state variables (e.g., `pendingPriceRange`, `pendingSortBy`, `pendingInStockOnly`)
+// And the "Apply Filters" button calls `handleApplyFilters`.
+// For example, in your price slider:
+// value={pendingPriceRange[0]}
+// onChange={(e) => {
+//   const newMin = parseInt(e.target.value);
+//   setPendingPriceRange([Math.min(newMin, pendingPriceRange[1] - 50), pendingPriceRange[1]]);
+// }}
+// And for sort by:
+// checked={pendingSortBy === 'lowest'} onChange={() => setPendingSortBy('lowest')}
 
-// Add this helper function near the top of your component or outside it
-const truncateText = (text, maxLength = 20) => {
-  if (!text) return 'Product';
-  return text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-};
+// In your return JSX, make sure you are using `searchResults` to map and display products.
+// And the loading states `isLoading` to show loading indicators.
+// ...existing code...
 
   return (
     <div className="pyro-page compare-page">
@@ -579,8 +499,8 @@ const truncateText = (text, maxLength = 20) => {
                 <div 
                   className="price-slider"
                   style={{ 
-                    '--left-percent': `${(priceRange[0]/2000)*100}%`,
-                    '--right-percent': `${100 - (priceRange[1]/2000)*100}%` 
+                    '--left-percent': `${(pendingPriceRange[0]/2000)*100}%`,
+                    '--right-percent': `${100 - (pendingPriceRange[1]/2000)*100}%` 
                   }}
                 >
                   <input
@@ -588,11 +508,11 @@ const truncateText = (text, maxLength = 20) => {
                     min="0"
                     max="2000"
                     step="50"
-                    value={priceRange[0]}
+                    value={pendingPriceRange[0]}
                     onChange={(e) => {
                       const newMin = parseInt(e.target.value);
                       // Ensure minimum doesn't exceed maximum
-                      setPriceRange([Math.min(newMin, priceRange[1] - 50), priceRange[1]]);
+                      setPendingPriceRange([Math.min(newMin, pendingPriceRange[1] - 50), pendingPriceRange[1]]);
                     }}
                   />
                   <input
@@ -600,16 +520,16 @@ const truncateText = (text, maxLength = 20) => {
                     min="0"
                     max="2000"
                     step="50"
-                    value={priceRange[1]}
+                    value={pendingPriceRange[1]}
                     onChange={(e) => {
                       const newMax = parseInt(e.target.value);
                       // Ensure maximum isn't less than minimum
-                      setPriceRange([priceRange[0], Math.max(newMax, priceRange[0] + 50)]);
+                      setPendingPriceRange([pendingPriceRange[0], Math.max(newMax, pendingPriceRange[0] + 50)]);
                     }}
                   />
                 </div>
                 <div className="price-range-display">
-                  ${priceRange[0]} - ${priceRange[1]}
+                  ${pendingPriceRange[0]} - ${pendingPriceRange[1]}
                 </div>
               </div>
 
@@ -617,7 +537,7 @@ const truncateText = (text, maxLength = 20) => {
                 <h3>Sort By</h3>
                 <div className="radio-group">
                   <label className="radio-container">
-                    <input type="radio" name="sortBy" value="lowest" checked={sortBy === 'lowest'} onChange={() => setSortBy('lowest')} />
+                    <input type="radio" name="sortBy" value="lowest" checked={pendingSortBy === 'lowest'} onChange={() => setPendingSortBy('lowest')} />
                     <span className="radio-mark"></span>
                     Lowest Price
                   </label>
@@ -626,8 +546,8 @@ const truncateText = (text, maxLength = 20) => {
                       type="radio" 
                       name="sortBy" 
                       value="highest" 
-                      checked={sortBy === 'highest'}
-                      onChange={() => setSortBy('highest')}
+                      checked={pendingSortBy === 'highest'}
+                      onChange={() => setPendingSortBy('highest')}
                     />
                     <span className="radio-mark"></span>
                     Highest Price
@@ -637,8 +557,8 @@ const truncateText = (text, maxLength = 20) => {
                       type="radio" 
                       name="sortBy" 
                       value="rating" 
-                      checked={sortBy === 'rating'}
-                      onChange={() => setSortBy('rating')}
+                      checked={pendingSortBy === 'rating'}
+                      onChange={() => setPendingSortBy('rating')}
                     />
                     <span className="radio-mark"></span>
                     Best Rating
@@ -651,8 +571,8 @@ const truncateText = (text, maxLength = 20) => {
                 <label className="checkbox-container">
                   <input 
                     type="checkbox" 
-                    checked={inStockOnly}
-                    onChange={() => setInStockOnly(!inStockOnly)}
+                    checked={pendingInStockOnly}
+                    onChange={() => setPendingInStockOnly(!pendingInStockOnly)}
                   />
                   <span className="checkmark"></span>
                   In Stock Only
@@ -668,10 +588,7 @@ const truncateText = (text, maxLength = 20) => {
                 </button>
                 <button 
                   className="pyro-button primary"
-                  onClick={() => {
-                    handleApplyFilters();
-                    closeFilters(); // Close panel after applying
-                  }}
+                  onClick={handleApplyFilters}
                 >
                   Apply Filters
                 </button>
@@ -872,7 +789,7 @@ const truncateText = (text, maxLength = 20) => {
         )}
 
         {/* Add Load More Button */}
-        {paginationSettings.totalItems > 0 && <PaginationControls />}
+        {pagination.totalItems > 0 && <PaginationControls />}
 
         {/* Show a message when no products match filters */}
         {searchResults.length === 0 && products.length > 0 && (
