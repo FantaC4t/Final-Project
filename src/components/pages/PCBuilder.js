@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
-  FiCpu, FiServer, FiGrid, FiHardDrive, FiBattery, FiBox, FiWind, FiMonitor, FiPlus, FiTrash2, FiX, FiDollarSign, FiTool, FiActivity, FiSliders, FiShoppingCart, FiSave, FiAlertCircle
+  FiCpu, FiServer, FiGrid, FiHardDrive, FiBattery, FiBox, FiWind, FiMonitor, FiPlus, FiTrash2, FiX, FiDollarSign, FiTool, FiActivity, FiSliders, FiShoppingCart, FiSave, FiAlertCircle, FiHeart, FiEye
 } from 'react-icons/fi';
 import { IoGameController } from "react-icons/io5";
 import Recommendations from './Recommendations'; // Assuming this path is correct
@@ -48,6 +48,85 @@ function PCBuilder() {
   const [useCase, setUseCase] = useState('gaming');
   const [gamesList, setGamesList] = useState([]);
   const [suggestedBuild, setSuggestedBuild] = useState(null);
+
+  const [message, setMessage] = useState(null);
+
+  // Add the saveToWishlist function
+  const saveToWishlist = () => {
+    // Get current wishlist from localStorage
+    let currentWishlist = [];
+    try {
+      const savedWishlist = localStorage.getItem('wishlist');
+      if (savedWishlist) {
+        currentWishlist = JSON.parse(savedWishlist);
+      }
+    } catch (error) {
+      console.error('Error loading wishlist:', error);
+    }
+    
+    // Create an array of the current components to add to wishlist
+    const componentsToAdd = Object.entries(components)
+      .filter(([_, component]) => component && component._id) // Only include components that are selected
+      .map(([category, component]) => {
+        // Ensure each component has the required properties for the wishlist
+        return {
+          _id: component._id,
+          name: component.name,
+          category: component.category || category.charAt(0).toUpperCase() + category.slice(1), // Format category name
+          lowestPrice: component.lowestPrice || component.price || 0,
+          image: component.image || '',
+          buyUrl: component.buyUrl || '',
+          specs: component.specs || []
+        };
+      });
+    
+    if (componentsToAdd.length === 0) {
+      alert('Please select at least one component before saving to wishlist.');
+      return;
+    }
+    
+    // Add the components to the wishlist
+    const newWishlist = [...currentWishlist, ...componentsToAdd];
+    
+    // Save to localStorage
+    try {
+      localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+      
+      // Also create a new configuration in the "configurations" localStorage
+      const configName = `PC Build ${new Date().toLocaleDateString()}`;
+      const configId = `config-${Date.now()}`;
+      
+      let currentConfigs = [];
+      try {
+        const savedConfigs = localStorage.getItem('configurations');
+        if (savedConfigs) {
+          currentConfigs = JSON.parse(savedConfigs);
+        } else {
+          currentConfigs = [{ id: 'default', name: 'My Build', items: [] }];
+        }
+      } catch (error) {
+        console.error('Error loading configurations:', error);
+        currentConfigs = [{ id: 'default', name: 'My Build', items: [] }];
+      }
+      
+      // Create a new configuration containing all the component IDs
+      const newConfig = {
+        id: configId,
+        name: configName,
+        items: componentsToAdd.map(comp => comp._id)
+      };
+      
+      // Add to configurations
+      const newConfigs = [...currentConfigs, newConfig];
+      localStorage.setItem('configurations', JSON.stringify(newConfigs));
+      
+      alert(`${componentsToAdd.length} components saved to your wishlist as "${configName}"!`);
+      
+    } catch (error) {
+      console.error('Error saving to wishlist:', error);
+      alert('Failed to save to wishlist. Please try again.');
+    }
+  };
 
   // --- Core Logic Wrappers using Utility Functions ---
 
@@ -769,8 +848,11 @@ function PCBuilder() {
               >
                 Customize in Advanced Mode
               </button>
-              <button className="pyro-button secondary">
-                Save Build
+              <button 
+                className="pyro-button secondary"
+                onClick={saveToWishlist}
+              >
+                <FiHeart className="button-icon-small" /> Save to Wishlist
               </button>
             </div>
           </div>
@@ -834,13 +916,22 @@ function PCBuilder() {
         
         <div className="build-summary">
           {renderPriceSummary()}
+          
+          {/* Message component for feedback */}
+          {message && (
+            <div className={`message ${message.type}`}>
+              {message.text}
+              <button className="close-message" onClick={() => setMessage(null)}>×</button>
+            </div>
+          )}
+          
           <div className="actions">
-            <button className="pyro-button primary">
-              <FiShoppingCart className="button-icon" /> Checkout
+            <button className="pyro-button primary" onClick={saveToWishlist}>
+              <FiHeart className="button-icon" /> Save to Wishlist
             </button>
-            <button className="pyro-button secondary">
-              <FiSave className="button-icon" /> Save Build
-            </button>
+            <Link to="/wishlist" className="pyro-button secondary">
+              <FiEye className="button-icon" /> View Wishlist
+            </Link>
           </div>
         </div>
       </div>

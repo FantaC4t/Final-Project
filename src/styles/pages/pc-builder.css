@@ -469,12 +469,16 @@
 .builder-mode-toggle {
   display: flex;
   justify-content: center;
-  margin: 1.5rem 0;
+  align-items: center;
+  margin: 1.5rem auto; /* Changed from margin: 1.5rem 0; to add auto for horizontal centering */
   gap: 1rem;
+  width: fit-content; /* Changed from 100% to fit-content */
+  position: relative; /* Ensure positioning context */
+  /* text-align: center; /* Removed as flexbox handles centering */
 }
 
 .mode-button {
-  display: flex;
+  display: inline-flex; /* Changed from flex to inline-flex */
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;

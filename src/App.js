@@ -9,6 +9,7 @@ import Deals from './components/pages/Deals';
 import About from './components/pages/About';
 import Footer from './components/layout/Footer'; // Update path to match your structure
 import RecommendationsPage from './components/pages/Recommendations'; // Added import for RecommendationsPage
+import Wishlist from './components/pages/Wishlist'; // Added import for Wishlist
 import './styles/main.css';
 
 function App() {
@@ -105,6 +106,7 @@ function App() {
           <Route path="/deals" element={<Deals />} />
           <Route path="/about" element={<About />} />
           <Route path="/recommendations" element={<RecommendationsPage />} /> {/* Added route for RecommendationsPage */}
+          <Route path="/wishlist" element={<Wishlist />} /> {/* Added route for Wishlist */}
         </Routes>
         
         <Footer />

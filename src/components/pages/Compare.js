@@ -54,8 +54,27 @@ function Compare() {
   const [isComparingAiLoading, setIsComparingAiLoading] = useState(false);
   const [showAiComparisonModal, setShowAiComparisonModal] = useState(false);
 
+  const [wishlistItems, setWishlistItems] = useState(() => {
+    try {
+      const savedWishlist = localStorage.getItem('wishlist');
+      console.log('Compare.js - Retrieved wishlist from localStorage:', savedWishlist);
+      return savedWishlist ? JSON.parse(savedWishlist) : [];
+    } catch (error) {
+      console.error('Error loading wishlist in Compare.js:', error);
+      return [];
+    }
+  });
+
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+
+  const truncateText = (text, maxLength) => {
+    if (!text) return '';
+    if (text.length <= maxLength) {
+      return text;
+    }
+    return text.substring(0, maxLength) + '...';
+  };
 
   // Main data fetching effect - relies on backend for filtering and pagination
   useEffect(() => {
@@ -332,6 +351,45 @@ function Compare() {
     }
   };
 
+  const handleToggleWishlist = (e, item) => {
+    e.stopPropagation(); // Prevent the card from expanding when clicking the wishlist button
+    
+    setWishlistItems(prev => {
+      const isInWishlist = prev.some(wishlistItem => wishlistItem._id === item._id);
+      
+      if (isInWishlist) {
+        // Remove from wishlist
+        return prev.filter(wishlistItem => wishlistItem._id !== item._id);
+      } else {
+        // Add to wishlist
+        return [...prev, item];
+      }
+    });
+    
+    // Optional: Show a toast notification or visual feedback
+    const isAdding = !wishlistItems.some(wishlistItem => wishlistItem._id === item._id);
+    if (isAdding) {
+      console.log(`Added ${item.name} to wishlist`);
+      // You could add a toast notification here
+    } else {
+      console.log(`Removed ${item.name} from wishlist`);
+      // You could add a toast notification here
+    }
+  };
+
+  const isItemInWishlist = (itemId) => {
+    return wishlistItems.some(item => item._id === itemId);
+  };
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('wishlist', JSON.stringify(wishlistItems));
+      console.log('Wishlist saved in Compare.js useEffect');
+    } catch (error) {
+      console.error('Error saving wishlist in Compare.js useEffect:', error);
+    }
+  }, [wishlistItems]);
+
 
   const getCategoryIcon = (category) => {
     switch (category) {
@@ -367,9 +425,6 @@ const PaginationControls = () => {
       } else if (currentPage + Math.floor(maxPagesToShow / 2) >= totalPages) {
         startPage = totalPages - maxPagesToShow + 1;
         endPage = totalPages;
-      } else {
-        startPage = currentPage - Math.floor(maxPagesToShow / 2);
-        endPage = currentPage + Math.floor(maxPagesToShow / 2);
       }
     }
 
@@ -800,6 +855,15 @@ const PaginationControls = () => {
                           >
                             <FiBarChart2 /> View Price History
                           </button>
+                          
+                          {/* Add this new wishlist button */}
+                          <button 
+                            className={`pyro-button ${isItemInWishlist(item._id) ? 'tertiary' : 'outline'}`}
+                            onClick={(e) => handleToggleWishlist(e, item)}
+                          >
+                            {isItemInWishlist(item._id) ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}
+                          </button>
+                          
                           <button 
                             className={`pyro-button ${isItemInCompare(item._id) ? 'primary' : 'outline'}`}
                             onClick={(e) => {

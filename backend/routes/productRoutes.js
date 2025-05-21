@@ -177,4 +177,38 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// Placeholder for your actual AI comparison logic
+const performAiComparison = async (itemsToCompare) => {
+  // This is where you would integrate with your AI service/model
+  // For now, let's return a mock summary
+  if (!itemsToCompare || itemsToCompare.length < 2) {
+    return "Please provide at least two items to compare.";
+  }
+  const itemNames = itemsToCompare.map(item => item.name).join(' and ');
+  return `AI Analysis:\nComparing ${itemNames}.\nItem 1 (${itemsToCompare[0].name}) seems better for gaming due to its higher clock speed.\nItem 2 (${itemsToCompare[1].name}) might be a better value for general productivity.`;
+};
+
+exports.compareProductsWithAI = async (req, res) => {
+  try {
+    const { itemsToCompare } = req.body;
+
+    if (!itemsToCompare || !Array.isArray(itemsToCompare) || itemsToCompare.length < 2) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Please provide an array of at least two items to compare in the "itemsToCompare" field.' 
+      });
+    }
+
+    // In a real application, you would call your AI service here
+    // const comparisonSummary = await aiService.getComparison(itemsToCompare);
+    const comparisonSummary = await performAiComparison(itemsToCompare); // Using placeholder
+
+    res.json({ success: true, comparisonSummary });
+
+  } catch (error) {
+    console.error('Error in AI comparison:', error);
+    res.status(500).json({ success: false, message: 'Server error during AI comparison.' });
+  }
+};
+
 module.exports = router;
