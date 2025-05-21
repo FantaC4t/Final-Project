@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { FiTrendingUp, FiTrendingDown, FiAlertCircle } from 'react-icons/fi';
-import '../styles/components/pricePrediction.css'; // Ensure this path is correct
+import '../styles/components/pricePrediction.css'; // Make sure this CSS file exists and path is correct
 
 const PricePrediction = ({ productId }) => {
   const [prediction, setPrediction] = useState(null);
-  const [loading, setLoading] = useState(true); // Start loading as true
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [days, setDays] = useState(30);
 
@@ -12,45 +12,52 @@ const PricePrediction = ({ productId }) => {
     if (!productId) {
       setLoading(false);
       setPrediction(null);
-      setError(null);
+      setError(null); // Clear previous errors if productId becomes null
       return;
     }
     
     setLoading(true);
     setError(null);
     try {
-      console.log(`Fetching prediction for product ID: ${productId}, days: ${days}`);
+      // console.log(`Fetching prediction for product ID: ${productId}, days: ${days}`); // Already present, good for debugging
       const response = await fetch(`http://localhost:5000/api/ml/price-prediction/${productId}?days=${days}`);
+      
+      // Try to parse JSON regardless of response.ok to get error messages from backend
+      const data = await response.json().catch(() => {
+        // If .json() fails (e.g. non-JSON response for a network error or severe server issue)
+        throw new Error(`HTTP error! status: ${response.status}. Server sent non-JSON response.`);
+      });
+
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: `HTTP error! status: ${response.status}` }));
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        // Use message from backend JSON if available, otherwise use status
+        throw new Error(data.message || `HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      if (data.success) {
+
+      // At this point, response.ok is true
+      if (data.success && data.prediction) {
         setPrediction(data.prediction);
       } else {
+        // Handle cases where response.ok is true, but backend indicates failure (e.g. success:false)
         throw new Error(data.message || 'Prediction data not found or error in response.');
       }
     } catch (err) {
-      console.error("Failed to fetch price prediction:", err);
+      console.error("Failed to fetch price prediction:", err.message); // Log only err.message for cleaner console
       setError(err.message);
       setPrediction(null);
     } finally {
       setLoading(false);
     }
-  }, [productId, days]); // useCallback dependencies
+  }, [productId, days]);
 
   useEffect(() => {
     fetchPredictionData();
-  }, [fetchPredictionData]); // Effect runs when fetchPredictionData changes (due to productId or days)
+  }, [fetchPredictionData]);
 
   const handleDaysChange = (e) => {
     setDays(parseInt(e.target.value, 10));
-    // The useEffect above will trigger a refetch because 'days' is a dependency of fetchPredictionData
   };
 
   if (!productId) {
-    // You might want to render nothing or a placeholder if no productId is given
     return null; 
   }
 
@@ -62,7 +69,6 @@ const PricePrediction = ({ productId }) => {
     return (
       <div className="text-xs text-red-500 p-2">
         <FiAlertCircle className="inline mr-1" /> Error: {error}
-        {/* Consider adding a simple retry mechanism if desired */}
         {/* <button onClick={fetchPredictionData} className="ml-2 text-xs underline">Retry</button> */}
       </div>
     );
@@ -73,15 +79,20 @@ const PricePrediction = ({ productId }) => {
     const predictedPrice = parseFloat(prediction.predictedPrice);
     
     if (isNaN(currentPrice) || isNaN(predictedPrice)) {
-        return <div className="text-xs text-red-500 p-2">Invalid price data.</div>;
+        setError('Invalid price data received.'); // Set error state
+        return ( // Render error message
+             <div className="text-xs text-red-500 p-2">
+                <FiAlertCircle className="inline mr-1" /> Error: Invalid price data.
+             </div>
+        );
     }
 
     const priceChange = predictedPrice - currentPrice;
     const percentChange = currentPrice !== 0 ? (priceChange / currentPrice) * 100 : 0;
-    const isIncrease = priceChange >= 0; // Treat 0 change as neutral or slight increase visually
+    const isIncrease = priceChange >= 0;
 
     return (
-      <div className="price-prediction-display p-2 border-t border-gray-200 mt-2"> {/* Added some basic styling classes */}
+      <div className="price-prediction-display p-2 border-t border-gray-200 mt-2">
         <div className="flex items-center justify-between mb-1 text-xs">
             <span className="text-gray-600">Prediction ({days} days):</span>
             <select 
@@ -98,19 +109,18 @@ const PricePrediction = ({ productId }) => {
         <div className={`text-sm font-semibold ${isIncrease ? 'text-green-600' : 'text-red-600'}`}>
           {isIncrease ? <FiTrendingUp className="inline mr-1"/> : <FiTrendingDown className="inline mr-1"/>}
           ${predictedPrice.toFixed(2)}
-          <span className="text-xs ml-1">(${priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}, {percentChange.toFixed(1)}%)</span>
+          <span className="text-xs ml-1">({priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}, {percentChange.toFixed(1)}%)</span>
         </div>
-        {prediction.confidence && (
+        {prediction.confidence != null && ( // Check for null or undefined
             <div className="text-xs text-gray-500 mt-0.5">
                 Confidence: {(prediction.confidence * 100).toFixed(0)}% 
-                {prediction.predictionType && ` (${prediction.predictionType})`}
+                {prediction.method && ` (${prediction.method})`} {/* Changed from predictionType to method */}
             </div>
         )}
       </div>
     );
   }
 
-  // Fallback if not loading, no error, but no prediction (e.g. API returned success:false without specific error message)
   return <div className="text-xs text-gray-500 p-2">No prediction data available.</div>;
 };
 

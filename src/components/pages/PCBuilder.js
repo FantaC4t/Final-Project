@@ -110,12 +110,14 @@ function PCBuilder() {
     setIsLoading(true);
     try {
       const response = await axios.get('http://localhost:5000/api/products');
-      if (!response.data || !response.data.data || !Array.isArray(response.data.data)) {
+      // MODIFIED: Check for response.data.products instead of response.data.data
+      if (!response.data || !response.data.products || !Array.isArray(response.data.products)) {
         console.error("Invalid API response format:", response.data);
         useMockData(); // Fallback to mock data
         return;
       }
-      const data = response.data.data;
+      // MODIFIED: Use response.data.products
+      const data = response.data.products; 
       const categorizedProducts = {
         cpu: data.filter(item => item.category === 'Processors'),
         motherboard: data.filter(item => item.category === 'Motherboards'),
@@ -297,14 +299,27 @@ function PCBuilder() {
       }
 
 
-      const component = findBestComponent(category, actualCategoryBudget, tempBuildForCompatChecks);
+      const selectedComponent = findBestComponent(category, actualCategoryBudget, tempBuildForCompatChecks); // Renamed to avoid conflict
       
-      if (component) {
-        const price = component.lowestPrice || component.price || 0;
-        if (currentBudget >= price) {
-          build[category] = component;
-          tempBuildForCompatChecks[category] = component; // Add to temp build for next iteration's compatibility
-          currentBudget -= price;
+      if (selectedComponent) {
+        // Ensure the component has a .price property for calculatePriceSummary
+        let componentToAdd = { ...selectedComponent };
+        if (componentToAdd.price === undefined || componentToAdd.price === null) { // Check if price is not explicitly set
+          if (componentToAdd.lowestPrice !== undefined && componentToAdd.lowestPrice !== null) {
+            componentToAdd.price = componentToAdd.lowestPrice;
+          } else if (componentToAdd.prices && componentToAdd.prices.length > 0 && componentToAdd.prices[0] && componentToAdd.prices[0].price !== undefined && componentToAdd.prices[0].price !== null) {
+            componentToAdd.price = componentToAdd.prices[0].price;
+          } else {
+            componentToAdd.price = 0; // Default to 0 if no price info
+          }
+        }
+
+        const priceToUse = componentToAdd.price; // Use the now-guaranteed price
+        
+        if (currentBudget >= priceToUse) {
+          build[category] = componentToAdd; // Store the component with the .price property
+          tempBuildForCompatChecks[category] = componentToAdd; 
+          currentBudget -= priceToUse;
         }
       }
     }

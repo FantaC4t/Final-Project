@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios'; // Make sure axios is imported
 import { 
-  FiSearch, FiFilter, FiShoppingCart, FiBarChart2, FiStar, 
-  FiChevronDown, FiX, FiMonitor, FiCpu, FiServer, 
-  FiHardDrive, FiGrid, FiBattery, FiBox, FiWind,
-  FiChevronLeft, FiChevronRight
+  FiSearch, FiFilter, FiChevronDown, FiX, FiStar, FiBarChart2, FiChevronLeft, FiChevronRight,
+  FiCpu, FiMonitor as FiGraphicsCard, FiServer, FiGrid, FiHardDrive, FiBattery, FiBox, FiWind // Aliased FiMonitor for GPU
 } from 'react-icons/fi';
-import axios from 'axios';
-import PricePrediction from '../PricePrediction';
+import PricePrediction from '/home/ivan/Documents/Final-Project/src/components/PricePrediction.js'; // Assuming PricePrediction.js is in the same directory or adjust path
+
+// ...other imports like PricePrediction...
 
 // Mock data for demonstration
 const mockRetailers = ['Amazon', 'Newegg', 'Best Buy', 'Micro Center', 'B&H Photo'];
-const mockCategories = ['Graphics Cards', 'Processors', 'Memory', 'Storage', 'Motherboards', 'Power Supplies', 'Cases', 'Cooling'];
+const mockCategoriesList = ['All Categories', 'Graphics Cards', 'Processors', 'Memory', 'Storage', 'Motherboards', 'Power Supplies', 'Cases', 'Cooling', 'Monitors'];
+
 
 // Mock search results with local image paths
 function Compare() {
@@ -47,6 +48,12 @@ function Compare() {
     totalItems: 0,
     totalPages: 1,
   });
+
+  // New states for AI Comparison
+  const [aiComparisonResult, setAiComparisonResult] = useState(null);
+  const [isComparingAiLoading, setIsComparingAiLoading] = useState(false);
+  const [showAiComparisonModal, setShowAiComparisonModal] = useState(false);
+
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -118,7 +125,7 @@ function Compare() {
   useEffect(() => {
     // If search term or category changes directly (not through "Apply Filters" button), reset page
     setPagination(prev => ({ ...prev, currentPage: 1 }));
-  }, [debouncedSearchTerm, selectedCategory]);
+  }, [debouncedSearchTerm, selectedCategory, appliedPriceRange, appliedSortBy, appliedInStockOnly]);
 
 
   const handlePageChange = (newPage) => {
@@ -187,9 +194,14 @@ function Compare() {
 
   const handleAddToCompare = (item) => {
     setCompareItems(prevItems => {
-      if (prevItems.find(i => i._id === item._id)) {
+      const itemExists = prevItems.find(i => i._id === item._id);
+      if (itemExists) {
         return prevItems.filter(i => i._id !== item._id);
-      } else if (prevItems.length < 4) { // Limit to 4 items
+      } else if (prevItems.length < 4) {
+        // Item is being added
+        if (item.category && item.category !== selectedCategory) {
+          setSelectedCategory(item.category); // Switch category
+        }
         return [...prevItems, item];
       }
       return prevItems;
@@ -293,11 +305,38 @@ function Compare() {
     }));
   };
 
+  // New function to trigger AI comparison
+  const handleTriggerAiCompare = async () => {
+    if (compareItems.length < 2) {
+      alert("Please select at least two items to compare with AI.");
+      return;
+    }
+    setIsComparingAiLoading(true);
+    setAiComparisonResult(null);
+    setShowAiComparisonModal(true);
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/products/compare-ai', {
+        itemsToCompare: compareItems,
+      });
+      if (response.data && response.data.success) {
+        setAiComparisonResult(response.data.comparisonSummary);
+      } else {
+        setAiComparisonResult("Error: Could not get comparison from AI. " + (response.data.message || ""));
+      }
+    } catch (error) {
+      console.error("Error fetching AI comparison:", error);
+      setAiComparisonResult(`Error: Could not get comparison from AI. ${error.message || "Network error."}`);
+    } finally {
+      setIsComparingAiLoading(false);
+    }
+  };
+
 
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Processors': return <FiCpu className="mr-2" />;
-      case 'Graphics Cards': return <FiMonitor className="mr-2" />;
+      case 'Graphics Cards': return <FiGraphicsCard className="mr-2" />;
       case 'Motherboards': return <FiServer className="mr-2" />;
       case 'Memory': return <FiGrid className="mr-2" />; // Or a more specific RAM icon if available
       case 'Storage': return <FiHardDrive className="mr-2" />;
@@ -459,7 +498,7 @@ const PaginationControls = () => {
                   className="category-select"
                 >
                   <option value="All Categories">All Categories</option>
-                  {mockCategories.map(category => (
+                  {mockCategoriesList.map(category => (
                     <option key={category} value={category}>{category}</option>
                   ))}
                 </select>
@@ -602,31 +641,47 @@ const PaginationControls = () => {
           <div className="comparison-selection">
             <div className="comparison-header">
               <h2>Comparison ({compareItems.length})</h2>
-              <button 
-                className="clear-comparison"
-                onClick={() => setCompareItems([])}
-              >
-                Clear All
-              </button>
+              <div> {/* Wrapper for buttons */}
+                <button 
+                  className="clear-comparison"
+                  onClick={() => setCompareItems([])}
+                  style={{marginRight: '10px'}} // Add some spacing
+                >
+                  Clear All
+                </button>
+                {compareItems.length >= 2 && (
+                  <button 
+                    className="pyro-button primary compare-button"
+                    onClick={handleOpenCompareView} // This opens the manual compare view
+                  >
+                    View Details
+                  </button>
+                )}
+                 {compareItems.length >= 2 && (
+                  <button 
+                    className="pyro-button secondary compare-button" // Changed to secondary for distinction
+                    onClick={handleTriggerAiCompare}
+                    disabled={isComparingAiLoading}
+                    style={{marginLeft: '10px'}}
+                  >
+                    {isComparingAiLoading ? 'AI Analyzing...' : 'AI Compare Summary'}
+                  </button>
+                )}
+              </div>
             </div>
             <div className="comparison-items">
               {compareItems.map(item => (
                 <div key={item._id} className="comparison-item">
-                  <img src={item.image} alt={item.name} />
-                  <div className="comparison-item-name">{item.name}</div>
+                  <img src={item.image || `https://via.placeholder.com/80x60/777777/FFFFFF?text=${encodeURIComponent(truncateText(item.name,10))}`} alt={item.name} />
+                  <div className="comparison-item-name">{truncateText(item.name, 25)}</div>
                   <button 
                     className="remove-item"
-                    onClick={() => handleAddToCompare(item)}
+                    onClick={() => handleAddToCompare(item)} // This correctly removes the item
                   >
                     ✕
                   </button>
                 </div>
               ))}
-              {compareItems.length >= 2 && (
-                <button className="pyro-button primary compare-button">
-                  Compare Items
-                </button>
-              )}
             </div>
           </div>
         )}
@@ -715,7 +770,7 @@ const PaginationControls = () => {
                           <span>Price trend: {item.priceHistory[0] > item.priceHistory[item.priceHistory.length - 1] ? 'Decreasing' : 'Increasing'}</span>
                         </div>
                         
-                        <PricePrediction productId={item._id} />
+                        { <PricePrediction productId={item._id} /> }
                         
                         <div className="price-comparison">
                           <h4>Compare Prices:</h4>
@@ -950,6 +1005,32 @@ const PaginationControls = () => {
             >
                 <FiX className="mr-2"/> Clear Comparison & Close
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* New AI Comparison Modal */}
+      {showAiComparisonModal && (
+        <div className="modal-overlay" onClick={() => setShowAiComparisonModal(false)}>
+          <div className="ai-compare-modal" onClick={e => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>AI Comparison Analysis</h2>
+              <button className="close-modal" onClick={() => setShowAiComparisonModal(false)}>
+                <FiX />
+              </button>
+            </div>
+            <div className="modal-content">
+              {isComparingAiLoading && <p className="text-center py-4">🧠 AI is thinking... Please wait.</p>}
+              {!isComparingAiLoading && aiComparisonResult && (
+                <div className="ai-result-text">
+                  {typeof aiComparisonResult === 'string' ? 
+                    aiComparisonResult.split('\n').map((paragraph, index) => <p key={index} className="mb-2">{paragraph}</p>) : 
+                    <pre>{JSON.stringify(aiComparisonResult, null, 2)}</pre>
+                  }
+                </div>
+              )}
+              {!isComparingAiLoading && !aiComparisonResult && <p>No AI comparison data available.</p>}
+            </div>
           </div>
         </div>
       )}

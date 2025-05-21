@@ -433,7 +433,7 @@
   {
     "name": "Arctic Liquid Freezer II Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "3 x 120mm Fans",
@@ -487,7 +487,7 @@
   {
     "name": "Arctic Liquid Freezer II Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2 x 140mm Fans",
@@ -543,7 +543,7 @@
   {
     "name": "Arctic Liquid Freezer II Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2x 120mm Fans",
@@ -997,7 +997,7 @@
   {
     "name": "Scythe Fuma CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "775, 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, AM2, AM2+, AM3, AM3+, FM1, FM2, FM2+ Sockets",
       "149 mm Height",
@@ -1182,7 +1182,7 @@
   {
     "name": "Scythe SCFM-2000 FUMA 2",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, 775, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+, 1700",
       "Height: 154.5 mm",
@@ -1434,7 +1434,7 @@
   {
     "name": "Aerocool Cylon 3H",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, AM2+, AM2, FM2, FM1",
       "138 mm Height",
@@ -1629,7 +1629,7 @@
   {
     "name": "Aerocool Mirage 5 Processor Kühler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 1200, 1150, 1151, 1155, 1156, 2011, 2066, 775, AM4, AM3+, AM3, AM2, FM2, FM1",
       "Height: 145 mm",
@@ -1815,7 +1815,7 @@
   {
     "name": "Aerocool Verkho 2 Plus - 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, AM2+, AM2, FM2, FM1",
       "72 mm Height",
@@ -1871,7 +1871,7 @@
   {
     "name": "Aerocool Verkho 3 Plus - 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "125 W TDP",
       "Compatible with various sockets (see compatibility)",
@@ -1938,7 +1938,7 @@
   {
     "name": "Aerocool Verkho 4 Dark - 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, AM2+, AM2, FM2, FM1",
       "73 mm Height",
@@ -2170,7 +2170,7 @@
   {
     "name": "Akasa AK-CC1101EP02 Low Profile AMD Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low Profile",
       "AMD Socket Compatibility",
@@ -2223,7 +2223,7 @@
   {
     "name": "Akasa AK-CC1107EP01 AMD Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Compatible with AMD Sockets 754, 939, 940, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+",
       "55.5 mm Height",
@@ -3501,7 +3501,7 @@
   {
     "name": "Akasa Alucia H4 High Performance Processor Kühler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "185 W TDP",
       "Compatible with various sockets (1200, 1150, 1151, 1155, 1156, 2011, 2066, AM4)",
@@ -3556,7 +3556,7 @@
   {
     "name": "Akasa Alucia H4 Plus High Performance Processor Kühler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 2066, 2011, 1700, 1200, 1150, 1151, 1155, 1156, AM4",
       "Height: 120 mm",
@@ -3614,7 +3614,7 @@
   {
     "name": "Akasa Aluminium Kühler 50mm Fan socket A",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Socket A, Socket 370",
       "50mm Fan",
@@ -3659,7 +3659,7 @@
   {
     "name": "Akasa Dual Socket Low Noise PWM for 775/115X - 80mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Dual Socket",
       "80mm Fan",
@@ -3971,7 +3971,7 @@
   {
     "name": "Akasa SOHO H4 plus Processor Kühler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 2066, 2011-V3, 2011, 1700, 1200, 1150, 1152, 1151, 1155, 1156, AM4",
       "Height: 153.6 mm",
@@ -4084,7 +4084,7 @@
   {
     "name": "Akasa Vegas Chroma AM4 Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4 Socket Compatible",
       "95W TDP",
@@ -4715,7 +4715,7 @@
   {
     "name": "Alpenföhn Brocken 2 PCGH Edition - 140 mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "165 mm Height",
@@ -5041,7 +5041,7 @@
   {
     "name": "Alpenföhn Brocken 4 Max - 2x 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Dual 120mm Fan",
       "250W TDP",
@@ -5745,7 +5745,7 @@
   {
     "name": "Alpenföhn Matterhorn Threadripper Edition",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Threadripper compatible",
       "158 mm Height",
@@ -6057,7 +6057,7 @@
   {
     "name": "Alpenföhn Super Silent SI 2, AMD - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "AM2, AM3, AM3+, FM1 Socket Compatibility",
@@ -6109,7 +6109,7 @@
   {
     "name": "Alphacool Core Ocean T38 120mm Processor Digital",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "Digital Display",
@@ -6174,7 +6174,7 @@
   {
     "name": "Alphacool Core Ocean T38 240mm Processor Digital",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -6239,7 +6239,7 @@
   {
     "name": "Alphacool Core Ocean T38 280mm Processor Digital",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "280mm Radiator",
       "Digital Display",
@@ -6304,7 +6304,7 @@
   {
     "name": "Alphacool Core Ocean T38 360mm Processor Digital",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "Digital Display",
@@ -6361,7 +6361,7 @@
   {
     "name": "Alphacool Core Ocean T38 420mm Processor Digital",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Custom Water Cooling",
       "420mm Radiator",
@@ -6416,7 +6416,7 @@
   {
     "name": "Alphacool Eisbaer Aurora LT240 Processor Digital RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Digital RGB",
@@ -6472,7 +6472,7 @@
   {
     "name": "Alphacool Eisbaer Aurora LT360 Processor Digital RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "Digital RGB",
@@ -6669,7 +6669,7 @@
   {
     "name": "Alphacool Eisbaer Pro Aurora 240 Processor, D-RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "2x 120mm Fans",
@@ -6726,7 +6726,7 @@
   {
     "name": "Alphacool Eisbaer Pro Aurora 360 Processor, D-RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "D-RGB Lighting",
@@ -6783,7 +6783,7 @@
   {
     "name": "Alphacool Eisbaer Pro Aurora 420 Processor, D-RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Customizable Radiator Size",
       "Addressable RGB Lighting",
@@ -7244,7 +7244,7 @@
   {
     "name": "Arctic Alpine 11 GT Rev. 2",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "775, 1155, 1156, 1150 Sockets",
       "75 mm Height",
@@ -7441,7 +7441,7 @@
   {
     "name": "Arctic Alpine 12 LP Low-Profile - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low-Profile",
       "92mm Fan",
@@ -7641,7 +7641,7 @@
   {
     "name": "Arctic Alpine 64 GT - 80mm CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "AM4 Socket Compatible",
@@ -7730,7 +7730,7 @@
   {
     "name": "Arctic Alpine 64 Pro Rev.2 - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "AM4 Socket Compatible",
@@ -7873,7 +7873,7 @@
   {
     "name": "Arctic Alpine M1 aktiv",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM1 Socket",
       "41 mm Height",
@@ -8017,7 +8017,7 @@
   {
     "name": "ARCTIC COOLING ACALP64 Pro 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "AM3, AM2+, AM2, 939, 754 Socket Compatibility",
@@ -8070,7 +8070,7 @@
   {
     "name": "ARCTIC COOLING ACALP64-GT 80mm Alpine 64 GT",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "64 mm Height",
@@ -8123,7 +8123,7 @@
   {
     "name": "ARCTIC COOLING ACFZ11-LP 92mm Fluid Dynamic Freezer 11 LP Intel for Power Users",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "Supports 1150,1155,1156,775 Sockets",
@@ -8221,7 +8221,7 @@
   {
     "name": "Arctic Alpine M1 aktiv",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM1 Socket",
       "41 mm Height",
@@ -8433,7 +8433,7 @@
   {
     "name": "Arctic Freezer i32 CO",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 2011, 2011-V3 Sockets",
       "150 mm Height",
@@ -8490,7 +8490,7 @@
   {
     "name": "ARCTIC COOLING UCACO-FA11001-CSA01 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM2, AM2+, AM3, AM3+, FM1, FM2",
       "130 mm",
@@ -8780,7 +8780,7 @@
   {
     "name": "Arctic Freezer 13 - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "Supports various sockets (check compatibility)",
@@ -9441,7 +9441,7 @@
   {
     "name": "Arctic Freezer 7X - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "133mm Height",
@@ -9663,7 +9663,7 @@
   {
     "name": "Arctic Freezer i11 CO",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 2011, 2011-V3 Sockets Supported",
       "130 mm Height",
@@ -9725,7 +9725,7 @@
   {
     "name": "Arctic Freezer i13X",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "150 W TDP",
       "137 mm Height",
@@ -9780,7 +9780,7 @@
   {
     "name": "Arctic Freezer i13X CO",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "150 W TDP",
       "137 mm Height",
@@ -9833,7 +9833,7 @@
   {
     "name": "Arctic Freezer i32 CO",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 2011, 2011-V3 Sockets",
       "150 mm Height",
@@ -9888,7 +9888,7 @@
   {
     "name": "Arctic Freezer i35 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "158.5 mm Height",
       "Supports 1700, 1200, 1150, 1151, 1155 Sockets",
@@ -10001,7 +10001,7 @@
   {
     "name": "Arctic Liquid Freezer Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2x 120mm Fans",
@@ -10058,7 +10058,7 @@
   {
     "name": "Arctic Liquid Freezer II ARGB Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Radiator",
       "3x 140mm Fans",
@@ -10115,7 +10115,7 @@
   {
     "name": "Arctic Liquid Freezer II Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fans: 3",
       "Socket Compatibility: 1200, 1150, 1151, 1155, 1156, 2011-V3, 2066, AM3, AM4",
@@ -10170,7 +10170,7 @@
   {
     "name": "Arctic Liquid Freezer II Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "AM4 Socket Compatibility",
@@ -10215,7 +10215,7 @@
   {
     "name": "ASUS ROG RYUJIN 360",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "RGB Lighting",
@@ -10327,7 +10327,7 @@
   {
     "name": "ASUS ROG Ryujin II 240 ARGB, black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "ARGB Lighting",
@@ -10382,7 +10382,7 @@
   {
     "name": "ASUS ROG Ryujin II 240 ARGB - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "ARGB Lighting",
@@ -10437,7 +10437,7 @@
   {
     "name": "ASUS ROG Ryujin II 360 - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "RGB Lighting",
@@ -10492,7 +10492,7 @@
   {
     "name": "ASUS ROG RYUJIN II 360 - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "RGB Lighting",
@@ -10547,7 +10547,7 @@
   {
     "name": "ASUS ROG Ryujin II 360 ARGB - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "ARGB Lighting",
@@ -10602,7 +10602,7 @@
   {
     "name": "ASUS ROG RYUJIN II 360 ARGB - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "ARGB Lighting",
@@ -11069,7 +11069,7 @@
   {
     "name": "ASUS ROG Strix LC 120 RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "RGB Lighting",
@@ -11179,7 +11179,7 @@
   {
     "name": "ASUS ROG Strix LC 240 RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -11290,7 +11290,7 @@
   {
     "name": "ASUS ROG Strix LC 360 RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "RGB Lighting",
@@ -12033,7 +12033,7 @@
   {
     "name": "ASUS TUF Gaming LC 240 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -12094,7 +12094,7 @@
   {
     "name": "ASUS TUF Gaming LC 240 RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -12329,7 +12329,7 @@
   {
     "name": "be quiet! Dark Rock Pro TR4 - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "TR4, sTRX4 Socket",
       "163 mm Height",
@@ -13158,7 +13158,7 @@
   {
     "name": "be quiet! Shadow Rock LP Low Profile - 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low Profile",
       "75.4 mm Height",
@@ -13395,7 +13395,7 @@
   {
     "name": "be quiet! Silent Loop",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "3x 120mm Fans",
@@ -13450,7 +13450,7 @@
   {
     "name": "be quiet! Silent Loop",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2x 120mm Fans",
@@ -13507,7 +13507,7 @@
   {
     "name": "be quiet! Silent Loop",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fans: 2",
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, 775, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+, TR4",
@@ -13562,7 +13562,7 @@
   {
     "name": "be quiet! Silent Loop",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2x 120mm Fans",
@@ -13853,7 +13853,7 @@
   {
     "name": "Bitspower Summit LGA 3647 - Acetal",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "LGA 3647 Socket",
       "19.5 mm Height",
@@ -14434,7 +14434,7 @@
   {
     "name": "Cooler Master Hyper TX3 Evo - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "136mm Height",
@@ -14489,7 +14489,7 @@
   {
     "name": "Cooler Master Hyper TX3i - 92mm PWM",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "136mm Height",
@@ -14657,7 +14657,7 @@
   {
     "name": "Cooler Master MasterAir MA410P RGB - 120mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "158.5 mm Height",
@@ -15328,7 +15328,7 @@
   {
     "name": "COOLER MASTER RR-910-HTX3-G1 92mm Long life sleeve bearing",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "Long Life Sleeve Bearing",
@@ -15382,7 +15382,7 @@
   {
     "name": "COOLER MASTER RR-B10-212P-G1 120mm Sleeve",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Sleeve",
       "159 mm Height",
@@ -15496,7 +15496,7 @@
   {
     "name": "COOLER MASTER RR-H6V2-13PK-R1 120mm Rifle",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multiple Socket Compatibility",
       "161 mm Height",
@@ -15552,7 +15552,7 @@
   {
     "name": "COOLER MASTER RR-HD92-28PK-R1 92mm Rifle",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "147 mm Height",
@@ -15598,7 +15598,7 @@
   {
     "name": "COOLER MASTER RR-T4-18PK-R1 120mm Rifle",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "Multiple Socket Compatibility",
@@ -15657,7 +15657,7 @@
   {
     "name": "COOLER MASTER RR-VTPS-28PK-R1 92mm Long life sleeve",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "754, 939, 940, AM2, 775, 1366",
       "59 mm",
@@ -15827,7 +15827,7 @@
   {
     "name": "Cooler Master Wraith Ripper - 120 mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "TR4 Socket",
       "160 mm Height",
@@ -17873,7 +17873,7 @@
   {
     "name": "Cryorig H5 Ultimate CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "160mm Height",
@@ -17928,7 +17928,7 @@
   {
     "name": "Cryorig H5 Universal CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "160mm Height",
@@ -17980,7 +17980,7 @@
   {
     "name": "Cryorig H7 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Tower Cooler",
       "145mm Height",
@@ -18092,7 +18092,7 @@
   {
     "name": "Cryorig H7 Quad Lumi CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "RGB Lighting",
@@ -18148,7 +18148,7 @@
   {
     "name": "Cryorig H7 Ultra CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Tower Cooler",
       "145mm Height",
@@ -18268,7 +18268,7 @@
   {
     "name": "Cryorig M9a CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM2, AM3, AM3+, AM4, FM1, FM2, FM2+ Socket Compatibility",
       "124.6 mm Height",
@@ -18383,7 +18383,7 @@
   {
     "name": "Cryorig R1 Ultimate CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Dual 140mm Fan",
       "168.3 mm Height",
@@ -18440,7 +18440,7 @@
   {
     "name": "Cryorig R1 Universal CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Universal Socket Compatibility",
       "168.3 mm Height",
@@ -18494,7 +18494,7 @@
   {
     "name": "Cryorig R5 Processor Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "200W TDP",
@@ -19176,7 +19176,7 @@
   {
     "name": "Dynatron K17 92mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "2 Ball Bearing",
@@ -19231,7 +19231,7 @@
   {
     "name": "Dynatron K199 80mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "2 Ball Bearing",
@@ -19286,7 +19286,7 @@
   {
     "name": "Dynatron K2 75mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "75mm 2 Ball",
       "Socket Compatibility: 1151, 1150, 1155, 1156",
@@ -19333,7 +19333,7 @@
   {
     "name": "Dynatron K5 92mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "2 Ball Bearing",
@@ -19388,7 +19388,7 @@
   {
     "name": "Dynatron K666 60mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "60mm 2 Ball",
       "Supported Sockets: 1151, 1150, 1155, 1156",
@@ -19442,7 +19442,7 @@
   {
     "name": "Dynatron K785 77mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "77mm 2 Ball",
       "Supports Sockets 1151, 1150, 1155, 1156",
@@ -19548,7 +19548,7 @@
   {
     "name": "Dynatron R14 60mm 2 Ball Intel Sandy Bridge Romley-EP/EX Narrow ILM Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel Sandy Bridge Romley-EP/EX",
       "Supports up to 150W TDP",
@@ -19603,7 +19603,7 @@
   {
     "name": "Dynatron R15",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Socket 2011",
       "Specification 2",
@@ -19658,7 +19658,7 @@
   {
     "name": "Dynatron R16 80mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm 2 Ball",
       "Socket 2011",
@@ -19712,7 +19712,7 @@
   {
     "name": "Dynatron R17 92mm 2 Ball Intel Sandy Bridge Romley-EP/EX Processor",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supports Intel Sandy Bridge Romley-EP/EX Processors",
       "Up to 160W TDP",
@@ -19767,7 +19767,7 @@
   {
     "name": "Dynatron R25 80mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm 2 Ball",
       "2011 Socket Support",
@@ -19809,7 +19809,7 @@
   {
     "name": "Dynatron R27 80mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "2 Ball Bearing",
@@ -19853,7 +19853,7 @@
   {
     "name": "Dynatron R5 60mm 2 Ball Bearing for Intel Sandy Bridge EP/EX Processors",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "2011 Socket Compatible",
       "66 mm Height",
@@ -19907,7 +19907,7 @@
   {
     "name": "Dynatron R8",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Specification details not available",
       "Clock speed information unavailable",
@@ -19951,7 +19951,7 @@
   {
     "name": "Dynatron R9 77mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Specification details unavailable",
       "Specification details unavailable",
@@ -19995,7 +19995,7 @@
   {
     "name": "Dynatron T450 80mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "2 Ball Bearing",
@@ -21228,7 +21228,7 @@
   {
     "name": "EVERCOOL HPL-815EP Ever Lubricate",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "K8, AM2, AM2+, AM3, 775, 1150, 1156, 1366 Supported Sockets",
       "45 mm Height",
@@ -21292,7 +21292,7 @@
   {
     "name": "EVERCOOL HPM-12025 120mm Ever Lubricate Transformer 3",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "161 mm Height",
@@ -21410,7 +21410,7 @@
   {
     "name": "EVERCOOL K8-FM1 Retention Holder for AMD K8, AM2, AM3, FM1",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AMD K8, AM2, AM3, FM1 Compatible",
       "29 mm Height",
@@ -21467,7 +21467,7 @@
   {
     "name": "EVERCOOL K8-RM AMD K8 Retention Module",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AMD K8 Socket Compatible",
       "29 mm Height",
@@ -22397,7 +22397,7 @@
   {
     "name": "Intel Thermal Solution HTS1155LP - socket 1155",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Socket 1150, 1151, 1155",
       "26 mm Height",
@@ -22444,7 +22444,7 @@
   {
     "name": "Intel Thermal Solution TS13X",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "Supports Various Sockets",
@@ -24719,7 +24719,7 @@
   {
     "name": "MASSCOOL 8WT15-38 90mm Long life Bearing",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "90mm Fan",
       "Long Life Bearing",
@@ -24949,7 +24949,7 @@
   {
     "name": "Montech Metal DT24 Premium",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM5, AM4, LGA 1700, 1200, 1150, 1152, 1151, 1155, 1156",
       "270W TDP",
@@ -25137,7 +25137,7 @@
   {
     "name": "MSI MAG CoreLiquid 240R V2 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -25331,7 +25331,7 @@
   {
     "name": "MSI MAG CoreLiquid C280 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "280mm Radiator",
       "Dual 140mm Fans",
@@ -25376,7 +25376,7 @@
   {
     "name": "MSI MAG CoreLiquid C360 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "ARGB Lighting",
@@ -25516,7 +25516,7 @@
   {
     "name": "MSI MEG CoreLiquid S280",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "2 x 140mm Fans",
       "Supports Various Sockets",
@@ -25561,7 +25561,7 @@
   {
     "name": "MSI MEG CoreLiquid S360",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "360mm Radiator",
       "3 x 120mm Fans",
@@ -25623,7 +25623,7 @@
   {
     "name": "MSI MPG CoreLiquid K240 V2 ARGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "240mm Radiator",
       "Dual 120mm Fans",
@@ -25786,7 +25786,7 @@
   {
     "name": "Noctua NH-L9x65 SE-AM4 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low-Profile Design",
       "65mm Height",
@@ -25951,7 +25951,7 @@
   {
     "name": "Noctua D9S DX-4189 4U - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "4189 Socket Support",
@@ -27332,7 +27332,7 @@
   {
     "name": "Noctua NH-L9x65 SE-AM4 - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "65mm Height",
@@ -28645,7 +28645,7 @@
   {
     "name": "NZXT KRAKEN X53",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fans: 2",
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+",
@@ -28746,7 +28746,7 @@
   {
     "name": "NZXT KRAKEN X72",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fans: 3",
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+, TR4, sTRX4",
@@ -28838,7 +28838,7 @@
   {
     "name": "NZXT Kraken Z53 RGB, white",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "2 x 120mm Fans",
       "RGB Lighting",
@@ -30379,7 +30379,7 @@
   {
     "name": "Phononic Hex 2.0 thermoelektrischer - 92 mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92 mm",
       "125 mm Height",
@@ -30499,7 +30499,7 @@
   {
     "name": "Prolimatech Black Series Genesis",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multi-Socket Compatible",
       "165 mm Height",
@@ -30567,7 +30567,7 @@
   {
     "name": "Prolimatech Blue Series Megahalems",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "High-Performance CPU Cooler",
       "158.7 mm Height",
@@ -30698,7 +30698,7 @@
   {
     "name": "Prolimatech Genesis \"Dual Viper Edition\"",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multiple Socket Compatibility",
       "160 mm Height",
@@ -30755,7 +30755,7 @@
   {
     "name": "Prolimatech Megahalems Rev.C",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Various Intel and AMD Sockets",
       "158.7 mm Height",
@@ -31004,7 +31004,7 @@
   {
     "name": "Raijintek Processor Kühler AIDOS II",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, 1200, 1150, 1151, 1155, 1156, 1366, 2011-V3, 2011, 2066",
       "155 mm Height",
@@ -31059,7 +31059,7 @@
   {
     "name": "Raijintek ELEOS 12 DUO RBW CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Dual Tower Design",
       "120mm Fans",
@@ -31125,7 +31125,7 @@
   {
     "name": "Raijintek ELEOS 12 EVO RBW CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1700, 1200, 1150, 1151, 1155, 1156, 1366, 2011-V3, 2011, 2066, AM4, AM3+, AM3 Socket Compatibility",
       "140 mm Height",
@@ -31182,7 +31182,7 @@
   {
     "name": "Raijintek THEMIS II CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1700, 1200, 1150, 1151, 1155, 1156, 1366, 2011-V3, 2011, 2066, AM4, AM3+, AM3 Sockets",
       "155 mm Height",
@@ -31240,7 +31240,7 @@
   {
     "name": "Raijintek Delos RBW Rainbow RGB LED - 3x 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "3x 92mm Fans",
       "RGB LED Lighting",
@@ -31295,7 +31295,7 @@
   {
     "name": "Raijintek ELEOS RBW",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 1200, 1150, 1151, 1155, 1156, 1366, 2011-V3, 2011, 2066, AM4, AM3+, AM3, AM2+, AM2, FM2+, FM2, FM1",
       "140 mm Height",
@@ -31491,7 +31491,7 @@
   {
     "name": "Raijintek Juno Pro ADD - addressable RGB LED",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Addressable RGB LED",
       "122.5 mm Height",
@@ -31546,7 +31546,7 @@
   {
     "name": "Raijintek Juno Pro RBW - RGB LED",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4 Socket Compatibility",
       "RGB LED Lighting",
@@ -31726,7 +31726,7 @@
   {
     "name": "Raijintek Juno-X - RGB LED",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multi-Socket Compatibility",
       "50 mm Height",
@@ -32371,7 +32371,7 @@
   {
     "name": "Raijintek Orcus RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "3x 120mm Fans",
       "Multi-Socket Compatibility",
@@ -32494,7 +32494,7 @@
   {
     "name": "Raijintek Orcus RGB",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "2x 120mm Fans",
       "AM4, AM3+, AM3, AM2, FM2+, FM2, 775, 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066",
@@ -32549,7 +32549,7 @@
   {
     "name": "Raijintek Orcus RGB Rainbow",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fans: 2",
       "Multi-Socket Compatibility",
@@ -32604,7 +32604,7 @@
   {
     "name": "Raijintek Orcus RGB Rainbow",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "2 x 120mm Fans",
       "AM4, AM3+, AM3, AM2, FM2+, FM2, 775, 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066",
@@ -32728,7 +32728,7 @@
   {
     "name": "Raijintek Orcus RGB Rainbow",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "Multi-Socket Compatibility",
@@ -32785,7 +32785,7 @@
   {
     "name": "Raijintek Orcus RGB Rainbow",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "Multi-Socket Compatibility",
@@ -33275,7 +33275,7 @@
   {
     "name": "Raijintek Tisis CORE Heatpipe",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, 775, AM2, AM3, AM3+, FM1, FM2, FM2+",
       "166.5 mm",
@@ -34704,7 +34704,7 @@
   {
     "name": "Scythe SCKTN-4000 Katana 4",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, AM2, FM1, FM2, FM2+",
       "143 mm Height",
@@ -34761,7 +34761,7 @@
   {
     "name": "Scythe SCKTN-5000 Katana 5",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, FM2+, FM2, FM1, AM3+, AM3, AM2, 940, 939, 775, 754, 1366, 1156, 1155, 1151, 1150",
       "135 mm Height",
@@ -34884,7 +34884,7 @@
   {
     "name": "Scythe SCMG-4000 Mugen 4",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 775, AM2, AM2+, AM3, AM3+, FM1, FM2, FM2+",
       "Height: 160 mm",
@@ -35183,7 +35183,7 @@
   {
     "name": "Scythe SCMG-5PCGH Mugen 5 \"PCGH Edition\"",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Compatible with various sockets (1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, 775, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+)",
       "154.5 mm Height",
@@ -35436,7 +35436,7 @@
   {
     "name": "Scythe SCSK-1100 Shuriken Rev.2",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multiple Socket Compatibility",
       "64 mm Height",
@@ -35552,7 +35552,7 @@
   {
     "name": "Scythe Tatsumi CPU Kühler für Intel",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM2, AM2+, AM3, AM3+, FM1, FM2, FM2+, AM4",
       "146 mm height",
@@ -35608,7 +35608,7 @@
   {
     "name": "SILVERSTONE AR01 120mm Sleeve",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Sleeve Bearing Fan",
       "159 mm Height",
@@ -35830,7 +35830,7 @@
   {
     "name": "SILVERSTONE AR08 140mm Sleeve Bearing CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "Long Life Sleeve Bearing",
@@ -36634,7 +36634,7 @@
   {
     "name": "Silverstone Argon SST-AR04 (only Thin-Mini-ITX)",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low Profile",
       "Supports various Intel sockets (1150, 1151, 1155, 1156)",
@@ -37622,7 +37622,7 @@
   {
     "name": "Silverstone SST-AR01-V2.1 Argon CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "159 mm Height",
@@ -38053,7 +38053,7 @@
   {
     "name": "Silverstone SST-AR09-1700 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "LGA 1700 Compatibility",
       "66mm Height",
@@ -38108,7 +38108,7 @@
   {
     "name": "SilverStone SST-AR09-AM4 AM4 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4 Socket Compatible",
       "95W TDP",
@@ -38272,7 +38272,7 @@
   {
     "name": "Silverstone SST-HE01 Heligon",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Heatsink",
       "160 mm Height",
@@ -38340,7 +38340,7 @@
   {
     "name": "Silverstone SST-HE01-V2 Heligon CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fan",
       "Supports Various Sockets (See Details)",
@@ -38406,7 +38406,7 @@
   {
     "name": "Silverstone SST-HE02-V2 Heligon",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Various Intel and AMD Sockets",
       "160 mm Height",
@@ -38542,7 +38542,7 @@
   {
     "name": "SilverStone SST-HYH90-ARGB Hydrogon Processor Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM5, AM4, LGA 2066, 2011, 1700, 1200, 1150, 1152, 1151, 1155, 1156",
       "48 mm Height",
@@ -38749,7 +38749,7 @@
   {
     "name": "Silverstone SST-KR01 Kryton Low Profile CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low Profile Design",
       "80mm Fan",
@@ -38799,7 +38799,7 @@
   {
     "name": "Silverstone SST-KR02 Kryton CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "125mm Height",
@@ -38851,7 +38851,7 @@
   {
     "name": "SilverStone SST-KR03 Kryton CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Compatible with various sockets (1366, 1200, 1150, 1152, 1151, 1155, 1156, 775, AM5, AM4, AM3, AM2, FM2, FM1)",
       "125 mm Height",
@@ -38906,7 +38906,7 @@
   {
     "name": "Silverstone SST-NT06-PRO Nitrogon",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Multiple Socket Support",
       "82 mm Height",
@@ -39084,7 +39084,7 @@
   {
     "name": "Silverstone SST-NT07-AM2 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM2, AM3, AM3+, FM1, FM2, FM2+ Socket Compatibility",
       "36.5 mm Height",
@@ -39137,7 +39137,7 @@
   {
     "name": "Silverstone SST-NT08-115XP 80 mm CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "80mm Fan",
       "33 mm Height",
@@ -39194,7 +39194,7 @@
   {
     "name": "SilverStone SST-NT09-1700 CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "92mm Fan",
       "45mm Height",
@@ -39579,7 +39579,7 @@
   {
     "name": "Silverstone SST-XE01-2011 Xenon Processor Passive Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Passive Cooling",
       "Intel LGA 2011/2066 Socket",
@@ -39626,7 +39626,7 @@
   {
     "name": "Silverstone SST-XE02-2011 Xenon Processor Cooler for 2U Server - Intel LGA2011/2066",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA2011/2066 compatible",
       "65 mm Height",
@@ -39682,7 +39682,7 @@
   {
     "name": "Silverstone SST-XE02-2066 Xeon Processor for 2U Servers",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA2011/2066",
       "165W TDP",
@@ -39727,7 +39727,7 @@
   {
     "name": "Silverstone SST-XE02-3647N Xeon for 2U Server - Intel LGA 3647",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA 3647",
       "205W TDP",
@@ -39781,7 +39781,7 @@
   {
     "name": "Silverstone SST-XE02-3647S Xeon Processor for 2U SFF Servers",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA 3647",
       "205W TDP",
@@ -39835,7 +39835,7 @@
   {
     "name": "SilverStone SST-XE02-4677 Xeon Processor Cooler for 2U Server - Intel LGA 4677",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA 4677 Socket",
       "270W TDP",
@@ -39889,7 +39889,7 @@
   {
     "name": "SilverStone SST-XE04-2066 CPU Cooler for 4U Server - Intel LGA2011/2066",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA2011/2066 compatible",
       "165W TDP",
@@ -39944,7 +39944,7 @@
   {
     "name": "SilverStone SST-XE04-4677 Xeon Processor Cooler for 4U Server - Intel LGA4677",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Intel LGA4677 Socket",
       "270W TDP",
@@ -39988,7 +39988,7 @@
   {
     "name": "SilverStone SST-XE04-SP3 CPU Cooler for AMD SP3/TR4",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AMD SP3/TR4 Socket Support",
       "250W TDP",
@@ -40238,7 +40238,7 @@
   {
     "name": "SUPERMICRO SNK-P0047P Heatsink",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "X9, X10 Compatible",
       "26 mm Height",
@@ -40278,7 +40278,7 @@
   {
     "name": "Thermalright AXP-200R ROG Processor Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "775, 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, AM2, AM2+, AM3, AM3+, FM1, FM2, FM2+, AM4",
       "73 mm Height",
@@ -40801,7 +40801,7 @@
   {
     "name": "Thermaltake Engine 17 Low-Profile CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "Low-Profile Design",
       "17 mm Height",
@@ -40848,7 +40848,7 @@
   {
     "name": "Thermaltake Floe Riing RGB TT Premium-Edition",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Radiator",
       "2x 120mm Fans",
@@ -40907,7 +40907,7 @@
   {
     "name": "Thermaltake Floe Riing RGB TT Premium-Edition",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Fans: 2",
       "Supports various sockets (see details)",
@@ -40965,7 +40965,7 @@
   {
     "name": "Thermaltake Floe Riing RGB TT Premium-Edition",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fans: 3",
       "Supported Sockets: 1150, 1151, 1155, 1156, 1366, 2011, 2011-V3, 2066, AM2, AM3, AM3+, AM4, FM1, FM2, FM2+",
@@ -41436,7 +41436,7 @@
   {
     "name": "Thermaltake Water 3.0 ARGB Sync",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fans: 3",
       "Supports Various Sockets",
@@ -41481,7 +41481,7 @@
   {
     "name": "Thermaltake Water 3.0 Riing, red - 140 mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "140mm Radiator",
       "RGB Lighting",
@@ -41536,7 +41536,7 @@
   {
     "name": "Thermaltake Water 3.0 Riing 280 mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "280 mm Radiator",
       "Dual 140mm Fans",
@@ -41772,7 +41772,7 @@
   {
     "name": "Titan DC-155A915Z/RPW 95mm Z-AXIS CPU Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "95mm Z-Axis",
       "Supports Sockets 1155, 1156, 1150",
@@ -41828,7 +41828,7 @@
   {
     "name": "Titan TTC-NA02TZ/RPW/CU30 95mm Z-AXIS Copper Cooler",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "95mm Z-AXIS Copper Cooler",
       "For socket 1150, 1155 & 1156",
@@ -41884,7 +41884,7 @@
   {
     "name": "Titan TTC-NA43TZ/CU35 95mm Z-AXIS",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "95mm Z-AXIS",
       "Socket 2011 Compatible",
@@ -42579,7 +42579,7 @@
   {
     "name": "ZALMAN CNPS10X Performa+ 120mm Long Life Bearing",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "120mm Fan",
       "151 mm Height",
@@ -42818,7 +42818,7 @@
   {
     "name": "Zalman CNPS17X - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 2011, 2011-V3, 2066, AM3, AM4 Sockets",
       "160 mm Height",
@@ -42876,7 +42876,7 @@
   {
     "name": "Zalman CNPS20X - black",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "1150, 1151, 1155, 1156, 2011, 2011-V3, 2066, AM3, AM4",
       "170 mm height",
@@ -43058,7 +43058,7 @@
   {
     "name": "Zalman CNPS4X RGB - 92mm",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "AM4, AM3+, AM3, FM2+, FM2, 1200, 1150, 1151, 1155, 1156, 775",
       "95 W TDP",
@@ -43603,7 +43603,7 @@
   {
     "name": "ZALMAN CNPS8X Optima 100mm Long Life Bearing HIGH PERFORMANCE Processor COOLER",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "100mm Fan",
       "149 mm Height",
@@ -43711,7 +43711,7 @@
   {
     "name": "ZALMAN CNPS9500A-LED 92mm 2 Ball",
     "image": "/assets/hardware/processors.png",
-    "category": "Processors",
+    "category": "Cooling",
     "specs": [
       "775, 1155, 1156, 1150, 754, 939, 940, AM2, AM2+, AM3",
       "125 mm Height",

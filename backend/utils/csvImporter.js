@@ -10,7 +10,7 @@ const Product = require('../models/Product');
 async function importCSVDataToMongoDB() {
   try {
     // Connect to MongoDB
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/pcbuilder', {
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/easyware', {
       useNewUrlParser: true,
       useUnifiedTopology: true
     });
